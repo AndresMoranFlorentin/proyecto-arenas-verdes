@@ -1,0 +1,130 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    background: #115b13;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 2;
+  }
+  
+  nav ul {
+    display: flex;
+    list-style: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav ul li {
+    margin-right: 20px; /* Espaciado entre los elementos del menú */
+  }
+  
+  nav ul li a {
+    list-style: none;
+    display: block;
+    color: #fefdfd;
+    margin: 5px 0px;
+    padding: 0px 15px;
+    padding: 0;
+    text-decoration: none;
+  }
+  
+  nav ul li:hover {
+    cursor: pointer;
+    border-bottom: 3px solid #fefdfd;
+  }
+   
+  nav ul li.active {
+    cursor: pointer;
+    border-bottom: 3px solid #fefdfd; /* Estilo para el enlace activo */
+  }
+  nav .btn_login{
+    margin-left: auto;
+  }
+  /**boton del login **/
+  .btn_login {
+    margin-left: 10%;
+  background: rgb(153, 225, 206);
+  font-size: 5px;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  margin: auto;
+  cursor:grab ; /* Cambia el cursor al pasar sobre el botón */
+
+}
+  /** SECCION CUERPO BODY**/
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    background-color: #9bdd9e;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+  }
+  main{
+    height: 50%;
+    width: 50%;
+    background-color: #9bdd9e;
+  }
+  .introduccion{
+     padding-right: 15%;
+     padding-left: 15%;
+     padding-bottom: 5%;
+  }
+ /** SECCION FOOTER**/
+ footer {
+  display: flex;
+  width: 100%;
+  height: 20%;
+  padding: 20px;
+  margin-top: 20px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: #241f20;
+}
+
+footer a {
+  padding: 10px;
+  margin-right: 48px;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-around;
+}
+
+.buttons a {
+  text-decoration: none;
+  font-size: 20px;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  background: #fefdfd;
+  color: #241f20;
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s ease-in-out;
+}
+
+.buttons a:hover {
+  transform: scale(1.2);
+}
