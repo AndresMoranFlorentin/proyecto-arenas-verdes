@@ -16,6 +16,7 @@ header {
     align-items: center;
     padding: 10px 20px;
     z-index: 2;
+    width: 100%;
   }
   
   nav ul {
@@ -23,7 +24,10 @@ header {
     list-style: none;
     overflow: hidden;
     margin: 0;
+    margin-right: 20px;
+    margin-left: 20px;
     padding: 0;
+    width: 100%;
   }
   
   nav ul li {
@@ -34,10 +38,11 @@ header {
     list-style: none;
     display: block;
     color: #fefdfd;
-    margin: 5px 0px;
+    margin: 5px 5px;
     padding: 0px 15px;
     padding: 0;
     text-decoration: none;
+    font-family: "Gill Sans", sans-serif;
   }
   
   nav ul li:hover {
@@ -54,14 +59,15 @@ header {
   }
   /**boton del login **/
   .btn_login {
+    display: contents;
     margin-left: 10%;
-  background: rgb(153, 225, 206);
-  font-size: 5px;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  margin: auto;
-  cursor:grab ; /* Cambia el cursor al pasar sobre el botón */
+    background: rgb(153, 225, 206);
+    font-size: 5px;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin: auto;
+    cursor:grab ; /* Cambia el cursor al pasar sobre el botón */
 
 }
   /** SECCION CUERPO BODY**/
@@ -74,7 +80,7 @@ header {
     align-items: center;
     text-align: left;
     background-color: #9bdd9e;
-    font-family: "Roboto", sans-serif;
+    font-family: "Gill Sans", sans-serif;
     font-size: 16px;
   }
   main{
