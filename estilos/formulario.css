@@ -99,3 +99,35 @@
 #form_costo button h3 {
   margin: 0;
 }
+/*FORMULARIO PARA BUSCAR DISPONIBILIDAD DE RESERVAS**/
+#buscadorForm {
+  margin-top: 20px;
+}
+
+#buscadorForm label {
+  display: block;
+  margin-top: 10px;
+}
+
+#buscadorForm input, #buscadorForm select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+#buscadorForm button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#results {
+  margin-top: 20px;
+  padding:10px;
+  background-color: bisque;
+  box-shadow: rgb(103, 121, 222);
+  border: solid 2px black;
+}
