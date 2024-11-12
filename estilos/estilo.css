@@ -134,3 +134,25 @@ footer a {
 .buttons a:hover {
   transform: scale(1.2);
 }
+
+#tabla_preguntas {
+  border: solid 1px #241f20;
+  text-align: center;
+}
+
+#tabla_preguntas td{
+  border: solid 1px #241f20;
+}
+
+#tabla_preguntas tr{
+  border: solid 1px #241f20;
+}
+
+.pregunta {
+  font-weight: bolder;
+}
+
+.section_preg {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
