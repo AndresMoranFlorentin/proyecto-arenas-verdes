@@ -4,7 +4,7 @@ header {
     align-items: center;
     text-align: center;
     width: 100%;
-    background: #115b13;
+    background: #6a7ecf;
     top: 0;
     left: 0;
     right: 0;
@@ -79,14 +79,14 @@ header {
     flex-direction: column;
     align-items: center;
     text-align: left;
-    background-color: #9bdd9e;
+    background-color: #FFFFFF;
     font-family: "Gill Sans", sans-serif;
     font-size: 16px;
   }
   main{
     height: 50%;
     width: 50%;
-    background-color: #9bdd9e;
+    background-color: #FFFFFF;
   }
   .introduccion{
      padding-right: 15%;
