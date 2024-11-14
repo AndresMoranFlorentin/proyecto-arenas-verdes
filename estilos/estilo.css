@@ -223,3 +223,11 @@ footer a {
   max-height: 1000px;
   padding: 10px;
 }
+
+.icon_wsp {
+  position: fixed;
+  width: 85px;
+  height: 85px;
+  bottom: 10px;
+  right: 10px;
+}
