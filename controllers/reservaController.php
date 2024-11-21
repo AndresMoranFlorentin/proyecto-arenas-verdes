@@ -14,5 +14,10 @@ class ReservaController {
     public function showHome() {
         $this->view->showHome();
     }
-
+    public function preguntasFrec() {
+        $this->view->pregFrec();
+    }
+    public function reservacion() {
+        $this->view->reservacion();
+    }
     }

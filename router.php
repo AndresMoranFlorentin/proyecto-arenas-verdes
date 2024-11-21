@@ -21,6 +21,14 @@ switch ($params[0]) {
         $controller = new AuthController();
         $controller->showLogin();
         break;
+    case 'preg':
+        $controller = new ReservaController();
+        $controller->preguntasFrec();
+        break;
+    case 'reservacion':
+        $controller = new ReservaController();
+        $controller->reservacion();
+        break;
     default:
         echo "404 Página no encontrada";
         break;
