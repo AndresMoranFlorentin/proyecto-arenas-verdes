@@ -210,7 +210,7 @@ footer a {
   content: "-";
 }
 
-.acordion_preg .content_box .content {
+.acordion_preg .content_box .contenido {
   position: relative;
   padding: 0 10px;
   background: #ffffff;
@@ -219,7 +219,7 @@ footer a {
   transition: max-height 0.5s ease, padding 0.5s ease;
 }
 
-.acordion_preg .content_box.active .content {
+.acordion_preg .content_box.active .contenido {
   max-height: 1000px;
   padding: 10px;
 }

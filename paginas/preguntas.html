@@ -15,7 +15,6 @@
 
     <link rel="stylesheet" href="../estilos/estilo.css" />
     <link rel="stylesheet" href="../estilos/formulario.css" />
-    <link rel="stylesheet" href="../estilos/fontello.css" />
     <title>Reservaciones Arenas Verdes</title>
   </head>
   <body>
@@ -45,7 +44,7 @@
           <div class="pregunta">
             ✍️ ¿Cuales son los tarifas de la Base Municipal de Campamentos?
           </div>
-          <div class="content">
+          <div class="contenido">
             <p>
               Cuando se trate de grupos escolares, se aplicará un 50% de
               descuento del valor de referencia. Estos valores están vigentes a
@@ -228,7 +227,7 @@
           <div class="pregunta">
             ✍️ ¿Cuál es el horario de ingreso y egreso del complejo?
           </div>
-          <div class="content">
+          <div class="contenido">
             <p>Para acampar podés ingresar entre las 08:00 y las 20:00 hs.</p>
             <p>
               Tenes que tener en cuenta que la estadía vence a las 10 hs
@@ -252,7 +251,7 @@
           <div class="pregunta">
             ✍️ ¿Hay que reservar previamente una parcela?
           </div>
-          <div class="content">
+          <div class="contenido">
             <p>
               Sugerimos que se comuniquen al cel de contacto para consultar
               disponibilidad
@@ -262,7 +261,7 @@
 
         <div class="content_box">
           <div class="pregunta">✍️ ¿Las parcelas tienen fogón y parrilla?</div>
-          <div class="content">
+          <div class="contenido">
             <p>
               El camping cuenta con algunos fogones y parrillas. No todas las
               parcelas cuentan con estos elementos, si tenes alguna parrillita,
@@ -275,7 +274,7 @@
           <div class="pregunta">
             ✍️ ¿Se puede hacer fuego en otro lado si los fogones están ocupados?
           </div>
-          <div class="content">
+          <div class="contenido">
             <p>Se debe consultar con los encargados del lugar.</p>
           </div>
         </div>
@@ -284,7 +283,7 @@
           <div class="pregunta">
             ✍️ ¿Durante el alojamiento puedo recibir visitas?
           </div>
-          <div class="content">
+          <div class="contenido">
             <p>
               Si, las visitas pueden permanecer en el complejo por el término de
               2 horas sin cargo, pasada dicha hora, deberán abonar la estadía.
@@ -294,7 +293,7 @@
 
         <div class="content_box">
           <div class="pregunta">✍️ Sobre Vestuarios y Duchas</div>
-          <div class="content">
+          <div class="contenido">
             <p>Se informará en el camping el horario de duchas.</p>
             <p>
               Se recomienda Ingresar con los elementos mínimos posibles a las
@@ -313,7 +312,7 @@
 
         <div class="content_box">
           <div class="pregunta">✍️ Sobre Horarios de Descanso</div>
-          <div class="content">
+          <div class="contenido">
             <p>
               Se establece que el horario de descanso es de 23 hasta las 08:00,
               por lo que se sugiere no tener elevado el volumen de la música
@@ -328,13 +327,69 @@
 
         <div class="content_box">
           <div class="pregunta">✍️ Sobre Mascotas</div>
-          <div class="content">
+          <div class="contenido">
             <p>
               Se permite el ingreso de mascotas en tanto sus dueños se hagan
               responsables de su cuidado y especialmente que no molesten a otros
               usuario en horarios de almuerzo/cena.
             </p>
           </div>
+        </div>
+      </div>
+    </main>
+      
+      <!--SECCION DEL FORMULARIO DE REGISTRO-->
+      <div class="overlay" id="overlay">
+        <div class="form-container">
+          <h2>Registro</h2>
+          <form id="registrationForm">
+            <input
+              type="number"
+              id="dni"
+              name="dni"
+              placeholder="DNI"
+              required
+            />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Nombre"
+              required
+            />
+            <input
+              type="text"
+              id="apellido"
+              name="apellido"
+              placeholder="Apellido"
+              required
+            />
+            <input
+              type="number"
+              id="phone"
+              name="phone"
+              placeholder="Celular"
+              required
+            />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="E-mail"
+              required
+            />
+            <input
+              type="text"
+              id="location"
+              name="location"
+              placeholder="Localidad"
+              required
+            />
+            <button type="submit">Registrarse</button>
+            <button type="button" class="cancel" id="cancelBtn">
+              Cancelar
+            </button>
+          </form>
         </div>
       </div>
 
@@ -346,7 +401,6 @@
       >
         <img src="../img/logos/btn_wsp.png" class="icon_wsp" alt="" />
       </a>
-    </main>
 
     <!--SECCION PIE DE PAGINA(DEBE SER IGUAL PARA TODAS LAS PAGINAS)-->
     <footer class="footer">

@@ -3,12 +3,6 @@ const overlay = document.getElementById("overlay");
 const cancelBtn = document.getElementById("cancelBtn");
 const content = document.getElementById("content");
 
-const accordion = document.getElementsByClassName("content_box");
-for (i = 0; i < accordion.length; i++) {
-  accordion[i].addEventListener('click', function(){
-    this.classList.toggle('active')
-  })
-}
 
 //funcion para quitar el efecto borroso cuando se inicializa la pagina
 function inicializar() {
@@ -34,3 +28,10 @@ document.getElementById("registrationForm").addEventListener("submit", (e) => {
   overlay.style.display = "none";
   content.classList.remove("blurred-content");
 });
+
+const accordion = document.getElementsByClassName("content_box");
+for (i = 0; i < accordion.length; i++) {
+  accordion[i].addEventListener('click', function(){
+    this.classList.toggle('active')
+  })
+}
