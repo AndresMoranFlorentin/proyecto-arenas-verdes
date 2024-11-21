@@ -1,3 +1,4 @@
+/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
@@ -96,25 +97,24 @@ main {
 /** SECCION FOOTER**/
 footer {
   display: flex;
-  width: 100%;
-  height: 20%;
+  width: 100vw; /* Usa la vista completa del ancho */
+  max-width: 100%; /* Evita que se sobrepase */
+  margin: 0;
   padding: 20px;
-  margin-top: 20px;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   background-color: #241f20;
+  text-align: center; /* Centra el contenido del footer */
 }
 
-footer a {
-  padding: 10px;
-  margin-right: 48px;
-}
 
 .buttons {
   display: flex;
   margin-top: 20px;
   justify-content: space-around;
+  width: 100%; /* Para que ocupe todo el ancho disponible */
+  flex-wrap: wrap; /* Permite que los botones se ajusten en pantallas más pequeñas */
 }
 
 .buttons a {
@@ -129,6 +129,7 @@ footer a {
   border-radius: 50%;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   transition: all 0.4s ease-in-out;
+  margin: 5px; /* Añadido para espaciado entre los iconos */
 }
 
 .buttons a:hover {
