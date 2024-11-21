@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelBtn = document.getElementById('cancelBtn');
   const content = document.getElementById('content');
   
- 
-  function inicializar(){}
+  //funcion para quitar el efecto borroso cuando se inicializa la pagina
+  function inicializar(){
+    console.log("El archivo JavaScript se cargó correctamente");
+  }
   inicializar(); 
 
   // Mostrar el formulario al presionar el botón "Login"
