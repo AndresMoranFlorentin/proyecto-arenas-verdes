@@ -9,15 +9,14 @@ require './templates/home.phtml';
     }
 
     public function pregFrec() {
-       
-
-        require './templates/preguntas.phtml';
-        
-            }
-            public function reservacion() {
-       
-
-                require './templates/reservacion.phtml';
-                
-                    }
+       require './templates/preguntas.phtml';
     }
+    
+    public function reservacion() {
+        require './templates/reservacion.phtml';
+    }
+
+    public function precios() {
+        require './templates/precios.phtml';
+    }
+}

@@ -20,4 +20,10 @@ class ReservaController {
     public function reservacion() {
         $this->view->reservacion();
     }
+    public function precios() {
+        $this->view->precios();
     }
+}
+
+
+    

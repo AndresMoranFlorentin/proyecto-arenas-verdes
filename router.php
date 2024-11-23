@@ -29,6 +29,10 @@ switch ($params[0]) {
         $controller = new ReservaController();
         $controller->reservacion();
         break;
+    case 'precios':
+        $controller = new ReservaController();
+        $controller->precios();
+        break;
     default:
         echo "404 Página no encontrada";
         break;
