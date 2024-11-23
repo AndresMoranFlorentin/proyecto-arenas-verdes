@@ -11,7 +11,7 @@ require './templates/home.phtml';
     public function pregFrec() {
        
 
-        require './templates/reservacion.phtml';
+        require './templates/preguntas.phtml';
         
             }
             public function reservacion() {
