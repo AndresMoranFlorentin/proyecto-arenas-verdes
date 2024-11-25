@@ -10,6 +10,6 @@ class AuthView {
     }
 
     public function renderHome($error = null){
-        
+        require './templates/home.phtml';
     }
 }

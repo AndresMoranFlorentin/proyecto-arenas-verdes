@@ -10,7 +10,7 @@ class SessionHelper
         }
     }
 
-    function iniciaSesion($user)
+    function logIn($user)
     {
         if (!$this->sessionVerify()) {
             session_start();
@@ -66,7 +66,7 @@ class SessionHelper
     }
 
 
-    function cerrarSesion()
+    function logOut()
     {
         if ($this->sessionVerify()) {
             session_destroy();

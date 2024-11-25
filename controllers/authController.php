@@ -2,7 +2,7 @@
 <?php 
 require_once './views/authView.php';
 require_once './models/authModel.php';
-require_once 'helpers/sessionHelper.php';
+require_once './helpers/sessionHelper.php';
 
 class AuthController {
     private $view;
@@ -31,7 +31,7 @@ class AuthController {
 
         $user = $this->model->findUser($usuario);
         if ($user && password_verify($password, $user->password)) {
-            $this->helper->iniciaSesion($user);
+            $this->helper->logIn($user);
             
             
             header('Location: ' . BASE_URL);
@@ -40,7 +40,7 @@ class AuthController {
         }
     }
 
-    function registrar()
+    function register()
     {
         if (empty($_POST['nombre']) || empty($_POST['email']) || empty($_POST['password'])) {
             $logueado = $this->helper->checkUser();
@@ -59,8 +59,8 @@ class AuthController {
             $this->view->renderError($logueado, $mensaje);
         } else {
             $userPassword = password_hash($clave, PASSWORD_BCRYPT);
-            $this->model->registrar($nombre, $email, $rol, $userPassword);
-            $this->helper->iniciaSesion($nombre);
+            $this->model->register($nombre, $email, $rol, $userPassword);
+            $this->helper->logIn($nombre);
             $logueado = $this->helper->checkUser();
             $$rol = $this->helper->getRol();
             $this->view->renderHome($logueado, $rol);
@@ -68,7 +68,7 @@ class AuthController {
     }
 
     public function logout() {
-        $this->helper->cerrarSesion();
+        $this->helper->logOut();
         header('Location: ' . BASE_URL);    
     }
 }

@@ -21,7 +21,7 @@ class AuthModel extends ConectionModel {
         return $user;
     }
 
-    function registrar($nombre, $email, $rol, $password)
+    function register($nombre, $email, $rol, $password)
     {
         $sql = 'INSERT INTO login (nombre, password, email, rol) 
         VALUES (?, ?, ?, ?)';
@@ -48,7 +48,7 @@ class AuthModel extends ConectionModel {
         return $rol;
     }
 
-    function getUsuarios()
+    function getUsers()
     {
         $sql = 'select * from login';
         $sentencia = $this->db->prepare($sql);
@@ -57,7 +57,7 @@ class AuthModel extends ConectionModel {
         return $usuarios;
     }
 
-    function cambiarRol($id, $rol)
+    function changeRol($id, $rol)
     {
         $sql = "UPDATE login SET rol = ?
         WHERE id_usuario = ?";
@@ -66,7 +66,7 @@ class AuthModel extends ConectionModel {
         $sentencia->execute([$rol, $id]);
     }
 
-    function eliminarUsuario($id)
+    function deleteUser($id)
     {
         $sql = "DELETE FROM login WHERE id_usuario = ?";
 
