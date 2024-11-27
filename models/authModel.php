@@ -1,9 +1,11 @@
 <?php
 
+require_once 'conectionModel.php';
+
 
 class AuthModel extends ConectionModel {
 
-    private $db;
+    protected $db;
 
     function __construct(){
         parent::__construct();

@@ -1,11 +1,12 @@
 <?php
 
-class ReservaView {
-    public function showHome() {
-       
+class ReservaView
+{
+    private $logueado;
+    public function showHome($logueado)
+    {
 
-require './templates/home.phtml';
-
+        $this->logueado = $logueado;
+        require './templates/home.phtml';
     }
-
-    }
+}

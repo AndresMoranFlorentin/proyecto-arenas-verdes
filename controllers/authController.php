@@ -51,7 +51,7 @@ class AuthController {
         $nombre = $_POST['nombre'];
         $email = $_POST['email'];
         $clave = $_POST['password'];
-        $rol = 'usuario';
+        $rol = 'user';
         $check = $this->model->existEmail($email);
         if ($check[0] > 0) {
             $logueado = $this->helper->checkUser();

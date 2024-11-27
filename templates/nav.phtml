@@ -31,9 +31,17 @@
  
       </ul>
         <!-- Botón de Login para registrarse -->
+     <?php if(!$this->logueado): ?>    
      <button class="btn_login" id="loginBtn" type="button">
           <img width="20px" src="./img/logos/login_1.png" alt="Login" />
         </button>
+        <button class="btn_regis" id="regisBtn" type="button"> </button>
+      <?php else: ?>
+        <button class="btn_logout" id="logoutBtn" type="button">
+          <img width="20px" src="./img/logos/login_1.png" alt="Logout" />
+        </button>
+        <?php endif; ?>
+
       </div>
     </div>
     <?php
