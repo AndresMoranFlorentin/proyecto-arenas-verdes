@@ -19,4 +19,9 @@ class ReservaController {
         $this->view->showHome($logueado);
     }
 
+    public function renderPrecios(){
+        $logueado = $this->helper->checkUser();
+        $this->view->renderPrecios($logueado);
+    }
+
     }

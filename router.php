@@ -17,9 +17,14 @@ $authController = new AuthController();
 $params = explode('/', $action);
 
 switch ($params[0]) {
+    //*******RESERVA CONTROLLER**********************
     case 'home':
         $reservaController->showHome();
         break;
+    case 'precios':
+        $reservaController->renderPrecios();
+        break;  
+    //*****AUTH CONTROLLER **************      
     case 'login':
         $authController->showLogin();
         break;
@@ -29,6 +34,7 @@ switch ($params[0]) {
     case 'register':
         $authController->register();
         break;
+        
     default:
         echo "404 Página no encontrada";
         break;
