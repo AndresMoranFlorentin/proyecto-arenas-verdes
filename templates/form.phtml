@@ -2,7 +2,13 @@
  <div class="overlay" id="overlay">
       <div class="form-container">
         <h2>Registro</h2>
-        <form id="registrationForm">
+        <!-- Mostrar mensaje si existe -->
+        <?php if ($mensaje): ?>
+              <div class="notification <?= $tipo ?>">
+                <?= htmlspecialchars($mensaje) ?>
+              </div>
+            <?php endif; ?><!--lugar donde se mostraran los mensajes de lo que pase luego de enviar los datos al formulario-->
+        <form action="agregarUsuario" method="post"  id="registrationForm">
           <input type="number" id="dni" name="dni" placeholder="DNI" required />
           <input
             type="text"

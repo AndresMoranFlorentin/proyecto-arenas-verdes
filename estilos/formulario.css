@@ -1,6 +1,7 @@
 /* Estilo para el fondo borroso */
 .blurred-content {
   filter: blur(5px);
+  width: 60%;
 }
 
 /* Estilo para el formulario emergente */
@@ -100,6 +101,11 @@
   margin: 0;
 }
 /*FORMULARIO PARA BUSCAR DISPONIBILIDAD DE RESERVAS**/
+.preg_dispo{
+  margin-left: 20%;
+  margin-right: 20%;
+  width: 60%;
+}
 #buscadorForm {
   margin-top: 20px;
 }

@@ -1,6 +1,7 @@
 <?php
 // router.php
 require_once './controllers/reservaController.php';
+require_once './controllers/AuthController.php';
 
 
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
@@ -21,6 +22,10 @@ switch ($params[0]) {
         $controller = new AuthController();
         $controller->showLogin();
         break;
+    case 'agregarUsuario':
+        $controller = new AuthController();
+        $controller->agregarUsuario();
+        break;
     case 'preg':
         $controller = new ReservaController();
         $controller->preguntasFrec();
@@ -37,4 +42,3 @@ switch ($params[0]) {
         echo "404 Página no encontrada";
         break;
 }
-?>
