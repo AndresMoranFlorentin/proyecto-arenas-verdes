@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //funcion para quitar el efecto borroso cuando se inicializa la pagina
   function inicializar() {
-    content.classList.remove("blurred-content");
+    //content.classList.remove("blurred-content");
   }
   inicializar();
 

@@ -23,13 +23,13 @@ class AuthModel extends ConectionModel {
         return $user;
     }
 
-    function register($nombre, $email, $rol, $password)
+    function register($nombre, $apellido, $email, $localidad, $phone, $rol, $password)
     {
-        $sql = 'INSERT INTO login (nombre, password, email, rol) 
-        VALUES (?, ?, ?, ?)';
+        $sql = 'INSERT INTO login (nombre, apellido, email, localidad, phone, rol, password) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)';
 
         $sentencia = $this->db->prepare($sql);
-        $sentencia->execute([$nombre, $password, $email, $rol]);
+        $sentencia->execute([$nombre, $apellido, $email, $localidad, $phone, $rol, $password]);
     }
 
     function existEmail($userEmail)

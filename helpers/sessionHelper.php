@@ -17,7 +17,7 @@ class SessionHelper
         }
         $_SESSION["logueado"] = true;
         $_SESSION["rol"] = $user->rol;
-        $_SESSION["id"] = $user->id_usuario;
+        $_SESSION["id"] = $user->id;
         
     }
 

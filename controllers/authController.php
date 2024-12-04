@@ -42,14 +42,17 @@ class AuthController {
 
     function register()
     {
-        if (empty($_POST['nombre']) || empty($_POST['email']) || empty($_POST['password'])) {
+        if (empty($_POST['nombre']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['apellido']) || empty($_POST['localidad']) || empty($_POST['phone'])) {
             $logueado = $this->helper->checkUser();
             $mensaje = "Complete los campos";
             $this->view->renderError($mensaje);
             die();
         }
         $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
         $email = $_POST['email'];
+        $localidad = $_POST['localidad'];
+        $phone = $_POST['phone'];
         $clave = $_POST['password'];
         $rol = 'user';
         $check = $this->model->existEmail($email);
@@ -59,8 +62,8 @@ class AuthController {
             $this->view->renderError($logueado, $mensaje);
         } else {
             $userPassword = password_hash($clave, PASSWORD_BCRYPT);
-            $this->model->register($nombre, $email, $rol, $userPassword);
-            $this->helper->logIn($nombre);
+            $this->model->register($nombre, $apellido, $email, $localidad, $phone, $rol, $userPassword);
+            $this->helper->logIn($email);
             $logueado = $this->helper->checkUser();
             $$rol = $this->helper->getRol();
             $this->view->renderHome($logueado, $rol);
