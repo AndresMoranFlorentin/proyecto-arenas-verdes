@@ -25,6 +25,14 @@
         <li class="nav-item">
           <a class="nav-link" href="precios">Precios</a>
         </li>
+        <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <li class="nav-item">
+          <a class="nav-link" href="Usuarios">Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="reservas">Reservas</a>
+        </li>
+        <?php endif; ?>
         <li class="nav-item">
           <a class="nav-link" href="preguntas">Preguntas Frecuentes</a>
         </li>
@@ -32,14 +40,16 @@
       </ul>
         <!-- Botón de Login para registrarse -->
      <?php if(!$this->logueado): ?>    
-     <button class="btn_login" id="loginBtn" type="button">
-          <img width="20px" src="./img/logos/login_1.png" alt="Login" />
-        </button>
-        <button class="btn_regis" id="regisBtn" type="button"> </button>
+      <li class="nav-item">
+          <a class="nav-link" href="login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="newUser">Registrarse</a>
+        </li>
       <?php else: ?>
-        <button class="btn_logout" id="logoutBtn" type="button">
-          <img width="20px" src="./img/logos/login_1.png" alt="Logout" />
-        </button>
+        <li class="nav-item">
+          <a class="nav-link" href="logout">Logout</a>
+        </li>
         <?php endif; ?>
 
       </div>

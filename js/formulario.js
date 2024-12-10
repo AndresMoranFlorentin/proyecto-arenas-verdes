@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // También podrías agregar funcionalidad para enviar el formulario si lo deseas
   document
-    .getElementById("registrationForm")
+    .getElementById("loginForm")
     .addEventListener("submit", (e) => {
       e.preventDefault();
       alert("Formulario enviado");
