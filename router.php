@@ -40,6 +40,15 @@ switch ($params[0]) {
     case 'logout':
         $authController->logout();
         break;
+    case 'users':
+        $authController->getUsers();
+        break;
+    case 'editRol':
+        $authController->editRol($params[1]);
+        break;
+    case 'deleteUser':
+        $authController->deleteUser($params[1]);
+        break;
 
     default:
         echo "404 Página no encontrada";

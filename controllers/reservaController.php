@@ -16,12 +16,14 @@ class ReservaController {
 
     public function showHome() {
         $logueado = $this->helper->checkUser();
-        $this->view->showHome($logueado);
+        $rol = $this->helper->getRol();
+        $this->view->showHome($logueado, $rol);
     }
 
     public function renderPrecios(){
         $logueado = $this->helper->checkUser();
-        $this->view->renderPrecios($logueado);
+        $rol = $this->helper->getRol();
+        $this->view->renderPrecios($logueado, $rol);
     }
 
     }

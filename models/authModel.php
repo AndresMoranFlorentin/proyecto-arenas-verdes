@@ -43,7 +43,7 @@ class AuthModel extends ConectionModel {
 
     function checkRol($id)
     {
-        $sql = 'select rol from users where id_usuario=?';
+        $sql = 'select rol from users where id=?';
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([$id]);
         $rol = $sentencia->fetch(PDO::FETCH_OBJ);
@@ -55,14 +55,14 @@ class AuthModel extends ConectionModel {
         $sql = 'select * from users';
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([]);
-        $usuarios = $sentencia->fetchAll(PDO::FETCH_OBJ);
-        return $usuarios;
+        $users = $sentencia->fetchAll(PDO::FETCH_OBJ);
+        return $users;
     }
 
     function changeRol($id, $rol)
     {
         $sql = "UPDATE users SET rol = ?
-        WHERE id_usuario = ?";
+        WHERE id = ?";
 
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([$rol, $id]);
@@ -70,7 +70,7 @@ class AuthModel extends ConectionModel {
 
     function deleteUser($id)
     {
-        $sql = "DELETE FROM users WHERE id_usuario = ?";
+        $sql = "DELETE FROM users WHERE id = ?";
 
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([$id]);

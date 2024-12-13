@@ -1,0 +1,40 @@
+<?php include 'header.phtml'; ?>
+
+
+<h1>Lista de Usuarios</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Apellido y Nombre</th>
+            <th>Email</th>
+            <th>DNI</th>
+            <th>Localidad</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($users as $user): ?>
+            <tr>
+                <td><?= htmlspecialchars($user->apellido . ' ' . htmlspecialchars($user->nombre)) ?></td>
+                <td><?= htmlspecialchars($user->email) ?></td>
+                <td><?= htmlspecialchars($user->dni) ?></td>
+                <td><?= htmlspecialchars($user->localidad) ?></td>
+                <td><?= htmlspecialchars($user->rol) ?></td>
+                <td>
+                    <a class="btn btn-edit" href="editRol/<?= htmlspecialchars($user->id) ?>">Editar Rol</a>
+                    <a class="btn btn-delete" href="deleteUser/<?= htmlspecialchars($user->id) ?>">Eliminar</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+
+
+<?php
+
+include 'whatsapp.phtml';
+include 'footer.phtml';
+
+?>

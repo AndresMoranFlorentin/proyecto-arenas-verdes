@@ -4,6 +4,8 @@ class AuthView {
 
     private $logueado;
     private $rol;
+    private $users;
+    private $error;
 
     public function showLogin($error = null) {
         require './templates/login.phtml';
@@ -14,6 +16,8 @@ class AuthView {
     }
 
     public function renderError($error = null){
+        $this->error = $error;
+        require './templates/error.phtml';
 
     }
 
@@ -21,5 +25,12 @@ class AuthView {
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/home.phtml';
+    }
+
+    public function renderUsers($users, $logueado, $rol){
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        $this->users = $users;
+        require './templates/users.phtml';
     }
 }
