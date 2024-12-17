@@ -35,4 +35,9 @@ COMO EL MAPA:**/
 .hidden {
   display: none;
 }
+.parcela_no_disponible {
+  background-color: rgb(206, 124, 124);
+  border-bottom: darkred;
+
+}
 

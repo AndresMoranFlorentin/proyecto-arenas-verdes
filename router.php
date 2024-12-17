@@ -34,6 +34,14 @@ switch ($params[0]) {
         $controller = new ReservaController();
         $controller->reservacion();
         break;
+    case 'buscarParcelasDispo':
+        $controller = new ReservaController();
+        $controller->buscarParcelasDispo();
+        break;
+    case 'simular_precios':
+        $controller = new ReservaController();
+        $controller->simularPrecioReserva();
+        break;
     case 'precios':
         $controller = new ReservaController();
         $controller->precios();

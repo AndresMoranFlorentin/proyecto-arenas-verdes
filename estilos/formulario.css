@@ -1,7 +1,6 @@
 /* Estilo para el fondo borroso */
 .blurred-content {
   filter: blur(5px);
-  width: 60%;
 }
 
 /* Estilo para el formulario emergente */
@@ -101,40 +100,68 @@
   margin: 0;
 }
 /*FORMULARIO PARA BUSCAR DISPONIBILIDAD DE RESERVAS**/
-.preg_dispo{
-  margin-left: 20%;
-  margin-right: 20%;
-  width: 60%;
-}
 #buscadorForm {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
-#buscadorForm label {
-  display: block;
-  margin-top: 10px;
+/* Row layout */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+#form_vehiculo{
+ width: 30%;
+}
+/* Input and label styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 180px;
 }
 
-#buscadorForm input,
-#buscadorForm select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-#buscadorForm button {
-  margin-top: 20px;
-  padding: 10px 15px;
-  background-color: #4caf50;
+input, select, button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Button styling */
+button {
+  background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
+  margin-left: 30%;
+  padding: 10px 20px;
+  align-self: center; /* Center the button */
 }
 
-#results {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: bisque;
-  box-shadow: rgb(103, 121, 222);
-  border: solid 2px black;
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Checkbox styles */
+.form-check {
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+/* Adjust spacing for multiple rows */
+.form-group:last-child {
+  margin-bottom: 0;
 }

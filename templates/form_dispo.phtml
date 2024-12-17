@@ -1,29 +1,74 @@
-<main>
-  <section class="preg_dispo">
-  <form id="buscadorForm">
-        <label for="inicio">Fecha de inicio:</label>
-        <input type="date" id="inicio" name="inicio" required />
-        <label for="fecha_fin">Fecha de fin:</label>
-        <input type="date" id="fecha_fin" name="fecha_fin" required />
-        <label for="personas">Cantidad de personas:</label>
-        <input type="number" id="personas" name="personas" required />
-        <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
-        <select id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
-          <option value="auto">Auto</option>
-          <option value="camioneta">Camioneta</option>
-          <option value="motorhome">Motorhome</option>
-        </select>
-        <label for="caracteristicas">Características de la parcela:</label>
-        <select id="caracteristicas" name="caracteristicas" required>
-          <option value="fogon">Con fogón</option>
-          <option value="tomaElectrica">Con toma eléctrica</option>
-          <option value="accesibilidad">Con accesibilidad</option>
-        </select>
-        <button type="submit">Buscar</button>
-      </form>
-      <div id="results"></div>
-    </section>
-       
 
-      </main>
-      
+    <form action="buscarParcelasDispo" id="buscadorForm" method="post">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="inicio">Fecha de inicio:</label>
+          <input type="date" id="inicio" name="inicio" required />
+        </div>
+        <div class="form-group">
+          <label for="fecha_fin">Fecha de fin:</label>
+          <input type="date" id="fecha_fin" name="fecha_fin" required />
+        </div>
+        <div class="form-group">
+          <label for="personas">Cantidad de personas:</label>
+          <input type="number" id="personas" name="personas" required />
+        </div>
+        <div class="form-group">
+          <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
+          <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
+            <option value="auto">Auto</option>
+            <option value="camioneta">Camioneta</option>
+            <option value="motorhome">Motorhome</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Características de la parcela:</label>
+          <div>
+            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox1" value="fogon">
+            <label for="inlineCheckbox1">Con Fogón</label>
+          </div>
+          <div>
+            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox2" value="tomaElectrica">
+            <label for="inlineCheckbox2">Con Toma Eléctrica</label>
+          </div>
+          <div>
+            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox3" value="sombra">
+            <label for="inlineCheckbox3">Con Sombra</label>
+          </div>
+          <div>
+            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox4" value="agua">
+            <label for="inlineCheckbox4">Con Agua</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </div>
+    </form>
+    <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
+    <div class="container">
+      <?php if (!empty($reservaciones)): ?>
+        <?php foreach ($reservaciones as $parcela): ?>
+          <div class="alert alert-success">
+            <img src="<?= htmlspecialchars($parcela['imagen']) ?>
+                " alt="Imagen de la parcela">
+            <div class="name">
+              <p>Descripcion: <?= htmlspecialchars($parcela['descripcion']) ?>
+              </p>
+            </div>
+            <div class="detalles">
+              <p>Precio:
+                <?= htmlspecialchars($parcela['precio']) ?>
+              </p>
+              <p>Sector: <?= htmlspecialchars($parcela['sector'])
+                          ?></p>
+              <p>Uso del espacio: <?= htmlspecialchars($parcela['uso_espacio'])
+                                  ?></p>
+              <p>Sanitarios: <?= htmlspecialchars($parcela['sanitarios_distancia']) ?></p>
+            </div>
+          </div> <?php endforeach; ?>
+      <?php else: ?> <p class="alert alert-danger">No se encontraron parcelas disponibles.</p>
+      <?php endif; ?>
+    </div>
