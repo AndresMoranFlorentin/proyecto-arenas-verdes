@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function inicializar() {
     //content.classList.remove("blurred-content");
   }
-  inicializar();
+  //inicializar();
 
   // Mostrar el formulario al presionar el botón "Login"
   loginBtn.addEventListener("click", () => {

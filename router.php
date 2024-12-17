@@ -25,7 +25,7 @@ switch ($params[0]) {
         $reservaController->renderPrecios();
         break;
         //*****AUTH CONTROLLER **************  
-    case 'preg':
+    case 'preguntas':
         $controller = new ReservaController();
         $controller->preguntasFrec();
         break;

@@ -2,13 +2,15 @@
 <?php
 require_once './views/reservaView.php';
 require_once './helpers/sessionHelper.php';
+require_once './models/reservaModel.php';
+
 
 class ReservaController
 {
     private $view;
     private $helper;
     private $model;
-    
+
     function __construct()
     {
         $this->model = new ReservaModel();
@@ -16,21 +18,23 @@ class ReservaController
         $this->helper = new SessionHelper();
     }
 
-    public function showHome() {
+    public function showHome()
+    {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
         $this->view->showHome($logueado, $rol);
     }
 
-    public function renderPrecios(){
+    public function renderPrecios()
+    {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
         $this->view->renderPrecios($logueado, $rol);
     }
     public function buscarParcelasDispo()
     {
-    $logueado = $this->helper->checkUser();
-    $rol = $this->helper->getRol();
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
         if (
             !isset($_POST['inicio'])
             && !isset($_POST['fecha_fin'])
@@ -99,7 +103,7 @@ class ReservaController
         ) {
             //vuelve a enviarte a la pagina de precio faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->renderPrecios($logueado,$rol);
+            $this->view->renderPrecios($logueado, $rol);
         }
         $edadninos4 = $_POST['edad_ninos4']; //atributo de aquellas personas de hasta 4 años
         $edadninos12 = $_POST['edad_ninos12']; //atributo de aquellas personas entre 4 y 12 años
@@ -132,10 +136,10 @@ class ReservaController
         //se le pide desde la base de datos la tabla que contiene
         //todos los precios de lo que cuesta una reserva
         $tabla_precios = $this->model->getPrecios($residente_loberia);
-        
+
         //de este modo solo utilizo los precios que se encuentran en la primera columna
         //ya que nunca se agregaran nuevos precios, en todo caso se actualizaran o dejaran vacios
-        $tabla_precios=$tabla_precios[0];
+        $tabla_precios = $tabla_precios[0];
         //cargo a la variable el precio total de lo que costo
         $precio_final = $this->calcularPrecio(
             $edadninos4,
@@ -149,7 +153,7 @@ class ReservaController
             $tabla_precios
         );
         $this->view->mostrarPrecioParcela($precio_final);
-  }
+    }
     private function calcularPrecio(
         $edadninos4,
         $edadninos12,
@@ -167,25 +171,25 @@ class ReservaController
         $precio_ninos20 = $edadninos20 * ($tabla_precios['edad_ninos20'] ?? 0);
         $precio_final = $precio_ninos4 + $precio_ninos12 + $precio_ninos20;
 
-        if($con_ducha){//en caso de que eligio la reserva con ducha
+        if ($con_ducha) { //en caso de que eligio la reserva con ducha
             //al monto se le suma el costo de la ducha
-            $precio_final+=$tabla_precios['costo_ducha'];
+            $precio_final += $tabla_precios['costo_ducha'];
         }
-        if($con_sanitario){//en caso de que eligio la reserva con sanitario
-            $precio_final+=$tabla_precios['costo_sanitario'];
+        if ($con_sanitario) { //en caso de que eligio la reserva con sanitario
+            $precio_final += $tabla_precios['costo_sanitario'];
         }
-        if($llevar_casilla){//en caso de que eligio llevar una casilla
-        $meses = floor($tiempo_estancia / 30);//calcula cuantos meses de estancia son
-        // Calcular los días restantes que no completan un mes
-        $dias = $tiempo_estancia % 30;
-        $precio_final+=($meses * $tabla_precios['costoxmescasilla']) + ($dias * $tabla_precios['costoxcasillaxdia']);
+        if ($llevar_casilla) { //en caso de que eligio llevar una casilla
+            $meses = floor($tiempo_estancia / 30); //calcula cuantos meses de estancia son
+            // Calcular los días restantes que no completan un mes
+            $dias = $tiempo_estancia % 30;
+            $precio_final += ($meses * $tabla_precios['costoxmescasilla']) + ($dias * $tabla_precios['costoxcasillaxdia']);
         }
-        if($llevar_vehiculo){//en caso de que eligio llevar un vehiculo
-        $precio_final+=$tabla_precios['costoxvehiculoxdia']*$tiempo_estancia;
+        if ($llevar_vehiculo) { //en caso de que eligio llevar un vehiculo
+            $precio_final += $tabla_precios['costoxvehiculoxdia'] * $tiempo_estancia;
         }
         //se le agrega al monto el costo de la estadia por dia
-        $precio_final+=($tabla_precios['costo_estancia_xdia']*$tiempo_estancia);
-       
+        $precio_final += ($tabla_precios['costo_estancia_xdia'] * $tiempo_estancia);
+
         return $precio_final;
     }
     public function preguntasFrec()

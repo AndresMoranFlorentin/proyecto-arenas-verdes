@@ -1,11 +1,19 @@
 <?php
-require_once "Model.php";
+require_once 'conectionModel.php';
 
-class ReservaModel extends Model
+class ReservaModel extends ConectionModel
 {
+    protected $conexion;
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->conexion = $this->getConection();
+    }
+
     public function buscarParcelasDisponibles($inicio, $fecha_fin, $personas, $tipo_de_vehiculo, $con_fogon, $con_toma_electrica, $sombra, $agua)
     {
-        $conexion = $this->conexionSQL();
+
 
         $sql = "SELECT p.* 
                 FROM parcela p
@@ -37,7 +45,7 @@ class ReservaModel extends Model
         }
 
         // Preparar la consulta
-        $resultado = $conexion->prepare($sql);
+        $resultado = $this->conexion->prepare($sql);
 
         // Asignar los parámetros
         $params = [
@@ -66,14 +74,15 @@ class ReservaModel extends Model
         return $parcelas;
     }
     //funcion donde traera todos los precios guardados en la bbdd
-    public function getPrecios($residente){
-        $conexion = $this->conexionSQL();
-        $sql="SELECT p.* FROM precios AS p WHERE p.residente_local = ? ";
+    public function getPrecios($residente)
+    {
+
+        $sql = "SELECT p.* FROM precios AS p WHERE p.residente_local = ? ";
         // Ejecutar la consulta
-        $resultado=$conexion->prepare($sql);
+        $resultado = $this->conexion->prepare($sql);
         $resultado->execute([$residente]);
-        $precios=$resultado->fetchAll(PDO::FETCH_ASSOC);
-        
+        $precios = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
         return $precios;
     }
 }
