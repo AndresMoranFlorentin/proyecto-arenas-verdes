@@ -25,6 +25,14 @@ switch ($params[0]) {
         $reservaController->renderPrecios();
         break;
         //*****AUTH CONTROLLER **************  
+    case 'simular_precios':
+        $controller = new ReservaController();
+        $controller->simularPrecioReserva();  
+        break;
+    case 'buscarParcelasDispo':
+        $controller = new ReservaController();
+        $controller->buscarParcelasDispo();  
+        break;   
     case 'preguntas':
         $controller = new ReservaController();
         $controller->preguntasFrec();

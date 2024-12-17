@@ -1,6 +1,5 @@
 document.getElementById('buscadorForm').addEventListener('submit', function(event) {
     event.preventDefault();
-
     const reservations = [
         {
             id: 1,
