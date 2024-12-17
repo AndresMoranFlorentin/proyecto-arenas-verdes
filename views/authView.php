@@ -8,10 +8,12 @@ class AuthView {
     private $error;
 
     public function showLogin($error = null) {
+        $this->error = $error;
         require './templates/login.phtml';
     }
 
     public function showRegisForm($error = null) {
+        $this->error = $error;
         require './templates/form.phtml';
     }
 

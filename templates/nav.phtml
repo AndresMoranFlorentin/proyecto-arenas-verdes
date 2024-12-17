@@ -40,14 +40,14 @@
       </ul>
         <!-- Botón de Login para registrarse -->
      <?php if(!$this->logueado): ?>    
-      <li class="nav-item">
+      <li class="nav-item btn btn-secondary">
           <a class="nav-link" href="login">Login</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item btn btn-secondary">
           <a class="nav-link" href="newUser">Registrarse</a>
         </li>
       <?php else: ?>
-        <li class="nav-item">
+        <li class="nav-item  btn btn-secondary">
           <a class="nav-link" href="logout">Logout</a>
         </li>
         <?php endif; ?>

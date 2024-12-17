@@ -1,3 +1,5 @@
+
+ 
  <!--SECCION DEL FORMULARIO DE REGISTRO-->
  <div class="overlay" id="overlay">
       <div class="form-container">
@@ -46,8 +48,11 @@
             placeholder="Localidad"
             required
           />
-          <button type="submit">Registrarse</button>
-          <button type="button" class="cancel" id="cancelBtn">Cancelar</button>
+          <button type="submit" class="btn btn-secondary">Registrarse</button>
+          <a href="home" class="btn btn-secondary" role="button">Cancelar</a> 
         </form>
+        <p><?= htmlspecialchars($error) ?></p>
       </div>
     </div>
+
+    

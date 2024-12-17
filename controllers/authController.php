@@ -36,7 +36,8 @@ class AuthController
         $password = $_POST['password'];
 
         if (empty($usuario) || empty($password)) {
-            $this->view->showLogin('Faltan completar datos');
+            $error = "Faltan completar datos";
+            $this->view->showLogin($error);
             return;
         }
 
@@ -48,7 +49,8 @@ class AuthController
             $rol = $this->helper->getRol();
             $this->viewRes->showHome($logueado, $rol);
         } else {
-            $this->view->showLogin('Usuario o contraseña invalidos');
+            $error = "Usuario o contraseña invalidos";
+            $this->view->showLogin($error);
         }
     }
 
@@ -56,8 +58,8 @@ class AuthController
     {
         if (empty($_POST['nombre']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['apellido']) || empty($_POST['localidad']) || empty($_POST['phone']) || empty($_POST['dni'])) {
             $logueado = $this->helper->checkUser();
-            $mensaje = "Complete los campos";
-            $this->view->renderError($mensaje);
+            $error = "Complete los campos";
+            $this->view->showRegisForm($error);
             die();
         }
         $nombre = $_POST['nombre'];
@@ -71,8 +73,8 @@ class AuthController
         $check = $this->model->existEmail($email);
         if ($check[0] > 0) {
             $logueado = $this->helper->checkUser();
-            $mensaje = "El usuario ya existe";
-            $this->view->renderError($logueado, $mensaje);
+            $error = "El usuario ya existe";
+            $this->view->showRegisForm($error);
         } else {
             $userPassword = password_hash($clave, PASSWORD_BCRYPT);
             $this->model->register($nombre, $apellido, $email, $localidad, $dni, $phone, $rol, $userPassword);
@@ -91,7 +93,8 @@ class AuthController
             $users = $this->model->getUsers();
             $this->view->renderUsers($users, $logueado, $rol);
         } else {
-            $this->view->renderError("Debe estar logueado");
+            $error = "Debe estar logueado y ser Administrador";
+            $this->view->renderError($error);
         }
     }
 
@@ -111,7 +114,8 @@ class AuthController
             $this->model->changeRol($id, $newRol);
             header("location:" . BASE_URL . "users");
         } else {
-            $this->view->renderError("Debe estar logueado");
+            $error = "Debe estar logueado y ser Administrador";
+            $this->view->renderError($error);
         }
     }
 
@@ -122,7 +126,8 @@ class AuthController
             $this->model->deleteUser($id);
             header("location:" . BASE_URL . "users");
         } else {
-            $this->view->renderError("Debe estar logueado");
+            $error = "Debe estar logueado y ser Administrador";
+            $this->view->renderError($error);
         }
     }
 
