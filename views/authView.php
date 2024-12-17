@@ -1,18 +1,38 @@
 <?php 
 
 class AuthView {
-    public function showLogin($error = null) {
-        require './templates/login.phtml';
-    }
-    public function mostrarResultadoFormulario($mensaje=" ",$estado=""){
-       // $this->render('form.phtml', ['mensaje' => $mensaje, 'tipo' => $estado]);
-        require './templates/login.phtml';
-    }
-    private function render($template, $data = []) {
-        // Extraer variables del array asociativo para que estén disponibles en la plantilla
-        extract($data);
 
-        // Incluir la plantilla HTML
-        include $template;
+    private $logueado;
+    private $rol;
+    private $users;
+    private $error;
+
+    public function showLogin($error = null) {
+        $this->error = $error;
+        require './templates/login.phtml';
+    }
+
+    public function showRegisForm($error = null) {
+        $this->error = $error;
+        require './templates/form.phtml';
+    }
+
+    public function renderError($error = null){
+        $this->error = $error;
+        require './templates/error.phtml';
+
+    }
+
+    public function renderHome($logueado, $rol){
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/home.phtml';
+    }
+
+    public function renderUsers($users, $logueado, $rol){
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        $this->users = $users;
+        require './templates/users.phtml';
     }
 }

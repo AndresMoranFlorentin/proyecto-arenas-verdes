@@ -1,19 +1,15 @@
+
+ 
  <!--SECCION DEL FORMULARIO DE REGISTRO-->
  <div class="overlay" id="overlay">
       <div class="form-container">
         <h2>Registro</h2>
-        <!-- Mostrar mensaje si existe -->
-        <?php if ($mensaje): ?>
-              <div class="notification <?= $tipo ?>">
-                <?= htmlspecialchars($mensaje) ?>
-              </div>
-            <?php endif; ?><!--lugar donde se mostraran los mensajes de lo que pase luego de enviar los datos al formulario-->
-        <form action="agregarUsuario" method="post"  id="registrationForm">
+        <form id="registrationForm" action="register" method="post">
           <input type="number" id="dni" name="dni" placeholder="DNI" required />
           <input
             type="text"
             id="name"
-            name="name"
+            name="nombre"
             placeholder="Nombre"
             required
           />
@@ -33,6 +29,13 @@
             required
           />
           <input
+            type="password"
+            id="pass"
+            name="password"
+            placeholder="Contraseña"
+            required
+          />
+          <input
             type="email"
             id="email"
             name="email"
@@ -41,13 +44,16 @@
           />
           <input
             type="text"
-            id="location"
-            name="location"
+            id="localidad"
+            name="localidad"
             placeholder="Localidad"
             required
           />
-          <button type="submit">Registrarse</button>
-          <button type="button" class="cancel" id="cancelBtn">Cancelar</button>
+          <button type="submit" class="btn btn-secondary">Registrarse</button>
+          <a href="home" class="btn btn-secondary" role="button">Cancelar</a> 
         </form>
+        <p><?= htmlspecialchars($error) ?></p>
       </div>
     </div>
+
+    

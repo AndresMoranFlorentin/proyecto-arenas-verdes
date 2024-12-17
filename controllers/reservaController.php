@@ -1,25 +1,36 @@
 
 <?php
 require_once './views/reservaView.php';
-require_once './models/ReservaModel.php';
+require_once './helpers/sessionHelper.php';
 
 class ReservaController
 {
     private $view;
+    private $helper;
     private $model;
-
+    
     function __construct()
     {
         $this->model = new ReservaModel();
         $this->view = new ReservaView();
+        $this->helper = new SessionHelper();
     }
 
-    public function showHome()
-    {
-        $this->view->showHome();
+    public function showHome() {
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->showHome($logueado, $rol);
+    }
+
+    public function renderPrecios(){
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->renderPrecios($logueado, $rol);
     }
     public function buscarParcelasDispo()
     {
+    $logueado = $this->helper->checkUser();
+    $rol = $this->helper->getRol();
         if (
             !isset($_POST['inicio'])
             && !isset($_POST['fecha_fin'])
@@ -78,6 +89,8 @@ class ReservaController
     //de una posible reserva
     public function simularPrecioReserva()
     {
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
         if (
             !isset($_POST['edad_ninos4'])
             && !isset($_POST['edad_ninos12'])
@@ -86,7 +99,7 @@ class ReservaController
         ) {
             //vuelve a enviarte a la pagina de precio faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->precios();
+            $this->view->renderPrecios($logueado,$rol);
         }
         $edadninos4 = $_POST['edad_ninos4']; //atributo de aquellas personas de hasta 4 años
         $edadninos12 = $_POST['edad_ninos12']; //atributo de aquellas personas entre 4 y 12 años
@@ -182,9 +195,5 @@ class ReservaController
     public function reservacion()
     {
         $this->view->reservacion();
-    }
-    public function precios()
-    {
-        $this->view->precios();
     }
 }

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //funcion para quitar el efecto borroso cuando se inicializa la pagina
   function inicializar() {
-    content.classList.remove("blurred-content");
+    //content.classList.remove("blurred-content");
   }
   inicializar();
 
@@ -21,6 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.style.display = "none";
     content.classList.remove("blurred-content");
   });
+
+  // También podrías agregar funcionalidad para enviar el formulario si lo deseas
+  document
+    .getElementById("loginForm")
+    .addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Formulario enviado");
+      overlay.style.display = "none";
+      content.classList.remove("blurred-content");
+    });
 
   const accordion = document.getElementsByClassName("content_box");
 

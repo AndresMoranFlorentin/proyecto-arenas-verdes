@@ -1,7 +1,7 @@
 <?php
 // router.php
 require_once './controllers/reservaController.php';
-require_once './controllers/AuthController.php';
+require_once './controllers/authController.php';
 
 
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
@@ -11,41 +11,52 @@ if (!empty($_GET['action'])) {
     $action = $_GET['action'];
 }
 
+$reservaController = new ReservaController();
+$authController = new AuthController();
+
 $params = explode('/', $action);
 
 switch ($params[0]) {
+        //*******RESERVA CONTROLLER**********************
     case 'home':
-        $controller = new ReservaController();
-        $controller->showHome();
+        $reservaController->showHome();
         break;
-    case 'login':
-        $controller = new AuthController();
-        $controller->showLogin();
+    case 'precios':
+        $reservaController->renderPrecios();
         break;
-    case 'agregarUsuario':
-        $controller = new AuthController();
-        $controller->agregarUsuario();
-        break;
+        //*****AUTH CONTROLLER **************  
     case 'preg':
         $controller = new ReservaController();
         $controller->preguntasFrec();
         break;
     case 'reservacion':
         $controller = new ReservaController();
-        $controller->reservacion();
+        $controller->reservacion();    
+    case 'login':
+        $authController->showLogin();
         break;
-    case 'buscarParcelasDispo':
-        $controller = new ReservaController();
-        $controller->buscarParcelasDispo();
+    case 'auth':
+        $authController->auth();
         break;
-    case 'simular_precios':
-        $controller = new ReservaController();
-        $controller->simularPrecioReserva();
+    case 'newUser':
+        $authController->showRegisForm();
         break;
-    case 'precios':
-        $controller = new ReservaController();
-        $controller->precios();
+    case 'register':
+        $authController->register();
         break;
+    case 'logout':
+        $authController->logout();
+        break;
+    case 'users':
+        $authController->getUsers();
+        break;
+    case 'editRol':
+        $authController->editRol($params[1]);
+        break;
+    case 'deleteUser':
+        $authController->deleteUser($params[1]);
+        break;
+
     default:
         echo "404 Página no encontrada";
         break;
