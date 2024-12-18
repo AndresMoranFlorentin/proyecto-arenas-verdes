@@ -24,14 +24,13 @@ switch ($params[0]) {
     case 'precios':
         $reservaController->renderPrecios();
         break;
-        //*****AUTH CONTROLLER **************  
     case 'preguntas':
-        $controller = new ReservaController();
-        $controller->preguntasFrec();
+        $reservaController->preguntasFrec();
         break;
     case 'reservacion':
-        $controller = new ReservaController();
-        $controller->reservacion();    
+        $reservaController->reservacion();
+        break;
+        //*****AUTH CONTROLLER **************  
     case 'login':
         $authController->showLogin();
         break;

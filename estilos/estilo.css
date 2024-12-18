@@ -86,12 +86,12 @@ body {
 }
 main {
   height: 50%;
-  width: 80%;
+  width: 90%;
   background-color: #ffffff;
 }
 .introduccion {
-  padding-right: 15%;
-  padding-left: 15%;
+  padding-right: 10%;
+  padding-left: 10%;
   padding-bottom: 5%;
 }
 /** SECCION FOOTER**/

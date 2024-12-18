@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const accordion = document.getElementsByClassName("content_box");
+
+  for (i = 0; i < accordion.length; i++) {
+    accordion[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+    });
+  }
+  
   const loginBtn = document.getElementById("loginBtn");
   const overlay = document.getElementById("overlay");
   const cancelBtn = document.getElementById("cancelBtn");
@@ -32,11 +41,5 @@ document.addEventListener("DOMContentLoaded", () => {
       content.classList.remove("blurred-content");
     });
 
-  const accordion = document.getElementsByClassName("content_box");
-
-  for (i = 0; i < accordion.length; i++) {
-    accordion[i].addEventListener("click", function () {
-      this.classList.toggle("active");
-    });
-  }
+  
 });
