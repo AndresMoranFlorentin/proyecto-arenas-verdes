@@ -3,6 +3,72 @@
 <main>
   <br>
   <section class="introduccion" id="content">
+    <h1>TARIFAS BASE DE CAMPAMENTO</h1>
+    <table class="table">
+      <tbody>
+        <thead>
+          <th></th>
+          <th>NO RESIDENTES</th>
+          <th>RESIDENTES DE LOBERIA</th>
+          <th></th>
+        </thead>
+        <tr>
+          <td>Menores 4 años</td>
+          <td>sin costo</td>
+          <td>sin costo</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>de 4 a 12 años</td>
+          <td>$ 4700</td>
+          <td>$ 500</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>Mayores 12 años</td>
+          <td>$ 8500</td>
+          <td>$ 900</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>Vehiculo</td>
+          <td>$ 1200</td>
+          <td>$ 300</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>Estadia diaria Casillas</td>
+          <td>$ 3000</td>
+          <td>$ 1300</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>Estadia Mensual Casillas</td>
+          <td>$ 60000</td>
+          <td>$ 30000</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>Pasar el día</td>
+          <td>$ 1300</td>
+          <td>$ 400</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>Uso de duchas</td>
+          <td>$ 900</td>
+          <td>$ 250</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+        <tr>
+          <td>Uso de sanitarios</td>
+          <td>$ 200</td>
+          <td>$ 100</td>
+          <td><button class="btn btn-primary">Editar</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>*Las tarifas son por día y por persona</p>
     <h2>Simulador de precios: </h2>
     <form class="form-inline" action="simular_precios" method="post">
       <div class="form-group">
@@ -22,13 +88,14 @@
         <input name="estancia" type="number" min="00"
           max="100" class="form-control">
       </div>
+      <p>Residente</p>
       <div class="form-check">
         <input class="form-check-input" type="radio" name="residentes" id="exampleRadios1" value="1" checked>
         <label class="form-check-label" for="exampleRadios1">
-          Si        
+          Si
         </label>
       </div>
-      <div class="form-check">
+      <div class="form-check">       
         <input class="form-check-input" type="radio" name="residentes" id="exampleRadios2" value="0">
         <label class="form-check-label" for="exampleRadios2">
           No
@@ -39,27 +106,25 @@
         <label><input name="caracteristicas[]" type="checkbox" value="ducha"> Ducha</label>
         <label><input name="caracteristicas[]" type="checkbox" value="sanitario"> Sanitario</label>
         <label><input name="caracteristicas[]" type="checkbox" value="casilla">Espacio para casilla</label>
-        <label><input name="caracteristicas[]" type="checkbox" value="vehiculo"> Espacio para vehiculo </label>
+        <label><input name="caracteristicas[]" type="checkbox" value="vehiculo"> Espacio para vehículo </label>
       </div>
       <div>
       </div>
-      <button type="submit" class="btn btn-primary">calcular</button>
+      <button type="submit" class="btn btn-primary">Calcular</button>
     </form>
   </section>
   <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
   <div class="container">
-      <?php if (!empty($precio_final)): ?>
-          <div class="alert alert-success">
-              <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
-          </div>
-          </div>
-      <?php else: ?> 
-        <br>
-      <?php endif; ?>
+    <?php if (!empty($precio_final)): ?>
+      <div class="alert alert-success">
+        <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
+      </div>
+  </div>
+<?php else: ?>
+  <br>
+<?php endif; ?>
 </main>
 <?php
-
 include 'whatsapp.phtml';
 include 'footer.phtml';
-
 ?>
