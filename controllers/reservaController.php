@@ -43,7 +43,7 @@ class ReservaController
         ) {
             //vuelve a enviarte a la pagina de reservacion8faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->reservacion();
+            $this->view->reservacion($rol, $logueado);
         }
         $inicio = $_POST['inicio'];
         $fecha_fin = $_POST['fecha_fin'];
@@ -193,11 +193,15 @@ class ReservaController
         return $precio_final;
     }
     public function preguntasFrec()
-    {
-        $this->view->pregFrec();
+    {   
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->pregFrec($logueado, $rol);
     }
     public function reservacion()
-    {
-        $this->view->reservacion();
+    {   
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->reservacion($rol, $logueado);
     }
 }

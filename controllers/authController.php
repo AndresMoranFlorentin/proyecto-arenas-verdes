@@ -41,7 +41,6 @@ class AuthController
             return;
         }
 
-
         $user = $this->model->findUser($usuario);
         if ($user && password_verify($password, $user->password)) {
             $this->helper->logIn($user);
@@ -119,7 +118,8 @@ class AuthController
         }
     }
 
-    public function deleteUser($id){
+    public function deleteUser($id)
+    {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
         if (($logueado) && ($rol == "admin")) {

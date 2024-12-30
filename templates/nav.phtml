@@ -34,12 +34,16 @@
       </ul>
       <!-- Botón de Login para registrarse -->
       <?php if (!$this->logueado): ?>
-        <li class="nav-item btn btn-secondary">
-          <a class="nav-link" href="login">Login</a>
-        </li>
-        <li class="nav-item btn btn-secondary">
-          <a class="nav-link" href="newUser">Registrarse</a>
-        </li>
+        <!-- Button login trigger modal -->
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">
+          Iniciar Sesión
+        </button>
+
+        <!-- Button regitro usuario trigger modal -->
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#regisModal">
+          Registrarse
+        </button>
+
 
       <?php else: ?>
         <li class="nav-item  btn btn-secondary">
@@ -49,3 +53,101 @@
     </div>
   </div>
   </header>
+
+
+
+  <!-- Modal login-->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="loginModalLabel">Inicio sesión</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form id="loginForm" action="auth" method="post">
+
+            <input
+              type="email"
+              name="email"
+              placeholder="E-mail"
+              required />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="password"
+              required />
+            <button type="submit" class="btn btn-primary" id="loginBtn">Iniciar sesión</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Modal registro de usuaruio -->
+  <div class="modal fade" id="regisModal" tabindex="-1" aria-labelledby="regisModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="regisModalLabel">Registro de Usuario</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form  id="registrationForm" action="register" method="post">
+            <input type="number" id="dni" name="dni" placeholder="DNI" required />
+            <input
+              type="text"
+              id="name"
+              name="nombre"
+              placeholder="Nombre"
+              required />
+            <input
+              type="text"
+              id="apellido"
+              name="apellido"
+              placeholder="Apellido"
+              required />
+            <input
+              type="number"
+              min="00000"
+              id="phone"
+              name="phone"
+              placeholder="Celular"
+              required />
+            <input
+              type="password"
+              id="pass"
+              name="password"
+              placeholder="Contraseña"
+              required />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="E-mail"
+              required />
+            <input
+              type="text"
+              id="localidad"
+              name="localidad"
+              placeholder="Localidad"
+              required />
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+
+
+        </div>
+      </div>
+    </div>
+  </div>

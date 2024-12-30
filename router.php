@@ -43,6 +43,7 @@ switch ($params[0]) {
     case 'register':
         $authController->register();
         break;
+        
     case 'logout':
         $authController->logout();
         break;
