@@ -22,6 +22,13 @@ class AuthModel extends ConectionModel {
         $user = $query->fetch(PDO::FETCH_OBJ);
         return $user;
     }
+    function findUserByDni($dni)
+    {
+        $query = $this->db->prepare('select * FROM usuario WHERE dni = ?');
+        $query->execute([$dni]);
+        $user = $query->fetch(PDO::FETCH_OBJ);
+        return $user;
+    }
 
     function register($nombre, $apellido, $email, $localidad, $dni, $phone, $rol, $password)
     {

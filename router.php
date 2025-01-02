@@ -3,7 +3,6 @@
 require_once './controllers/reservaController.php';
 require_once './controllers/authController.php';
 
-
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
 
 $action = 'home'; // Acción por defecto
@@ -15,16 +14,14 @@ $reservaController = new ReservaController();
 $authController = new AuthController();
 
 $params = explode('/', $action);
-
 switch ($params[0]) {
-        //*******RESERVA CONTROLLER**********************
+//------FUNCIONES DEL CONTROLLER RESERVA
     case 'home':
         $reservaController->showHome();
         break;
     case 'precios':
         $reservaController->renderPrecios();
         break;
-        //*****AUTH CONTROLLER **************  
     case 'simular_precios':
         $controller = new ReservaController();
         $controller->simularPrecioReserva();  
@@ -33,13 +30,23 @@ switch ($params[0]) {
         $controller = new ReservaController();
         $controller->buscarParcelasDispo();  
         break;   
+    case 'pedir_reservacion':
+        $controller = new ReservaController();
+        $controller->pedirReservacion();
+        break;
+    case 'generar_reservacion':
+        $controller = new ReservaController();
+        $controller->generarReservacion();
+        break;
     case 'preguntas':
         $controller = new ReservaController();
         $controller->preguntasFrec();
         break;
     case 'reservacion':
         $controller = new ReservaController();
-        $controller->reservacion();    
+        $controller->reservacion();  
+    //-----FIN DE LAS FUNCIONES DEL RESERVA CONTROLLER---  
+     //*******RESERVA CONTROLLER**********************
     case 'login':
         $authController->showLogin();
         break;

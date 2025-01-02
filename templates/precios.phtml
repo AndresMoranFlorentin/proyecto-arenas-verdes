@@ -24,7 +24,7 @@
       <div class="form-check">
         <input class="form-check-input" type="radio" name="residentes" id="exampleRadios1" value="1" checked>
         <label class="form-check-label" for="exampleRadios1">
-          Si        
+          Si
         </label>
       </div>
       <div class="form-check">
@@ -37,8 +37,16 @@
         <label>Caracteristicas adicionales: </label>
         <label><input name="caracteristicas[]" type="checkbox" value="ducha"> Ducha</label>
         <label><input name="caracteristicas[]" type="checkbox" value="sanitario"> Sanitario</label>
-        <label><input name="caracteristicas[]" type="checkbox" value="casilla">Espacio para casilla</label>
-        <label><input name="caracteristicas[]" type="checkbox" value="vehiculo"> Espacio para vehiculo </label>
+      </div>
+      <div class="form-group">
+        <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
+        <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
+          <option value="sin_vehiculo">Sin vehiculo</option>
+          <option value="auto">Auto</option>
+          <option value="camioneta">Camioneta</option>
+          <option value="motorhome">Motorhome</option>
+          <option value="casilla">Casilla</option>
+        </select>
       </div>
       <div>
       </div>
@@ -47,14 +55,14 @@
   </section>
   <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
   <div class="container">
-      <?php if (!empty($precio_final)): ?>
-          <div class="alert alert-success">
-              <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
-          </div>
-          </div>
-      <?php else: ?> 
-        <br>
-      <?php endif; ?>
+    <?php if (!empty($precio_final)): ?>
+      <div class="alert alert-success">
+        <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
+      </div>
+  </div>
+<?php else: ?>
+  <br>
+<?php endif; ?>
 </main>
 <?php
 

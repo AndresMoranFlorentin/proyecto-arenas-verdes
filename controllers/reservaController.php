@@ -1,21 +1,28 @@
-
 <?php
 require_once './views/reservaView.php';
 require_once './helpers/sessionHelper.php';
+require_once './helpers/ToolsHelper.php';
+require_once './servicios/ServicioReserva.php';
 require_once './models/reservaModel.php';
-
-
+require_once './models/authModel.php';
 class ReservaController
 {
+    private $cel_washapp = "+54 9 2262 30-1388";
     private $view;
     private $helper;
     private $model;
-
+    private $modelUser;
+    private $toolsHelper;
+    private $servicioR;
     function __construct()
     {
         $this->model = new ReservaModel();
+        $this->modelUser = new authModel();
         $this->view = new ReservaView();
         $this->helper = new SessionHelper();
+        $this->toolsHelper = new ToolsHelper();
+        $this->servicioR = new ServicioReserva();
+        $this->cel_washapp == "+54 9 2262 30-1388";
     }
 
     public function showHome()
@@ -36,12 +43,12 @@ class ReservaController
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
         if (
-            !isset($_POST['inicio'])
-            && !isset($_POST['fecha_fin'])
-            && !isset($_POST['personas'])
-            && !isset($_POST['tipo_de_vehiculo'])
+            !isset($_POST['inicio']) && !isset($_POST['fecha_fin'])
+            && !isset($_POST['personas']) && !isset($_POST['tipo_de_vehiculo'])
+            && !($this->servicioR->controlFechasInicioFin($_POST['inicio'], $_POST['fecha_fin']))
+            && $_POST['personas'] <= 0
         ) {
-            //vuelve a enviarte a la pagina de reservacion8faltaria mejorar para que muestre un mensaje
+            //vuelve a enviarte a la pagina de reservacion faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
             $this->view->reservacion();
         }
@@ -49,32 +56,12 @@ class ReservaController
         $fecha_fin = $_POST['fecha_fin'];
         $personas = $_POST['personas'];
         $tipo_de_vehiculo = $_POST['tipo_de_vehiculo'];
-        // Captura las características de la parcela 
-        $caracteristicas = [
-            'fogon' => in_array(
-                'fogon',
-                $_POST['caracteristicas'] ?? []
-            ),
-            'tomaElectrica' => in_array(
-                'tomaElectrica',
-                $_POST['caracteristicas'] ?? []
-            ),
-            'sombra' => in_array(
-                'sombra',
-                $_POST['caracteristicas'] ?? []
-            ),
-            'agua' => in_array(
-                'agua',
-                $_POST['caracteristicas'] ?? []
-            )
-        ];
-        $con_fogon = ($caracteristicas['fogon'] ? 1 : 0);
-        $con_electricidad = ($caracteristicas['tomaElectrica'] ? 1 : 0);
-        $con_sombra = ($caracteristicas['sombra'] ? 1 : 0);
-        $con_agua = ($caracteristicas['agua'] ? 1 : 0);
-        //
-        //faltarian agregarles algunos controles como que si o si debe haber al menos una persona y jamas un numero negativo
-        //cuando se eligen las fechas, jamas la fecha de inicio debe ser mas adelantada que la fecha de fin
+        //Las características de la parcela 
+        $caracteristicas = $_POST['caracteristicas'];
+        $con_fogon = in_array('fogon', $caracteristicas) ? 1 : 0;
+        $con_electricidad = in_array('tomaElectrica', $caracteristicas) ? 1 : 0;
+        $con_sombra = in_array('sombra', $caracteristicas) ? 1 : 0;
+        $con_agua = in_array('agua', $caracteristicas) ? 1 : 0;
         $reservaciones = $this->model->buscarParcelasDisponibles(
             $inicio,
             $fecha_fin,
@@ -85,24 +72,19 @@ class ReservaController
             $con_sombra,
             $con_agua
         );
-        //funciona, me trae las parcelas que se ajustan a las condiciones dadas por el usuario
+        //me trae las parcelas que se ajustan a las condiciones dadas por el usuario
         //falta mostrarlas de forma elegante con una vista bien hecha
         $this->view->mostrarParcelasDisponibles($reservaciones);
     }
-    //funcion encargada de recibir las condiciones de la reserva y simular los precios
-    //de una posible reserva
+    //funcion encargada de recibir las condiciones de la reserva y simular los precios de una posible reserva
     public function simularPrecioReserva()
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
         if (
-            !isset($_POST['edad_ninos4'])
-            && !isset($_POST['edad_ninos12'])
-            && !isset($_POST['edad_ninos20'])
-            && !isset($_POST['estancia'])
+            !isset($_POST['edad_ninos4']) && !isset($_POST['edad_ninos12'])
+            && !isset($_POST['edad_ninos20']) && (!isset($_POST['estancia']) && $_POST['estancia'] <= 0)
         ) {
-            //vuelve a enviarte a la pagina de precio faltaria mejorar para que muestre un mensaje
-            //de error por envio de datos incompletos 
             $this->view->renderPrecios($logueado, $rol);
         }
         $edadninos4 = $_POST['edad_ninos4']; //atributo de aquellas personas de hasta 4 años
@@ -110,87 +92,109 @@ class ReservaController
         $edadninos20 = $_POST['edad_ninos20']; //atributo de aquellas personas mayores de 12 años
         $tiempo_estancia = $_POST['estancia']; //el tiempo de estancia que calcula estar
         // Captura las características de la parcela 
-        $caracteristicas = [
-            'ducha' => in_array(
-                'ducha',
-                $_POST['caracteristicas'] ?? []
-            ),
-            'sanitario' => in_array(
-                'sanitario',
-                $_POST['caracteristicas'] ?? []
-            ),
-            'casilla' => in_array(
-                'casilla',
-                $_POST['caracteristicas'] ?? []
-            ),
-            'vehiculo' => in_array(
-                'vehiculo',
-                $_POST['caracteristicas'] ?? []
-            )
-        ];
-        $con_ducha = ($caracteristicas['ducha'] ? 1 : 0);
-        $con_sanitario = ($caracteristicas['sanitario'] ? 1 : 0);
-        $llevar_casilla = ($caracteristicas['casilla'] ? 1 : 0);
-        $llevar_vehiculo = ($caracteristicas['vehiculo'] ? 1 : 0);
-        $residente_loberia = $_POST['residentes'];
-        //se le pide desde la base de datos la tabla que contiene
-        //todos los precios de lo que cuesta una reserva
-        $tabla_precios = $this->model->getPrecios($residente_loberia);
+        $caracteristicas = $_POST['caracteristicas'];
+        $con_ducha = in_array('ducha', $caracteristicas) ? 1 : 0;
+        $con_sanitario = in_array('sanitario', $caracteristicas) ? 1 : 0;
 
-        //de este modo solo utilizo los precios que se encuentran en la primera columna
-        //ya que nunca se agregaran nuevos precios, en todo caso se actualizaran o dejaran vacios
-        $tabla_precios = $tabla_precios[0];
-        //cargo a la variable el precio total de lo que costo
-        $precio_final = $this->calcularPrecio(
+        $medio_transporte = $_POST['tipo_de_vehiculo'];
+        $residente_loberia = $_POST['residentes'];
+        $precio_final = $this->servicioR->calcularPrecio(
             $edadninos4,
             $edadninos12,
             $edadninos20,
             $tiempo_estancia,
             $con_ducha,
             $con_sanitario,
-            $llevar_casilla,
-            $llevar_vehiculo,
-            $tabla_precios
+            $medio_transporte,
+            $residente_loberia
         );
+
         $this->view->mostrarPrecioParcela($precio_final);
     }
-    private function calcularPrecio(
-        $edadninos4,
-        $edadninos12,
-        $edadninos20,
-        $tiempo_estancia,
-        $con_ducha,
-        $con_sanitario,
-        $llevar_casilla,
-        $llevar_vehiculo,
-        $tabla_precios
-    ) {
-        //costo por en numero de niños y su categoria de edad
-        $precio_ninos4 = $edadninos4 * ($tabla_precios['edad_ninos4'] ?? 0);
-        $precio_ninos12 = $edadninos12 * ($tabla_precios['edad_ninos12'] ?? 0);
-        $precio_ninos20 = $edadninos20 * ($tabla_precios['edad_ninos20'] ?? 0);
-        $precio_final = $precio_ninos4 + $precio_ninos12 + $precio_ninos20;
+    public function generarReservacion()
+    {   
+        // Validar si el usuario está logueado y tiene un rol permitido
+    /*if (!$this->usuarioLogueado()) {
+        $mensaje = "Debe estar logueado para realizar una reservación.";
+        $tipo_mensaje = "error";
+        $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+        return;
+    }*/
+        // Verificar que llegaron todos los datos necesarios
+        if (!$this->servicioR->validacionDatosReservacion($_POST)) {
+            $mensaje = "Por favor, completa todos los campos obligatorios.";
+            $tipo_mensaje = "error";
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+            return;
+        }
+    
+        // Recopilar y procesar datos
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $dni = $_POST['dni'];
+        $fecha_inicio = $_POST['inicio'];
+        $fecha_fin = $_POST['fecha_fin'];
+        $menores = $_POST['menores'];
+        $cuatroDoce = $_POST['cuatroDoce'];
+        $doceMas = $_POST['doceMas'];
+        $tipo_de_vehiculo = $_POST['tipo_de_vehiculo'];
+        $caracteristicas = $_POST['caracteristicas'];
+    
+        // Convertir características a valores binarios
+        $fogon = in_array('fogon', $caracteristicas) ? 1 : 0;
+        $tomaElectrica = in_array('tomaElectrica', $caracteristicas) ? 1 : 0;
+        $sombra = in_array('sombra', $caracteristicas) ? 1 : 0;
+        $agua = in_array('agua', $caracteristicas) ? 1 : 0;
+        $con_ducha = in_array('con_ducha', $caracteristicas) ? 1 : 0;
+        $con_sanitario = in_array('con_sanitario', $caracteristicas) ? 1 : 0;
+    
+        $cantPersonas = $menores + $cuatroDoce + $doceMas;
+        $dias_de_estancia = $this->servicioR->retornarDiasDeDiferencia($fecha_inicio, $fecha_fin);
+        $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha, $con_sanitario, $tipo_de_vehiculo, $_POST['personas']);
+    
+        // Validar si el usuario existe
+        $id_user = $this->modelUser->findUserByDni($dni);
+        if (empty($id_user)) {
+            $mensaje = "Debe registrarse primero para poder hacer una reservación.";
+            $tipo_mensaje = "error";
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+            return;
+        }
+    
+        // Buscar parcela disponible
+        $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
+        if (empty($id_parcela) || !isset($id_parcela['id'])) {
+            $mensaje = "No se ha encontrado una parcela con las características indicadas.";
+            $tipo_mensaje = "error";
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+            return;
+        }
+    
+        // Crear la reservación
+        $identificador = $this->toolsHelper->generarIdentificador();
+        $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
+        $id_nueva_reserva = $this->model->nuevaReserva($id_user->id_usuario, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
+    
+        $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela['id']);
+        $this->toolsHelper->generarPDF($nombre, $apellido, $identificador, $precio_reserva, $this->cel_washapp);
+        // Mensaje de éxito
+        $mensaje = "Reservación creada exitosamente. Descargue el comprobante y confirme su pago.";
+        $tipo_mensaje = "exito";
+        $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+    }
+    private function getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
+    {
+        $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
+        if (empty($idServicio)) { //no existe un servicio de esas caracteristicas
+            $this->model->insertServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
+            $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
+        }
+        return $idServicio[0]['id_servicio'];
+    }
 
-        if ($con_ducha) { //en caso de que eligio la reserva con ducha
-            //al monto se le suma el costo de la ducha
-            $precio_final += $tabla_precios['costo_ducha'];
-        }
-        if ($con_sanitario) { //en caso de que eligio la reserva con sanitario
-            $precio_final += $tabla_precios['costo_sanitario'];
-        }
-        if ($llevar_casilla) { //en caso de que eligio llevar una casilla
-            $meses = floor($tiempo_estancia / 30); //calcula cuantos meses de estancia son
-            // Calcular los días restantes que no completan un mes
-            $dias = $tiempo_estancia % 30;
-            $precio_final += ($meses * $tabla_precios['costoxmescasilla']) + ($dias * $tabla_precios['costoxcasillaxdia']);
-        }
-        if ($llevar_vehiculo) { //en caso de que eligio llevar un vehiculo
-            $precio_final += $tabla_precios['costoxvehiculoxdia'] * $tiempo_estancia;
-        }
-        //se le agrega al monto el costo de la estadia por dia
-        $precio_final += ($tabla_precios['costo_estancia_xdia'] * $tiempo_estancia);
-
-        return $precio_final;
+    public function pedirReservacion()
+    {
+        $this->view->formSolicitarReservacion();
     }
     public function preguntasFrec()
     {

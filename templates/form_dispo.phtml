@@ -1,5 +1,4 @@
-
-    <form action="buscarParcelasDispo" id="buscadorForm" method="post">
+<form action="buscarParcelasDispo" id="buscadorForm" method="post">
       <div class="form-row">
         <div class="form-group">
           <label for="inicio">Fecha de inicio:</label>
@@ -16,6 +15,7 @@
         <div class="form-group">
           <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
           <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
+            <option value="sin_vehiculo">---</option>
             <option value="auto">Auto</option>
             <option value="camioneta">Camioneta</option>
             <option value="motorhome">Motorhome</option>
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="form-row">
-        <button type="submit" class="btn btn-primary">Buscar</button>
+        <button type="submit" class="btn btn-success">Buscar</button>
       </div>
     </form>
     <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
@@ -67,8 +67,10 @@
               <p>Uso del espacio: <?= htmlspecialchars($parcela['uso_espacio'])
                                   ?></p>
               <p>Sanitarios: <?= htmlspecialchars($parcela['sanitarios_distancia']) ?></p>
+              <div><button class="button">Reservar</button></div>
             </div>
           </div> <?php endforeach; ?>
       <?php else: ?> <p class="alert alert-danger">No se encontraron parcelas disponibles.</p>
       <?php endif; ?>
     </div>
+

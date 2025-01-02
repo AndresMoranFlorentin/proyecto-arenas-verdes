@@ -32,4 +32,14 @@ class ReservaView
     public function mostrarPrecioParcela($precio_final){
         require './templates/precios.phtml';
     }
+    public function formSolicitarReservacion($id_parcela=null){
+        $mensaje="La reservacion fue hecha con exito";
+        $tipo_mensaje="exito";
+        require './templates/formParaReservacion.phtml';
+        
+    }
+    public function mostrarFormularioReservacion($mensaje, $tipo_mensaje){
+        var_dump("mensaje: ".$mensaje.", tipo : ".$tipo_mensaje);
+        require './templates/formParaReservacion.phtml';
+    }
 }
