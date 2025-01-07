@@ -32,4 +32,8 @@ class ReservaView
     public function mostrarPrecioParcela($precio_final){
         require './templates/precios.phtml';
     }
+    
+        public function parcelas() {
+        require './templates/parcelas.phtml';
+     }
 }

@@ -2,7 +2,7 @@
 <?php
 require_once './views/reservaView.php';
 require_once './helpers/sessionHelper.php';
-require_once './models/reservaModel.php';
+require_once './models/ReservaModel.php';
 
 
 class ReservaController
@@ -199,5 +199,10 @@ class ReservaController
     public function reservacion()
     {
         $this->view->reservacion();
+    }
+        //Muestra los distintos sectores
+        public function sectoresParcelas()
+    {
+        $this->view->parcelas();
     }
 }

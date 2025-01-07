@@ -32,7 +32,11 @@ switch ($params[0]) {
     case 'buscarParcelasDispo':
         $controller = new ReservaController();
         $controller->buscarParcelasDispo();  
-        break;   
+        break;
+    case 'parcelas':
+        $controller = new ReservaController();
+        $controller->sectoresParcelas();
+        break;       
     case 'preguntas':
         $controller = new ReservaController();
         $controller->preguntasFrec();

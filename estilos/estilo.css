@@ -85,9 +85,11 @@ body {
   font-size: 16px;
 }
 main {
+  flex:1;
   height: 50%;
   width: 80%;
   background-color: #ffffff;
+  margin:auto;
 }
 .introduccion {
   padding-right: 15%;
