@@ -6,14 +6,14 @@
     <div class="mensaje <?= $tipo_mensaje; ?>">
         <p><?= $mensaje; ?></p>
         <?php if ($tipo_mensaje == 'exito') : ?>
-            <a href="https://wa.me/+5492262301388" class="btn btn-success">Confirmar vía WhatsApp</a>
+            <a href="https://wa.me/+5492262301388" class="btn btn-success" onclick="resetForm()">Confirmar vía WhatsApp</a>
         <?php else : ?>
-            <button onclick="cerrarMensaje()" class="btn btn-danger">Aceptar</button>
+            <button onclick="cerrarMensajeYResetear()" class="btn btn-danger">Aceptar</button>
         <?php endif; ?>
     </div>
 <?php endif; ?>
 
-    <form action="generar_reservacion" class="form-inline" id="buscadorForm" method="post">
+    <form action="generar_reservacion" class="form-inline formulario" id="buscadorForm" method="post">
         <div class="form-group">
             <div>
                 <label>Reservacion a Nombre de :</label>
@@ -123,11 +123,11 @@
                         <label for="inlineCheckbox4">Con Agua</label>
                     </div>
                     <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox4" value="con_ducha">
+                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox5" value="con_ducha">
                         <label for="inlineCheckbox4">Con Ducha</label>
                     </div>
                     <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox4" value="con_sanitario">
+                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox6" value="con_sanitario">
                         <label for="inlineCheckbox4">Con Sanitario</label>
                     </div>
                 </div>
@@ -138,6 +138,28 @@
     </form>
     <br>
 </section>
+<script>
+    function resetForm() {
+    document.getElementById('buscadorForm').reset();
+}
+
+function cerrarMensajeYResetear() {
+    resetForm();
+    cerrarMensaje();
+}
+
+function cerrarMensaje() {
+    var mensaje = document.querySelector('.mensaje');
+    if (mensaje) {
+        mensaje.style.display = 'none';
+    }
+
+    var formulario = document.querySelector('.formulario');
+    if (formulario) {
+        formulario.style.display = 'block';
+    }
+}
+</script>
 <?php
 
 include 'whatsapp.phtml';

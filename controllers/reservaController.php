@@ -62,7 +62,7 @@ class ReservaController
         $con_electricidad = in_array('tomaElectrica', $caracteristicas) ? 1 : 0;
         $con_sombra = in_array('sombra', $caracteristicas) ? 1 : 0;
         $con_agua = in_array('agua', $caracteristicas) ? 1 : 0;
-        $reservaciones = $this->model->buscarParcelasDisponibles(
+        $parcelas = $this->model->buscarParcelasDisponibles(
             $inicio,
             $fecha_fin,
             $personas,
@@ -73,8 +73,9 @@ class ReservaController
             $con_agua
         );
         //me trae las parcelas que se ajustan a las condiciones dadas por el usuario
-        //falta mostrarlas de forma elegante con una vista bien hecha
-        $this->view->mostrarParcelasDisponibles($reservaciones);
+        //hay 5 sectores en total: Carpa Familiar--Familiar--Joven--MotorHome
+        $parcelas_por_sector=$this->servicioR->agruparPorSector($parcelas);        
+        $this->view->mostrarParcelasDisponibles($parcelas,$parcelas_por_sector,$inicio,$fecha_fin);
     }
     //funcion encargada de recibir las condiciones de la reserva y simular los precios de una posible reserva
     public function simularPrecioReserva()
@@ -112,14 +113,8 @@ class ReservaController
         $this->view->mostrarPrecioParcela($precio_final);
     }
     public function generarReservacion()
-    {   
+    {
         // Validar si el usuario está logueado y tiene un rol permitido
-    /*if (!$this->usuarioLogueado()) {
-        $mensaje = "Debe estar logueado para realizar una reservación.";
-        $tipo_mensaje = "error";
-        $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
-        return;
-    }*/
         // Verificar que llegaron todos los datos necesarios
         if (!$this->servicioR->validacionDatosReservacion($_POST)) {
             $mensaje = "Por favor, completa todos los campos obligatorios.";
@@ -127,7 +122,7 @@ class ReservaController
             $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
             return;
         }
-    
+
         // Recopilar y procesar datos
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
@@ -139,7 +134,7 @@ class ReservaController
         $doceMas = $_POST['doceMas'];
         $tipo_de_vehiculo = $_POST['tipo_de_vehiculo'];
         $caracteristicas = $_POST['caracteristicas'];
-    
+
         // Convertir características a valores binarios
         $fogon = in_array('fogon', $caracteristicas) ? 1 : 0;
         $tomaElectrica = in_array('tomaElectrica', $caracteristicas) ? 1 : 0;
@@ -147,11 +142,11 @@ class ReservaController
         $agua = in_array('agua', $caracteristicas) ? 1 : 0;
         $con_ducha = in_array('con_ducha', $caracteristicas) ? 1 : 0;
         $con_sanitario = in_array('con_sanitario', $caracteristicas) ? 1 : 0;
-    
+
         $cantPersonas = $menores + $cuatroDoce + $doceMas;
         $dias_de_estancia = $this->servicioR->retornarDiasDeDiferencia($fecha_inicio, $fecha_fin);
         $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha, $con_sanitario, $tipo_de_vehiculo, $_POST['personas']);
-    
+
         // Validar si el usuario existe
         $id_user = $this->modelUser->findUserByDni($dni);
         if (empty($id_user)) {
@@ -160,27 +155,37 @@ class ReservaController
             $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
             return;
         }
-    
+
         // Buscar parcela disponible
         $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
-        if (empty($id_parcela) || !isset($id_parcela['id'])) {
+
+        // Verifica si $id_parcela es válido
+        if (!empty($id_parcela)) {
+            // Si llega aquí, $id_parcela es válido
+            $id_parcela = $id_parcela['id'];
+            // Crear la reservación
+            $identificador = $this->toolsHelper->generarIdentificador();
+            $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
+            $id_nueva_reserva = $this->model->nuevaReserva($id_user->id_usuario, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
+            $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
+            $mensaje = "Reservación creada exitosamente. Descargue el comprobante y confirme su pago.";
+            $tipo_mensaje = "exito";
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+                           // Validar datos antes de generar el PDF
+            if (empty($nombre) || empty($apellido) || empty($identificador) || empty($precio_reserva) || empty($this->cel_washapp)) {
+                echo "Error: Datos incompletos para generar el PDF.";
+            } else {
+                try {
+                    $this->toolsHelper->generarPDF($nombre, $apellido, $identificador, $precio_reserva, $this->cel_washapp);
+                } catch (Exception $e) {
+                    echo "Error al generar el PDF: " . $e->getMessage();
+                }
+            }
+        } 
             $mensaje = "No se ha encontrado una parcela con las características indicadas.";
             $tipo_mensaje = "error";
             $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
-            return;
-        }
-    
-        // Crear la reservación
-        $identificador = $this->toolsHelper->generarIdentificador();
-        $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
-        $id_nueva_reserva = $this->model->nuevaReserva($id_user->id_usuario, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
-    
-        $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela['id']);
-        $this->toolsHelper->generarPDF($nombre, $apellido, $identificador, $precio_reserva, $this->cel_washapp);
-        // Mensaje de éxito
-        $mensaje = "Reservación creada exitosamente. Descargue el comprobante y confirme su pago.";
-        $tipo_mensaje = "exito";
-        $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+            
     }
     private function getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
     {

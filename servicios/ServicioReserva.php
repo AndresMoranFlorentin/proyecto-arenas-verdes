@@ -99,4 +99,30 @@ class ServicioReserva
         $dias_de_estancia = $fecha_inicio_obj->diff($fecha_fin_obj);
         return $dias_de_estancia->days;
     }
+    public function agruparPorSector($parcelas){
+        $familiar=0;
+        $campamento_familiar=0;
+        $joven=0;
+        $motorhome=0;
+
+        foreach($parcelas as $par){
+            if($par['sector']=="familiar"){
+                $familiar+=1;
+            }
+            else if($par['sector']=="campamento_familiar"){
+                $campamento_familiar+=1;
+            }
+            else if($par['sector']=="juvenil"){
+                $joven+=1;
+            }
+            else if($par['sector']=="motorhome"){
+                $motorhome+=1;
+            }
+           return $asociativo = array( 
+                "familiar" => $familiar, 
+                "campamento_familiar" => $campamento_familiar, 
+                "juvenil" => $joven,
+                "motorhome"=>$motorhome);
+        }
+    }
 }

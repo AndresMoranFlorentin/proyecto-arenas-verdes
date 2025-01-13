@@ -22,7 +22,7 @@ COMO EL MAPA:**/
 }
 
 /* Efecto blur cuando se pasa el mouse por el contenedor */
-.presentacionReservacion .botton{
+.presentacionReservacion .botton {
   filter: blur(5px);
 }
 
@@ -62,31 +62,104 @@ COMO EL MAPA:**/
   background-color: rgb(206, 124, 124);
   border-bottom: darkred;
 }
+
 /*************************************************************************/
 /***AQUI SE UBICA EL ESTILO DE LOS MENSAJES DE RESULTADO DE LAS RESERVAS**/
 /*************************************************************************/
-.mensaje-exito, .mensaje-error {
+/* Centrar el mensaje en la pantalla */
+.mensaje {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   text-align: center;
   z-index: 1000;
+  background-color: #fff;
 }
 
-.mensaje-exito {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+/* Estilos para el texto del mensaje */
+.mensaje p {
+  margin: 0 0 20px 0;
+  font-size: 1.5em;
 }
 
-.mensaje-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+/* Estilos para el mensaje de éxito */
+.mensaje.exito {
+  border: 2px solid green;
 }
 
+/* Estilos para el mensaje de error */
+.mensaje.error {
+  border: 2px solid red;
+}
 
+/* Estilos para los botones */
+.mensaje .btn {
+  font-size: 1em;
+  padding: 10px 20px;
+  margin-top: 20px;
+}
 
+/* Ocultar el formulario cuando el mensaje está presente */
+body>*:not(.mensaje) {
+  opacity: 0.5;
+  /* Ajustar la opacidad para superponer */
+  pointer-events: none;
+  /* Desactivar la interactividad */
+}
+
+/* Restablecer el formulario cuando el mensaje no está presente */
+body>*:not(.mensaje):not([class="mensaje-"]) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.formulario {
+  display: none;
+}
+
+/**** Caja de colores para diferenciar los distintos sectores en el resultado de disponibilidad **/
+.sectores_parcelas {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Alineación vertical */
+  align-items: flex-start; /* Alineación a la izquierda para mejor legibilidad */
+  gap: 10px; /* Espacio entre los elementos */
+  padding: 10px;
+}
+
+.sectores_parcelas .motorhome,
+.sectores_parcelas .familiar,
+.sectores_parcelas .juvenil,
+.sectores_parcelas .campamento_familiar {
+  color: white;
+  font-weight: bold;
+  padding: 10px; /* Más espacio para que el texto no se vea apretado */
+  border-radius: 5px; /* Bordes redondeados para un look más moderno */
+  margin-bottom: 10px; /* Espacio uniforme entre los elementos */
+  text-align: left; /* Alineación izquierda para mejor legibilidad */
+  font-size: 14px; /* Un tamaño de fuente más pequeño pero legible */
+  width: 35%; /* Ancho completo del contenedor */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para un efecto de profundidad */
+}
+
+.sectores_parcelas .motorhome {
+  background: rgb(100, 57, 100);
+}
+
+.sectores_parcelas .familiar {
+  background: rgb(71, 149, 71);
+}
+
+.sectores_parcelas .juvenil {
+  background: rgb(215, 162, 63);
+}
+
+.sectores_parcelas .campamento_familiar {
+  background: rgb(68, 68, 150);
+}

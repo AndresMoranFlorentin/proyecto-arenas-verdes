@@ -4,6 +4,8 @@ class ReservaView
 {
     private $logueado;
     private $rol;
+    private $mensaje="";
+    private $tipo_mensaje="";
 
     public function showHome($logueado, $rol)
     {
@@ -26,20 +28,23 @@ class ReservaView
      public function reservacion() {
          require './templates/reservacion.phtml';
      }
-     public function mostrarParcelasDisponibles($reservaciones){
+     public function mostrarParcelasDisponibles($reservaciones,$parcelas_por_sector,$fechaInicio,$fechaFin){
         require './templates/reservacion.phtml';
     }
     public function mostrarPrecioParcela($precio_final){
         require './templates/precios.phtml';
     }
     public function formSolicitarReservacion($id_parcela=null){
-        $mensaje="La reservacion fue hecha con exito";
-        $tipo_mensaje="exito";
+        $this->mensaje="";
+        $this->tipo_mensaje="";
         require './templates/formParaReservacion.phtml';
         
     }
-    public function mostrarFormularioReservacion($mensaje, $tipo_mensaje){
-        var_dump("mensaje: ".$mensaje.", tipo : ".$tipo_mensaje);
+    public function mostrarFormularioReservacion($mensaje, $tipo_mensaje) {
+        $this->mensaje=$mensaje;
+        $this->tipo_mensaje=$tipo_mensaje;
+        print_r($mensaje);
+        print_r($tipo_mensaje);
         require './templates/formParaReservacion.phtml';
     }
 }

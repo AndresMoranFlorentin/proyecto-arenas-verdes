@@ -47,30 +47,5 @@
         <button type="submit" class="btn btn-success">Buscar</button>
       </div>
     </form>
-    <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
-    <div class="container">
-      <?php if (!empty($reservaciones)): ?>
-        <?php foreach ($reservaciones as $parcela): ?>
-          <div class="alert alert-success">
-            <img src="<?= htmlspecialchars($parcela['imagen']) ?>
-                " alt="Imagen de la parcela">
-            <div class="name">
-              <p>Descripcion: <?= htmlspecialchars($parcela['descripcion']) ?>
-              </p>
-            </div>
-            <div class="detalles">
-              <p>Precio:
-                <?= htmlspecialchars($parcela['precio']) ?>
-              </p>
-              <p>Sector: <?= htmlspecialchars($parcela['sector'])
-                          ?></p>
-              <p>Uso del espacio: <?= htmlspecialchars($parcela['uso_espacio'])
-                                  ?></p>
-              <p>Sanitarios: <?= htmlspecialchars($parcela['sanitarios_distancia']) ?></p>
-              <div><button class="button">Reservar</button></div>
-            </div>
-          </div> <?php endforeach; ?>
-      <?php else: ?> <p class="alert alert-danger">No se encontraron parcelas disponibles.</p>
-      <?php endif; ?>
-    </div>
+  
 
