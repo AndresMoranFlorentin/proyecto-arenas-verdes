@@ -85,11 +85,11 @@ body {
   font-size: 16px;
 }
 main {
-  flex:1;
   height: 50%;
   width: 80%;
   background-color: #ffffff;
-  margin:auto;
+  display: flex;
+  flex: 1; 
 }
 .introduccion {
   padding-right: 15%;
@@ -232,4 +232,8 @@ footer {
   height: 85px;
   bottom: 10px;
   right: 10px;
+}
+
+.sin-border-box {
+  box-sizing: content-box; 
 }
