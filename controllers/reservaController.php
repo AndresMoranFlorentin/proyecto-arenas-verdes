@@ -158,25 +158,31 @@ class ReservaController
 
         // Buscar parcela disponible
         $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
-
+        echo "---------------------->>>>>>". $id_parcela;
         // Verifica si $id_parcela es válido
         if (!empty($id_parcela)) {
             // Si llega aquí, $id_parcela es válido
-            $id_parcela = $id_parcela['id'];
             // Crear la reservación
             $identificador = $this->toolsHelper->generarIdentificador();
+            echo $identificador;
             $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
+            echo $id_servicio;
             $id_nueva_reserva = $this->model->nuevaReserva($id_user->id_usuario, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
             $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
-            $mensaje = "Reservación creada exitosamente. Descargue el comprobante y confirme su pago.";
-            $tipo_mensaje = "exito";
-            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
-                           // Validar datos antes de generar el PDF
+           
+            // Validar datos antes de generar el PDF
             if (empty($nombre) || empty($apellido) || empty($identificador) || empty($precio_reserva) || empty($this->cel_washapp)) {
                 echo "Error: Datos incompletos para generar el PDF.";
             } else {
                 try {
                     $this->toolsHelper->generarPDF($nombre, $apellido, $identificador, $precio_reserva, $this->cel_washapp);
+                    ob_end_clean();
+                    // Mostrar mensaje de éxito y redirigir
+                    $mensaje = "Reservación creada exitosamente. Descargue el comprobante y confirme su pago.";
+                    $tipo_mensaje = "exito";
+                    $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+                    
+                  
                 } catch (Exception $e) {
                     echo "Error al generar el PDF: " . $e->getMessage();
                 }
@@ -187,14 +193,19 @@ class ReservaController
             $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
             
     }
+    /**
+     * funcion encargada de buscar aquellos servicios que proveen ciertas parcelas
+     * y en caso de que no exista---<< NO DEBERIA CREARLO >> deberian ya existir en la base de datos
+     * precargado
+     */
     private function getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
     {
         $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
+        //corregir, si no encuentra el servicio retornar null
         if (empty($idServicio)) { //no existe un servicio de esas caracteristicas
-            $this->model->insertServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
-            $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
+           return null;
         }
-        return $idServicio[0]['id_servicio'];
+        return $idServicio;
     }
 
     public function pedirReservacion()

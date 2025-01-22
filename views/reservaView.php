@@ -6,6 +6,7 @@ class ReservaView
     private $rol;
     private $mensaje="";
     private $tipo_mensaje="";
+    private $urlPdf="";
 
     public function showHome($logueado, $rol)
     {
@@ -43,8 +44,6 @@ class ReservaView
     public function mostrarFormularioReservacion($mensaje, $tipo_mensaje) {
         $this->mensaje=$mensaje;
         $this->tipo_mensaje=$tipo_mensaje;
-        print_r($mensaje);
-        print_r($tipo_mensaje);
         require './templates/formParaReservacion.phtml';
     }
 }

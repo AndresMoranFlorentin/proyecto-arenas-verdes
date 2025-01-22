@@ -24,7 +24,7 @@ class AuthModel extends ConectionModel {
     }
     function findUserByDni($dni)
     {
-        $query = $this->db->prepare('select * FROM usuario WHERE dni = ?');
+        $query = $this->db->prepare('select * FROM users WHERE dni = ?');
         $query->execute([$dni]);
         $user = $query->fetch(PDO::FETCH_OBJ);
         return $user;
@@ -50,7 +50,7 @@ class AuthModel extends ConectionModel {
 
     function checkRol($id)
     {
-        $sql = 'select rol from users where id=?';
+        $sql = 'select rol from users where id_usuario=?';
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([$id]);
         $rol = $sentencia->fetch(PDO::FETCH_OBJ);
@@ -77,7 +77,7 @@ class AuthModel extends ConectionModel {
 
     function deleteUser($id)
     {
-        $sql = "DELETE FROM users WHERE id = ?";
+        $sql = "DELETE FROM users WHERE id_usuario = ?";
 
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([$id]);

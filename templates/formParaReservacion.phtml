@@ -6,7 +6,9 @@
     <div class="mensaje <?= $tipo_mensaje; ?>">
         <p><?= $mensaje; ?></p>
         <?php if ($tipo_mensaje == 'exito') : ?>
-            <a href="https://wa.me/+5492262301388" class="btn btn-success" onclick="resetForm()">Confirmar vía WhatsApp</a>
+            <!-- Botón para confirmar por WhatsApp -->
+            <a href="https://wa.me/+5492262301388" class="btn btn-success" onclick="confirmarViaWhatsApp()">Confirmar vía WhatsApp</a>
+        
         <?php else : ?>
             <button onclick="cerrarMensajeYResetear()" class="btn btn-danger">Aceptar</button>
         <?php endif; ?>
@@ -139,30 +141,43 @@
     <br>
 </section>
 <script>
+    // Función para resetear el formulario
     function resetForm() {
-    document.getElementById('buscadorForm').reset();
-}
-
-function cerrarMensajeYResetear() {
-    resetForm();
-    cerrarMensaje();
-}
-
-function cerrarMensaje() {
-    var mensaje = document.querySelector('.mensaje');
-    if (mensaje) {
-        mensaje.style.display = 'none';
+        document.getElementById('buscadorForm').reset();
     }
 
-    var formulario = document.querySelector('.formulario');
-    if (formulario) {
-        formulario.style.display = 'block';
+    // Función para cerrar el mensaje y resetear el formulario
+    function cerrarMensajeYResetear() {
+        resetForm();
+        cerrarMensaje();
     }
-}
-</script>
-<?php
 
-include 'whatsapp.phtml';
-include 'footer.phtml';
+    // Función para cerrar el mensaje
+    function cerrarMensaje() {
+        var mensaje = document.querySelector('.mensaje');
+        if (mensaje) {
+            mensaje.style.display = 'none';
+        }
 
-?>
+        var formulario = document.querySelector('.formulario');
+        if (formulario) {
+            formulario.style.display = 'block';
+        }
+    }
+
+    // Función para manejar la descarga del comprobante
+    function descargarComprobante() {
+        setTimeout(() => {
+            cerrarMensaje();
+            resetForm();
+        }, 3000); // Tiempo opcional para dar margen a la descarga
+        resetForm();
+
+    }
+
+    // Función para confirmar vía WhatsApp
+    function confirmarViaWhatsApp() {
+        cerrarMensaje(); // Cierra el mensaje
+        resetForm(); // Resetea el formulario
+    }
+    </script>

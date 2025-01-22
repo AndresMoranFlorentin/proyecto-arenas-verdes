@@ -75,7 +75,7 @@ class ReservaModel extends ConectionModel
     }
     public function getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua) {
         $sql = "
-        SELECT p.* 
+        SELECT p.id 
         FROM parcela AS p
         INNER JOIN servicioreserva AS sr ON p.id_servicio = sr.id_servicio
         WHERE 
@@ -92,7 +92,7 @@ class ReservaModel extends ConectionModel
     // Ejecutar la consulta
     $resultado = $this->conexion->prepare($sql);
     $resultado->execute([$fogon, $tomaElectrica, $sombra, $agua, $cantPersonas, $fecha_inicio, $fecha_fin]);
-    $parcela = $resultado->fetch(PDO::FETCH_ASSOC);
+    $parcela = $resultado->fetchColumn();
 
     return $parcela;
     }
@@ -119,15 +119,18 @@ class ReservaModel extends ConectionModel
         return $precios;
     }
     public function findServicio($fogon,$tomaElectrica,$sombra,$agua){
-        $sql="SELECT s.id_servicio FROM servicioreserva AS s
-              WHERE s.con_fogon=? 
-              AND s.sombra= ?
-              AND s.con_toma_electrica=? 
-              AND s.agua= ?";
+        $sql="SELECT id_servicio 
+              FROM servicioreserva 
+              WHERE con_fogon= ? 
+              AND sombra= ? 
+              AND con_toma_electrica= ? 
+              AND agua= ?";
         $servicio = $this->conexion->prepare($sql);
-        $servicio->execute([$fogon,$sombra,$tomaElectrica,$agua]);
-        $resultado = $servicio->fetchAll(PDO::FETCH_ASSOC);
-        return $resultado;
+        $servicio->execute([$fogon,$tomaElectrica,$sombra,$agua]);
+        //me trae solo el primer resultado
+        $id_servicio = $servicio->fetchColumn();
+        echo "------->>>   ".$id_servicio;
+        return $id_servicio;
     }
     //funcion que agrega un nuevo servicio adicional
     public function insertServicioAdicional($fogon,$tomaElectrica,$sombra,$agua){
@@ -139,5 +142,21 @@ class ReservaModel extends ConectionModel
         $sql = "INSERT INTO reserva_parcela (id_reserva, id_parcela) VALUES (?, ?)";
         $sentencia = $this->conexion->prepare($sql);
         $sentencia->execute([$id_nueva_reserva,$id_parcela]);
+    }
+    //DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+    public function getNotificaciones(){
+        $sql="SELECT np.*
+         FROM notificaciones_pendientes np, users u
+         WHERE enviado = 0 
+         AND DATE(fecha_notificacion) = CURDATE()";
+        $servicio = $this->conexion->prepare($sql);
+        $servicio->execute();
+        $resultado = $servicio->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
+    }
+    public function deleteNotificacion($id){
+        $sql="DELETE FROM notificaciones_pendientes WHERE id = ?";
+        $servicio = $this->conexion->prepare($sql);
+        $servicio->execute([$id]);
     }
 }

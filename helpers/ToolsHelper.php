@@ -2,6 +2,8 @@
 require_once 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
 use PHPMailer\PHPMailer\Exception;
 // Incluir PHPMailer
 require 'vendor/autoload.php'; // Si usas Composer
@@ -10,6 +12,11 @@ class ToolsHelper
     function generarPDF($nombre, $apellido, $identificador, $precio, $washapp)
     {
         try {
+            // Limpiar cualquier salida previa
+            // Limpiar cualquier salida previa
+            if (ob_get_length()) {
+                ob_clean();
+            }
             // Crear el objeto TCPDF
             $pdf = new TCPDF();
             $pdf->AddPage();
@@ -30,56 +37,21 @@ class ToolsHelper
             $pdf->Ln(10);
             $pdf->MultiCell(0, 10, "Aviso: Si no confirma el medio de pago a través del número de WhatsApp proporcionado, su reservación se eliminará luego de 5 días de haberla pedido.");
 
-            // Nombre del archivo PDF
-            $fileName = 'reserva_' . $identificador . '.pdf';
-            // Limpiar cualquier salida previa
-            ob_clean();
-            // Enviar el archivo como descarga al navegador
-            $pdf->Output($fileName, 'D');
+            // Configurar la salida del PDF
+            $fileName = 'reserva' . $identificador . '.pdf';
 
-            // Terminar el script después de la descarga
-            exit();
+            // Enviar encabezados para forzar la descarga
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename="reserva_' . $identificador . '.pdf"');
+            $pdf->Output('reserva_' . $identificador . '.pdf', 'D');
         } catch (Exception $e) {
             error_log("Error al generar el PDF: " . $e->getMessage());
-            return false;
         }
     }
+
     //funcion que genera un numero alfanumerico unico para identificar las reservaciones
     public function generarIdentificador()
     {
         return strtoupper(bin2hex(random_bytes(10)));
-    }
-    //funcion que sirve para enviar un mensaje de mail para alertar a los usuarios de que
-    //la reservacion finalizara
-    public function enviarEmail()
-    {
-        $mail = new PHPMailer(true);
-
-        try {
-            // Configuración del servidor SMTP
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'tucorreo@gmail.com'; // Tu correo Gmail
-            $mail->Password = 'tu_contraseña'; // Tu contraseña (o App Password)
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-
-            // Destinatarios
-            $mail->setFrom('tucorreo@gmail.com', 'Tu Nombre o Nombre del Negocio');
-            $mail->addAddress('destinatario@example.com', 'Nombre del Destinatario'); // Añadir destinatario
-
-            // Contenido del correo
-            $mail->isHTML(true); // Habilitar HTML
-            $mail->Subject = 'Recordatorio de Reservación';
-            $mail->Body    = '<p>Hola,</p><p>Te recordamos que tu reservación termina <strong>mañana</strong>. ¡Gracias por elegirnos!</p>';
-            $mail->AltBody = 'Hola, Te recordamos que tu reservación termina mañana. ¡Gracias por elegirnos!';
-
-            // Enviar correo
-            $mail->send();
-            echo 'Correo enviado exitosamente';
-        } catch (Exception $e) {
-            echo "Error al enviar el correo: {$mail->ErrorInfo}";
-        }
     }
 }
