@@ -66,8 +66,8 @@
         </div>
         <div class="modal-body">
 
-          <form id="loginForm" action="auth" method="post">
-
+          <form id="loginForm" action="auth" method="post" class="form-container" >
+            <div>
             <input
               type="email"
               name="email"
@@ -79,8 +79,14 @@
               name="password"
               placeholder="password"
               required />
+            </div>
+            
+            <div>
+              <a href="#">Olvide mi contraseña</a>
             <button type="submit" class="btn btn-primary" id="loginBtn">Iniciar sesión</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+            
           </form>
         </div>
         <div class="modal-footer">
@@ -101,7 +107,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form  id="registrationForm" action="register" method="post">
+          <form  id="registrationForm" action="register" method="post" class="form-container">
             <input type="number" id="dni" name="dni" placeholder="DNI" required />
             <input
               type="text"
