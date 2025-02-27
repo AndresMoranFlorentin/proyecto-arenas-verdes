@@ -28,6 +28,7 @@ class ReservaModel extends ConectionModel
                         AND :fecha_fin NOT BETWEEN r.fecha_inicio AND r.fecha_fin
                     ) 
                     OR r.id IS NULL
+                AND p.disponible='disponible'
                 )";
 
         // Agregar filtros dinámicos para las características
@@ -81,6 +82,7 @@ class ReservaModel extends ConectionModel
         WHERE 
             (sr.con_fogon = ? AND sr.con_toma_electrica = ? AND sr.sombra = ? AND sr.agua = ?)
             AND p.cant_personas >= ?
+            AND p.disponible='disponible'
             AND p.id NOT IN (
                 SELECT DISTINCT reserpar.id_parcela
                 FROM reserva_parcela AS reserpar
@@ -129,7 +131,6 @@ class ReservaModel extends ConectionModel
         $servicio->execute([$fogon,$tomaElectrica,$sombra,$agua]);
         //me trae solo el primer resultado
         $id_servicio = $servicio->fetchColumn();
-        echo "------->>>   ".$id_servicio;
         return $id_servicio;
     }
     //funcion que agrega un nuevo servicio adicional
@@ -143,6 +144,9 @@ class ReservaModel extends ConectionModel
         $sentencia = $this->conexion->prepare($sql);
         $sentencia->execute([$id_nueva_reserva,$id_parcela]);
     }
+    public function getAlgo(){
+        return 'ahyahy---ahuahu';
+    }
     //DATE_SUB(CURDATE(), INTERVAL 1 DAY)
     public function getNotificaciones(){
         $sql="SELECT np.*
@@ -154,9 +158,35 @@ class ReservaModel extends ConectionModel
         $resultado = $servicio->fetchAll(PDO::FETCH_ASSOC);
         return $resultado;
     }
+    public function hayDisponibilidad($limite) {
+        $sql = "SELECT COUNT(p.id) AS total
+                FROM parcela AS p
+                LEFT JOIN reserva_parcela AS rp ON p.id = rp.id_parcela
+                WHERE rp.id_parcela IS NULL";
+        $servicio = $this->conexion->prepare($sql);
+        $servicio->execute();
+        $resultado = $servicio->fetch(PDO::FETCH_ASSOC);
+        return $resultado['total'] > $limite ? true : false;
+    }
     public function deleteNotificacion($id){
         $sql="DELETE FROM notificaciones_pendientes WHERE id = ?";
         $servicio = $this->conexion->prepare($sql);
         $servicio->execute([$id]);
+    }
+    public function estaReservada($id_p){
+        $sql="SELECT COUNT(rp.id_parcela)
+              FROM reserva_parcela AS rp, reserva AS r
+              ON(rp.id_reserva=r.id)
+              WHERE (rp.id_parcela=?)
+              AND NOW() BETWEEN r.fecha_inicio AND r.fecha_fin";
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([$id_p]);
+        $resultado = $consulta->fetchColumn(PDO::FETCH_ASSOC);
+        return $resultado > 0 ? true : false;
+    }
+    public function marcarNoDisponibleParcela($id_p){
+        $sql="UPDATE parcela SET disponible='no disponible' WHERE id=?";
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([$id_p]);
     }
 }

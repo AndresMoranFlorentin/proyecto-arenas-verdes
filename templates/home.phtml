@@ -1,15 +1,13 @@
+<?php include 'header.phtml'; ?>
 
-
-    <?php include 'header.phtml'; ?>
-
-    <main>
-      <section class="introduccion" id="content">
-        <h1>Bienvenido a Arenas Verdes</h1>
-        <p>
-          Explora nuestras opciones de reservaciones, descubre nuestras tarifas y
-          encuentra respuestas a tus preguntas. Disfruta de una experiencia única
-          en Arenas Verdes.
-        </p>
+<main>
+  <section class="introduccion" id="content">
+    <h1>Bienvenido a Arenas Verdes</h1>
+    <p>
+      Explora nuestras opciones de reservaciones, descubre nuestras tarifas y
+      encuentra respuestas a tus preguntas. Disfruta de una experiencia única
+      en Arenas Verdes.
+    </p>
 
     <h1>Arenas Verdes, las playas de Lobería, te esperan</h1>
     <p>
@@ -56,16 +54,17 @@
       aves y
       llevarte imágenes de quienes nos visitan y siguen su camino.
     </p>
-        <a href="reservacion.html" class="boton-reserva">Reservar ahora</a>
-      </section>
-       
+    <a href="reservacion.html" class="boton-reserva">Reservar ahora</a>
+  </section>
 
-      </main>
-      
-    
-   
+  <?php if ($dispo == false): ?>
+    <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+  <?php else: ?>
+    <br>
+  <?php endif; ?>
+</main>
+
 <?php
- include 'whatsapp.phtml'; 
- include 'footer.phtml';
-
+include 'whatsapp.phtml';
+include 'footer.phtml';
 ?>

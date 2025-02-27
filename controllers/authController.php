@@ -47,7 +47,7 @@ class AuthController
             $this->helper->logIn($user);
             $logueado = $this->helper->checkUser();
             $rol = $this->helper->getRol();
-            $this->viewRes->showHome($logueado, $rol);
+            $this->viewRes->showHome($logueado, $rol,null);
         } else {
             $error = "Usuario o contraseña invalidos";
             $this->view->showLogin($error);

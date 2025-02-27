@@ -72,7 +72,7 @@ nav .btn_login {
 }
 /** SECCION CUERPO BODY**/
 body {
-  height: 100%;
+  height: 120%;
   margin: 0;
   padding: 0;
   display: flex;
@@ -85,7 +85,7 @@ body {
   font-size: 16px;
 }
 main {
-  height: 50%;
+  height: 80%;
   width: 80%;
   background-color: #ffffff;
 }

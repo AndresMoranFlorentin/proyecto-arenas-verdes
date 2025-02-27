@@ -65,6 +65,11 @@
 <?php else: ?>
   <br>
 <?php endif; ?>
+<?php if ($dispo == false): ?>
+  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+<?php else: ?>
+  <br>
+<?php endif; ?>
 </main>
 <?php
 

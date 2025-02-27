@@ -1,12 +1,12 @@
 <?php
-require_once './views/reservaView.php';
-require_once './helpers/sessionHelper.php';
+
 require_once './helpers/ToolsHelper.php';
 require_once './servicios/ServicioReserva.php';
+require_once './views/reservaView.php';
 require_once './models/reservaModel.php';
 require_once './models/authModel.php';
 class ReservaController
-{
+{   private static $disponibilidad=true;
     private $cel_washapp = "+54 9 2262 30-1388";
     private $view;
     private $helper;
@@ -29,14 +29,14 @@ class ReservaController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->showHome($logueado, $rol);
+        $this->view->showHome($logueado, $rol,self::$disponibilidad);
     }
 
     public function renderPrecios()
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->renderPrecios($logueado, $rol);
+        $this->view->renderPrecios($logueado, $rol,self::$disponibilidad);
     }
     public function buscarParcelasDispo()
     {
@@ -50,7 +50,7 @@ class ReservaController
         ) {
             //vuelve a enviarte a la pagina de reservacion faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->reservacion();
+            $this->view->reservacion(self::$disponibilidad);
         }
         $inicio = $_POST['inicio'];
         $fecha_fin = $_POST['fecha_fin'];
@@ -75,7 +75,7 @@ class ReservaController
         //me trae las parcelas que se ajustan a las condiciones dadas por el usuario
         //hay 5 sectores en total: Carpa Familiar--Familiar--Joven--MotorHome
         $parcelas_por_sector=$this->servicioR->agruparPorSector($parcelas);        
-        $this->view->mostrarParcelasDisponibles($parcelas,$parcelas_por_sector,$inicio,$fecha_fin);
+        $this->view->mostrarParcelasDisponibles($parcelas,$parcelas_por_sector,$inicio,$fecha_fin,self::$disponibilidad);
     }
     //funcion encargada de recibir las condiciones de la reserva y simular los precios de una posible reserva
     public function simularPrecioReserva()
@@ -86,7 +86,7 @@ class ReservaController
             !isset($_POST['edad_ninos4']) && !isset($_POST['edad_ninos12'])
             && !isset($_POST['edad_ninos20']) && (!isset($_POST['estancia']) && $_POST['estancia'] <= 0)
         ) {
-            $this->view->renderPrecios($logueado, $rol);
+            $this->view->renderPrecios($logueado, $rol,self::$disponibilidad);
         }
         $edadninos4 = $_POST['edad_ninos4']; //atributo de aquellas personas de hasta 4 años
         $edadninos12 = $_POST['edad_ninos12']; //atributo de aquellas personas entre 4 y 12 años
@@ -110,7 +110,7 @@ class ReservaController
             $residente_loberia
         );
 
-        $this->view->mostrarPrecioParcela($precio_final);
+        $this->view->mostrarPrecioParcela($precio_final,self::$disponibilidad);
     }
     public function generarReservacion()
     {
@@ -119,7 +119,7 @@ class ReservaController
         if (!$this->servicioR->validacionDatosReservacion($_POST)) {
             $mensaje = "Por favor, completa todos los campos obligatorios.";
             $tipo_mensaje = "error";
-            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
             return;
         }
 
@@ -149,24 +149,23 @@ class ReservaController
 
         // Validar si el usuario existe
         $id_user = $this->modelUser->findUserByDni($dni);
+        $email_user=$id_user->email;
         if (empty($id_user)) {
             $mensaje = "Debe registrarse primero para poder hacer una reservación.";
             $tipo_mensaje = "error";
-            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
             return;
         }
 
         // Buscar parcela disponible
         $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
-        echo "---------------------->>>>>>". $id_parcela;
-        // Verifica si $id_parcela es válido
-        if (!empty($id_parcela)) {
+        // busca si $id_servicio es encontrado
+        $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
+        echo "<script>console.log('".addslashes("id servicio-> ".$id_servicio)."');</script>";
+        if (!empty($id_parcela) && !empty($id_servicio)) {
             // Si llega aquí, $id_parcela es válido
             // Crear la reservación
             $identificador = $this->toolsHelper->generarIdentificador();
-            echo $identificador;
-            $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
-            echo $id_servicio;
             $id_nueva_reserva = $this->model->nuevaReserva($id_user->id_usuario, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
             $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
            
@@ -175,23 +174,41 @@ class ReservaController
                 echo "Error: Datos incompletos para generar el PDF.";
             } else {
                 try {
-                    $this->toolsHelper->generarPDF($nombre, $apellido, $identificador, $precio_reserva, $this->cel_washapp);
-                    ob_end_clean();
+                    $archivoPdf= $this->toolsHelper->generarPDF($nombre, $apellido, $identificador, $precio_reserva, $this->cel_washapp);
+                   
+                    if ($archivoPdf) {
+                        if ($this->toolsHelper->enviarCorreoConPDF($email_user, $nombre, $archivoPdf)) {
+                            if(unlink($archivoPdf)){
+                                //archivo eliminado exitosamente
+                            }
+                            else{
+                                echo 'el archivo no se pudo eliminar';
+                            }
+                        } else {
+                            echo "Error al enviar el correo.";
+                        }
+                    } else {
+                        $mensaje = "Error al generar el comprobante de reserva.";
+                        $tipo_mensaje = "error";
+                        $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+                    }
                     // Mostrar mensaje de éxito y redirigir
-                    $mensaje = "Reservación creada exitosamente. Descargue el comprobante y confirme su pago.";
-                    $tipo_mensaje = "exito";
-                    $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
-                    
-                  
+                    $mensaje = "Reservación creada exitosamente. El comprobante sera enviado a su correo electronico";
+                    $tipo_mensaje="exito";
+                    $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+
                 } catch (Exception $e) {
                     echo "Error al generar el PDF: " . $e->getMessage();
                 }
             }
         } 
+        else{
             $mensaje = "No se ha encontrado una parcela con las características indicadas.";
             $tipo_mensaje = "error";
-            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje);
-            
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+     
+        }
+                   
     }
     /**
      * funcion encargada de buscar aquellos servicios que proveen ciertas parcelas
@@ -207,17 +224,49 @@ class ReservaController
         }
         return $idServicio;
     }
+    /**
+     * funcion encargada de marcar por parte del administrador como no disponible
+     * aquellas parcelas que no pueden ser utilizadas
+     */
+    public function marcarNoDisponibleParcela($id_p){
+        //como primer paso no se puede marcar como no disponible aquella
+        //parcela o parcelas que ya esten reservadas, ya que generarian un
+        //conflicto:
+            //aun asi ahy dos soluciones para eso:
+            //1->no dejar que se bloquee la parcela
+            //2->buscar otra parcela que cumpla con los requisitos del usuario
+            //si se encuentra otra parcela disponible entonces
+            //modificar la reservacion del usuario para que apunte a la nueva
+            //y entonces si marcar como No disponible la parcela original
+            //entonces para marcar como no disponible una parcela debe pasar por varios controles
+        
+        if(!($this->model->estaReservada($id_p))){
+            //quiere decir que no esta reservada por lo tanto
+            //se la puede marcar como no disponible
+            $this->model->marcarNoDisponibleParcela($id_p);
+            //deberia actualizar la vista y mostrar ya sea un cartel u otra
+            //cosa la parcela como ¡no! disponible
+        }
+        else{
+            //en este caso al estar reservada se deberia
+            //1)avisar que no se puede suspender la parcela
+                    
+        }
 
+    }
     public function pedirReservacion()
     {
-        $this->view->formSolicitarReservacion();
+        $this->view->formSolicitarReservacion(null,self::$disponibilidad);
     }
     public function preguntasFrec()
     {
-        $this->view->pregFrec();
+        $this->view->pregFrec(self::$disponibilidad);
     }
     public function reservacion()
     {
-        $this->view->reservacion();
+        $this->view->reservacion(self::$disponibilidad);
+    }
+    public static function setDisponibilidad($valor){
+        self::$disponibilidad = $valor; // Acceso a variable estática
     }
 }

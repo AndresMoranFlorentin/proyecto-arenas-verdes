@@ -2,6 +2,7 @@
 // router.php
 require_once './controllers/reservaController.php';
 require_once './controllers/authController.php';
+require_once './controllers/ParcelaController.php';
 
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
 
@@ -44,7 +45,20 @@ switch ($params[0]) {
         break;
     case 'reservacion':
         $controller = new ReservaController();
-        $controller->reservacion();  
+        $controller->reservacion();
+        break;
+    case 'crt_parcelas':
+        $controller= new ParcelaController();
+        $controller->seccionParcelas(); 
+        break;
+    case 'habilitar':
+        $controller= new ParcelaController();
+        $controller->habilitarParcela(); 
+        break;
+    case 'inhabilitar':
+        $controller= new ParcelaController();
+        $controller->inhabilitarParcela(); 
+        break;
     //-----FIN DE LAS FUNCIONES DEL RESERVA CONTROLLER---  
      //*******RESERVA CONTROLLER**********************
     case 'login':

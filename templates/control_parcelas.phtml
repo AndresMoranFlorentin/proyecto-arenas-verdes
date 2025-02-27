@@ -1,0 +1,27 @@
+<main>
+    <section class="introduccion" id="content">
+        <h2>En esta seccion podra habilitar o desahabilitar las parcelas que desee:</h2>
+        <br>
+        <?php foreach ($parcelas as $parcela): ?>
+            <div class="parcelas">
+                <div class="parcela">
+                    <img src="<?php echo $parcela['imagen']; ?>" alt="<?php echo $parcela['imagen']; ?>">
+                    <span>Parcela <?php echo $parcela['id']; ?></span>
+                    <span style="border-left:solid 1px black; margin:10px;"> <?php echo $parcela['disponible']; ?></span>
+
+                    <div class="botones">
+                        <?php if ($parcela['disponible'] == 'disponible'): ?>
+                            <button class="boton inhabilitar">
+                                <a style="text-decoration: none; color: inherit;" href="inhabilitar?id=<?php echo $parcela['id']; ?>">Inhabilitar</a>
+                            </button>
+                        <?php else: ?>
+                            <button class="boton habilitar">
+                                <a style="text-decoration: none; color: inherit;" href="habilitar?id=<?php echo $parcela['id']; ?>">Habilitar</a>
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </section>
+</main>

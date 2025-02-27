@@ -23,7 +23,7 @@ class AuthView {
 
     }
 
-    public function renderHome($logueado, $rol){
+    public function renderHome($logueado, $rol,$dispo=true){
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/home.phtml';
