@@ -1,5 +1,9 @@
 <?php include 'header.phtml'; ?>
-
+<?php if ($dispo == false): ?>
+  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+<?php else: ?>
+  <br>
+<?php endif; ?>
 <main>
   <section class="introduccion" id="content">
     <h1>Bienvenido a Arenas Verdes</h1>
@@ -57,11 +61,6 @@
     <a href="reservacion.html" class="boton-reserva">Reservar ahora</a>
   </section>
 
-  <?php if ($dispo == false): ?>
-    <?php include 'cartel_baja_disponibilidad.phtml'; ?>
-  <?php else: ?>
-    <br>
-  <?php endif; ?>
 </main>
 
 <?php

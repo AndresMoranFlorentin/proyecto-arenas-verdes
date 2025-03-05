@@ -1,6 +1,10 @@
 <!--SECCION CUERPO PRINCIPAL(INFORMACION RELEVANTE)-->
 <?php include 'header.phtml'; ?>
-
+<?php if ($dispo == false): ?>
+    <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+  <?php else: ?>
+    <br>
+  <?php endif; ?>
 <main>
     <section class="introduccion blurred-content" id="content">
         <h1>Como llegar al campamento:</h1>
@@ -45,8 +49,6 @@
 
 
 </main>
-
-
 <script src="../js/form_dispo.js"></script>
 
 <?php

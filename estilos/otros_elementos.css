@@ -212,12 +212,12 @@ body>*:not(.mensaje):not([class="mensaje-"]) {
   /* Cambia el color al pasar el cursor sobre el botón */
 }
 /*----ESTILO PARA CARTEL DE BAJA DISPONIBILIDAD*/
-.cartel_baja_dispo {
+.cartel_baja_dispo1 {
   background-color: #ffcccb; /* Fondo de color rojo claro */
   border: 2px solid #d32f2f; /* Borde rojo oscuro */
   border-radius: 8px; /* Bordes redondeados */
   padding: 16px;
-  max-width: 400px; /* Ancho máximo del cartel */
+  max-width: 900px; /* Ancho máximo del cartel */
   margin: 20px auto; /* Centrar el cartel horizontalmente */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
   font-family: Arial, sans-serif;
@@ -226,13 +226,33 @@ body>*:not(.mensaje):not([class="mensaje-"]) {
   font-size: 16px; /* Tamaño de letra */
   line-height: 1.5; /* Espaciado entre líneas */
 }
+/*----ESTILO PARA CARTEL DE BAJA DISPONIBILIDAD*/
+.cartel_baja_dispo {
+  background-color: #1f1c1c; /* Fondo de color negro */
+  color: #fff; /* Texto de color blanco */
+  height: 50px; /* Altura fija */
+  width: 100%; /* Ancho completo del body */
+  box-sizing: border-box; /* Incluir padding y borde en el ancho total */
+  text-align: center; /* Centrar el texto */
+  font-family: Arial, sans-serif;
+  font-size: 16px; /* Tamaño de letra */
+  display: flex; /* Utilizar flexbox */
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centrar horizontalmente */
+  padding: 0 10px; /* Asegurarse de que el texto no toque los bordes */
+  box-shadow: 0px 4px 8px rgba(29, 21, 21, 0.015); /* Sombra sutil */
+}
+
+
 
 .cartel_baja_dispo strong {
   color: #b71c1c; /* Color destacado para "Aviso" */
-  font-size: 18px; /* Tamaño un poco mayor */
+  font-size: 20px; /* Tamaño un poco mayor */
 }
 
 .cartel_baja_dispo span {
-  color: #004d40; /* Color verde oscuro para la llamada a la acción */
+  color: #e2e60b; /* Color verde oscuro para la llamada a la acción */
   font-weight: bold; /* Resaltar la acción */
+  font-size: 18px; /* Tamaño un poco mayor */
+
 }

@@ -6,7 +6,7 @@ require_once './views/reservaView.php';
 require_once './models/reservaModel.php';
 require_once './models/authModel.php';
 class ReservaController
-{   private static $disponibilidad=true;
+{   private static $disponibilidad=false;
     private $cel_washapp = "+54 9 2262 30-1388";
     private $view;
     private $helper;
