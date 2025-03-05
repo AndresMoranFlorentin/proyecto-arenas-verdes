@@ -39,6 +39,11 @@ switch ($params[0]) {
         $controller = new ReservaController();
         $controller->generarReservacion();
         break;
+        break;
+    case 'parcelas':
+        $controller = new ReservaController();
+        $controller->sectoresParcelas();
+        break;       
     case 'preguntas':
         $controller = new ReservaController();
         $controller->preguntasFrec();

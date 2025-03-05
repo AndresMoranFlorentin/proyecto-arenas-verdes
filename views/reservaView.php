@@ -47,4 +47,8 @@ class ReservaView
         require './templates/formParaReservacion.phtml';
         require './templates/footer.phtml';
     }
+    
+        public function parcelas() {
+        require './templates/parcelas.phtml';
+     }
 }
