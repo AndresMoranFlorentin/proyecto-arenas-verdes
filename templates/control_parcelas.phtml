@@ -1,7 +1,14 @@
+<?php include 'header.phtml'; ?>
+<?php if ($dispo == false): ?>
+  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+<?php else: ?>
+  <br>
+<?php endif; ?>
 <main>
     <section class="introduccion" id="content">
-        <h2>En esta seccion podra habilitar o desahabilitar las parcelas que desee:</h2>
         <br>
+        <br>
+        <h2>En esta seccion podra habilitar o desahabilitar las parcelas que desee:</h2>
         <?php foreach ($parcelas as $parcela): ?>
             <div class="parcelas">
                 <div class="parcela">
@@ -24,4 +31,11 @@
             </div>
         <?php endforeach; ?>
     </section>
+    <br>
 </main>
+<?php
+
+include 'whatsapp.phtml';
+include 'footer.phtml';
+
+?>

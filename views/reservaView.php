@@ -48,7 +48,7 @@ class ReservaView
         require './templates/footer.phtml';
     }
     
-        public function parcelas() {
+    public function parcelas($dispo=true) {
         require './templates/parcelas.phtml';
      }
 }

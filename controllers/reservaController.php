@@ -9,7 +9,7 @@ require_once './models/ReservaModel.php';
 
 
 class ReservaController
-{   private static $disponibilidad=false;
+{   private static $disponibilidad=true;
     private $cel_washapp = "+54 9 2262 30-1388";
     private $view;
     private $helper;
@@ -162,8 +162,10 @@ class ReservaController
 
         // Buscar parcela disponible
         $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
+        //$id_parcela=1;
         // busca si $id_servicio es encontrado
         $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
+        echo "<script>console.log('".addslashes("id parcela-> ".$id_parcela)."');</script>";
         echo "<script>console.log('".addslashes("id servicio-> ".$id_servicio)."');</script>";
         if (!empty($id_parcela) && !empty($id_servicio)) {
             // Si llega aquí, $id_parcela es válido
@@ -225,7 +227,7 @@ class ReservaController
         if (empty($idServicio)) { //no existe un servicio de esas caracteristicas
            return null;
         }
-        return $idServicio;
+        return null;//$idServicio;
     }
     /**
      * funcion encargada de marcar por parte del administrador como no disponible
@@ -272,9 +274,13 @@ class ReservaController
     public static function setDisponibilidad($valor){
         self::$disponibilidad = $valor; // Acceso a variable estática
     }
-        //Muestra los distintos sectores
-        public function sectoresParcelas()
+    public static function obtenerDisponibilidad()
     {
-        $this->view->parcelas();
+        return self::$disponibilidad;
+    }
+        //Muestra los distintos sectores
+    public function sectoresParcelas()
+    {
+        $this->view->parcelas(self::$disponibilidad);
     }
 }

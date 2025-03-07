@@ -1,6 +1,6 @@
 <?php
 // router.php
-require_once './controllers/reservaController.php';
+require_once './controllers/ReservaController.php';
 require_once './controllers/authController.php';
 require_once './controllers/ParcelaController.php';
 
@@ -38,7 +38,6 @@ switch ($params[0]) {
     case 'generar_reservacion':
         $controller = new ReservaController();
         $controller->generarReservacion();
-        break;
         break;
     case 'parcelas':
         $controller = new ReservaController();

@@ -120,19 +120,29 @@ class ReservaModel extends ConectionModel
 
         return $precios;
     }
-    public function findServicio($fogon,$tomaElectrica,$sombra,$agua){
-        $sql="SELECT id_servicio 
-              FROM servicioreserva 
-              WHERE con_fogon= ? 
-              AND sombra= ? 
-              AND con_toma_electrica= ? 
-              AND agua= ?";
-        $servicio = $this->conexion->prepare($sql);
-        $servicio->execute([$fogon,$tomaElectrica,$sombra,$agua]);
-        //me trae solo el primer resultado
-        $id_servicio = $servicio->fetchColumn();
-        return $id_servicio;
+    public function findServicio($fogon, $tomaElectrica, $sombra, $agua) {
+    
+        $sql = "SELECT id_servicio 
+                FROM servicioreserva 
+                WHERE con_fogon = ? 
+                AND sombra = ? 
+                AND con_toma_electrica = ? 
+                AND agua = ? 
+                LIMIT 1;";
+    
+        try {
+            $servicio = $this->conexion->prepare($sql);
+            $servicio->execute([(int)$fogon, (int)$tomaElectrica, (int)$sombra, (int)$agua]); // Convertimos a enteros
+            $id_servicio = $servicio->fetchColumn();
+    
+            echo "<script>console.log('".addslashes("id del servicio original:::-> ".$id_servicio)."');</script>";
+            return $id_servicio;
+        } catch (PDOException $e) {
+            die("Error en la consulta: " . $e->getMessage());
+        }
     }
+    
+    
     //funcion que agrega un nuevo servicio adicional
     public function insertServicioAdicional($fogon,$tomaElectrica,$sombra,$agua){
         $sql = 'INSERT INTO servicioreserva (con_fogon,con_toma_electrica,sombra,agua) VALUES (?, ?, ?, ?)';
@@ -143,9 +153,6 @@ class ReservaModel extends ConectionModel
         $sql = "INSERT INTO reserva_parcela (id_reserva, id_parcela) VALUES (?, ?)";
         $sentencia = $this->conexion->prepare($sql);
         $sentencia->execute([$id_nueva_reserva,$id_parcela]);
-    }
-    public function getAlgo(){
-        return 'ahyahy---ahuahu';
     }
     //DATE_SUB(CURDATE(), INTERVAL 1 DAY)
     public function getNotificaciones(){
