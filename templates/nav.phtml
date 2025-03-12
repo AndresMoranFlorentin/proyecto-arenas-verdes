@@ -46,6 +46,9 @@
 
 
       <?php else: ?>
+        <li class="nav-item btn btn-secondary">
+          <a href="perfil"><i class="bi bi-person-circle"></i></a>
+        </li>
         <li class="nav-item  btn btn-secondary">
           <a class="nav-link" href="logout">Logout</a>
         </li>
@@ -82,8 +85,39 @@
             </div>
             
             <div>
-              <a href="#">Olvide mi contraseña</a>
+              <a href="#" data-bs-toggle="modal" data-bs-target="olvideModal">Olvide mi contraseña</a>
             <button type="submit" class="btn btn-primary" id="loginBtn">Iniciar sesión</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal olvide mi contraseña -->
+  <div class="modal fade" id="olvideModal" tabindex="-1" aria-labelledby="olvideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="olvideModalLabel">Olvide mi contraseña</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form id="olvideForm" action="olvideContraseña" method="post" class="form-container" >
+            <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="E-mail"
+              required />
+            
+            <button type="submit" class="btn btn-primary" >Enviar</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             </div>
             
@@ -108,12 +142,17 @@
         </div>
         <div class="modal-body">
           <form  id="registrationForm" action="register" method="post" class="form-container">
-            <input type="number" id="dni" name="dni" placeholder="DNI" required />
+            
             <input
               type="text"
               id="name"
               name="nombre"
               placeholder="Nombre"
+              required />
+            <input 
+              type="number" 
+              id="dni" name="dni" 
+              placeholder="DNI" 
               required />
             <input
               type="text"

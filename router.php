@@ -56,6 +56,12 @@ switch ($params[0]) {
     case 'deleteUser':
         $authController->deleteUser($params[1]);
         break;
+    case 'perfil':
+        $authController->verPerfil();
+        break;
+    case 'editarUser':
+        $authController->editarUser();
+        break;
 
     default:
         echo "404 Página no encontrada";

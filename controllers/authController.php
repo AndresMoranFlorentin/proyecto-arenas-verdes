@@ -131,9 +131,48 @@ class AuthController
         }
     }
 
+    public function verPerfil()
+    {
+        $logueado = $this->helper->checkUser();
+        $id = $this->helper->getId();
+        $rol = $this->helper->getRol();
+        
+        if ($logueado) {
+            $user = $this->model->getPerfilUser($id);
+            $this->view->renderPerfil($user, $logueado, $rol);
+        } else {
+            $error = "Debe estar logueado";
+            $this->view->renderError($error);
+        }
+    }
+
+    public function editarUser()
+    {
+        $logueado = $this->helper->checkUser();
+        $id = $this->helper->getId();
+        $rol = $this->helper->getRol();
+        if ($logueado) {
+            $nombre = $_POST['nombre'];
+            $apellido = $_POST['apellido'];
+            $email = $_POST['email'];
+            $localidad = $_POST['localidad'];
+            $phone = $_POST['phone'];
+            $dni = $_POST['dni'];
+            
+            $this->model->editarUser($nombre, $apellido, $email, $localidad, $dni, $phone, $id);
+            $user = $this->model->getPerfilUser($id);
+            $this->view->renderPerfil($user, $logueado, $rol);
+        } else {
+            $error = "Debe estar logueado";
+            $this->view->renderError($error);
+        }
+    }
+
     public function logout()
     {
         $this->helper->logOut();
         header('Location: ' . BASE_URL);
     }
+
+
 }
