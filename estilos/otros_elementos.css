@@ -92,7 +92,10 @@ COMO EL MAPA:**/
 .mensaje.exito {
   border: 2px solid green;
 }
-
+/* Estilos para el mensaje de cuidado, es decir que tiene un error menor */
+.mensaje.cuidado {
+  border: 2px solid #856404;
+}
 /* Estilos para el mensaje de error */
 .mensaje.error {
   border: 2px solid red;

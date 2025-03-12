@@ -4,10 +4,10 @@
   <?php if (!empty($reservaciones)): ?>
     <h4> El numero de parcelas encontradas en total bajo esas caracteristicas son: <?= htmlspecialchars(count($reservaciones)) ?></h3>
     <div class="sectores_parcelas">
-      <p class="motorhome">Sector Motorhome: <?= htmlspecialchars($parcelas_por_sector['motorhome']) ?></p>
-      <p class="familiar">Sector Familiar: <?= htmlspecialchars($parcelas_por_sector['familiar']) ?></p>
-      <p class="juvenil">Sector juvenil: <?= htmlspecialchars($parcelas_por_sector['juvenil']) ?></p>
-      <p class="campamento_familiar">Sector campamento familiar: <?= htmlspecialchars($parcelas_por_sector['campamento_familiar']) ?></p>
+      <p class="motorhome">Sector Motorhome: <?= htmlspecialchars($parcelas_por_sector['Motorhome']) ?></p>
+      <p class="familiar">Sector Familiar: <?= htmlspecialchars($parcelas_por_sector['Familiar']) ?></p>
+      <p class="juvenil">Sector juvenil: <?= htmlspecialchars($parcelas_por_sector['Joven']) ?></p>
+      <p class="campamento_familiar">Sector campamento familiar: <?= htmlspecialchars($parcelas_por_sector['Carpa Fam']) ?></p>
 </div>
 <br>
     <div id="calendar"></div>
@@ -23,9 +23,6 @@
           </p>
         </div>
         <div class="detalles">
-          <p>Precio:
-            <?= htmlspecialchars($parcela['precio']) ?>
-          </p>
           <p>Sector: <?= htmlspecialchars($parcela['sector'])
                       ?></p>
           <p>Uso del espacio: <?= htmlspecialchars($parcela['uso_espacio'])
@@ -54,10 +51,10 @@
 
     // Colores para los sectores
     const sectorColors = {
-      'campamento_familiar': 'rgb(68, 68, 150)',
-      'familiar': 'rgb(71, 149, 71)',
-      'juvenil': 'rgb(215, 162, 63)',
-      'motorhome': 'rgb(100, 57, 100)',
+      'Carpa Fam': 'rgb(68, 68, 150)',
+      'Familiar': 'rgb(71, 149, 71)',
+      'Joven': 'rgb(215, 162, 63)',
+      'Motorhome': 'rgb(100, 57, 100)',
     };
 
     // Función para generar el rango de fechas

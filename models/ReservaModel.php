@@ -1,6 +1,10 @@
 <?php
 require_once 'conectionModel.php';
-
+/**
+ * Este archivo realiza la conexion con la base de datos 
+ * y se encarga de realizar todas aquellas operaciones 
+ * relacionadas a las reservaciones
+ */
 class ReservaModel extends ConectionModel
 {
     protected $conexion;
@@ -10,11 +14,22 @@ class ReservaModel extends ConectionModel
         parent::__construct();
         $this->conexion = $this->getConection();
     }
-
+    /**
+     * Busca parcelas disponibles en un camping según los filtros proporcionados.
+     *
+     * @param string $inicio La fecha de inicio de la reserva en formato 'YYYY-MM-DD'.
+     * @param string $fecha_fin La fecha de fin de la reserva en formato 'YYYY-MM-DD'.
+     * @param int $personas El número de personas que ocuparán la parcela (actualmente no se usa en la consulta SQL).
+     * @param string $tipo_de_vehiculo El tipo de vehículo para la parcela (actualmente no se usa en la consulta SQL).
+     * @param bool $con_fogon Indica si la parcela debe tener fogón. Puede ser null si no se requiere filtro.
+     * @param bool $con_toma_electrica Indica si la parcela debe tener toma eléctrica. Puede ser null si no se requiere filtro.
+     * @param bool $sombra Indica si la parcela debe tener sombra. Puede ser null si no se requiere filtro.
+     * @param bool $agua Indica si la parcela debe tener suministro de agua. Puede ser null si no se requiere filtro.
+     * @return array Retorna un array asociativo con las parcelas disponibles que cumplen con los filtros especificados.
+     */
     public function buscarParcelasDisponibles($inicio, $fecha_fin, $personas, $tipo_de_vehiculo, $con_fogon, $con_toma_electrica, $sombra, $agua)
     {
-
-
+        // Construir la consulta SQL para buscar parcelas disponibles
         $sql = "SELECT p.* 
                 FROM parcela p
                 LEFT JOIN servicioreserva s ON p.id_servicio = s.id_servicio
@@ -74,7 +89,21 @@ class ReservaModel extends ConectionModel
 
         return $parcelas;
     }
-    public function getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua) {
+    /**
+     * Busca una parcela disponible en un camping según los filtros proporcionados.
+     *
+     * @param string $fecha_inicio La fecha de inicio de la reserva en formato 'YYYY-MM-DD'.
+     * @param string $fecha_fin La fecha de fin de la reserva en formato 'YYYY-MM-DD'.
+     * @param int $cantPersonas El número de personas que ocuparán la parcela.
+     * @param string $tipo_de_vehiculo El tipo de vehículo para la parcela (actualmente no se usa en la consulta SQL).
+     * @param bool $fogon Indica si la parcela debe tener fogón.
+     * @param bool $tomaElectrica Indica si la parcela debe tener toma eléctrica.
+     * @param bool $sombra Indica si la parcela debe tener sombra.
+     * @param bool $agua Indica si la parcela debe tener suministro de agua.
+     * @return int Retorna el ID de la parcela disponible que cumple con los filtros especificados, o null si no hay ninguna disponible.
+     */
+    public function getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua)
+    {
         $sql = "
         SELECT p.id 
         FROM parcela AS p
@@ -91,14 +120,27 @@ class ReservaModel extends ConectionModel
             )
         LIMIT 1";
 
-    // Ejecutar la consulta
-    $resultado = $this->conexion->prepare($sql);
-    $resultado->execute([$fogon, $tomaElectrica, $sombra, $agua, $cantPersonas, $fecha_inicio, $fecha_fin]);
-    $parcela = $resultado->fetchColumn();
+        // Ejecutar la consulta
+        $resultado = $this->conexion->prepare($sql);
+        $resultado->execute([$fogon, $tomaElectrica, $sombra, $agua, $cantPersonas, $fecha_inicio, $fecha_fin]);
+        $parcela = $resultado->fetchColumn();
 
-    return $parcela;
+        return $parcela;
     }
-    public function nuevaReserva($id_user, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador) {
+    /**
+     * Crea una nueva reserva en la base de datos.
+     *
+     * @param int $id_user El ID del usuario que realiza la reserva.
+     * @param string $fecha_inicio La fecha de inicio de la reserva en formato 'YYYY-MM-DD'.
+     * @param string $fecha_fin La fecha de fin de la reserva en formato 'YYYY-MM-DD'.
+     * @param string $tipo_de_vehiculo El tipo de vehículo asociado con la reserva.
+     * @param int $id_servicio El ID del servicio asociado con la reserva.
+     * @param string $estado El estado de la reserva ('confirmada', 'pendiente').
+     * @param string $identificador Un identificador único para la reserva.
+     * @return int El ID de la nueva reserva creada en la base de datos.
+     */
+    public function nuevaReserva($id_user, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador)
+    {
         $sql = 'INSERT INTO reserva (id_usuario, fecha_inicio, fecha_fin,tipo_vehiculo, id_servicio, estado, identificador) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)';
         $sentencia = $this->conexion->prepare($sql);
@@ -107,11 +149,13 @@ class ReservaModel extends ConectionModel
         $nuevo_id = $this->conexion->lastInsertId();
         return $nuevo_id;
     }
-    
-    //funcion donde traera todos los precios guardados en la bbdd
+
+    /**
+     * Funcion donde traera todos los precios guardados en la bbdd
+     * @param boolean (true | false) de si es residente o no de loberia
+     */
     public function getPrecios($residente)
     {
-
         $sql = "SELECT p.* FROM precios AS p WHERE p.residente_local = ? ";
         // Ejecutar la consulta
         $resultado = $this->conexion->prepare($sql);
@@ -120,8 +164,19 @@ class ReservaModel extends ConectionModel
 
         return $precios;
     }
-    public function findServicio($fogon, $tomaElectrica, $sombra, $agua) {
-    
+    /**
+     * Busca el ID de un servicio de reserva que cumpla con las características especificadas.
+     *
+     * @param bool $fogon Indica si el servicio debe incluir un fogón.
+     * @param bool $tomaElectrica Indica si el servicio debe incluir toma eléctrica.
+     * @param bool $sombra Indica si el servicio debe incluir sombra.
+     * @param bool $agua Indica si el servicio debe incluir suministro de agua.
+     * @return int|null Retorna el ID del servicio que cumple con los filtros especificados, o null si no se encuentra ningún servicio.
+     * @throws PDOException Si ocurre un error durante la consulta a la base de datos.
+     */
+    public function findServicio($fogon, $tomaElectrica, $sombra, $agua)
+    {
+
         $sql = "SELECT id_servicio 
                 FROM servicioreserva 
                 WHERE con_fogon = ? 
@@ -129,34 +184,95 @@ class ReservaModel extends ConectionModel
                 AND con_toma_electrica = ? 
                 AND agua = ? 
                 LIMIT 1;";
-    
+
         try {
             $servicio = $this->conexion->prepare($sql);
-            $servicio->execute([(int)$fogon, (int)$tomaElectrica, (int)$sombra, (int)$agua]); // Convertimos a enteros
+            $servicio->execute([$fogon, $sombra, $tomaElectrica, $agua]); // Convertimos a enteros
             $id_servicio = $servicio->fetchColumn();
-    
-            echo "<script>console.log('".addslashes("id del servicio original:::-> ".$id_servicio)."');</script>";
+            //echo "<script>console.log('".addslashes("id del servicio original:::-> ".$id_servicio)."');</script>";
+
             return $id_servicio;
         } catch (PDOException $e) {
             die("Error en la consulta: " . $e->getMessage());
         }
     }
-    
-    
-    //funcion que agrega un nuevo servicio adicional
-    public function insertServicioAdicional($fogon,$tomaElectrica,$sombra,$agua){
+    /**
+     * Funcion que agrega un nuevo servicio adicional
+     * @param bool $fogon Indica si la parcela debe tener fogón.
+     * @param bool $tomaElectrica Indica si la parcela debe tener toma eléctrica.
+     * @param bool $sombra Indica si la parcela debe tener sombra.
+     * @param bool $agua Indica si la parcela debe tener suministro de agua.
+     * 
+    */
+    public function insertServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
+    {
         $sql = 'INSERT INTO servicioreserva (con_fogon,con_toma_electrica,sombra,agua) VALUES (?, ?, ?, ?)';
         $sentencia = $this->conexion->prepare($sql);
-        $sentencia->execute([$fogon,$sombra,$tomaElectrica,$agua]);
+        $sentencia->execute([$fogon, $sombra, $tomaElectrica, $agua]);
     }
-    public function crearRelacionParcela($id_nueva_reserva,$id_parcela){
+    /**
+     * Funcion encargada de crear la relacion entre la parcela y una reserva generada
+     * un nuevo registro en la tabla  de parcela_reserva
+     * @param int $id_nueva_reserva id de la reserva
+     * @param int $id_parcela id de la parcela 
+     */
+    public function crearRelacionParcela($id_nueva_reserva, $id_parcela)
+    {
         $sql = "INSERT INTO reserva_parcela (id_reserva, id_parcela) VALUES (?, ?)";
         $sentencia = $this->conexion->prepare($sql);
-        $sentencia->execute([$id_nueva_reserva,$id_parcela]);
+        $sentencia->execute([$id_nueva_reserva, $id_parcela]);
     }
-    //DATE_SUB(CURDATE(), INTERVAL 1 DAY)
-    public function getNotificaciones(){
-        $sql="SELECT np.*
+    /**
+     * Funcion encargada de devolver aquella reserva que tenga el mismo id
+     * que recibe por parametro
+     * @param int $id id de la reservacio
+     * @return array devuelve aquella reserva que encontro
+     */
+    public function getReserva($id){
+        $sql="SELECT r.* FROM reserva AS r WHERE r.id = ?";
+        $conexion_bbdd=$this->conexion->prepare($sql);
+        $conexion_bbdd->execute([$id]);
+        $reserva=$conexion_bbdd->fetchAll(PDO::FETCH_ASSOC);
+        return $reserva;
+    }
+    /**
+     * Funcion encargada de eliminar la relacion entre la reserva y la parcela
+     * @param int $id_reserva el id de la reserva
+     * @return boolean retorna true si realizo la operacion o no
+     */
+    public function eliminarRelacionParcelaReserva($id_reserva){
+        $sql="DELETE FROM reserva_parcela AS rp WHERE rp.id_reserva = ?";
+        $conexion_bbdd=$this->conexion->prepare($sql);
+        $resultado=$conexion_bbdd->execute([$id_reserva]);
+        if ($resultado) {
+            return true; // La consulta se ejecutó correctamente
+        } else {
+            return false; // Hubo un error al ejecutar la consulta
+        }
+    }
+    /**
+     * Funcion encargada de eliminar la reserva hecha
+     * @param int $id_reserva el identificador unico de la reserva
+     * @return boolean retorna true si pudo eliminar la reserva con exito
+     */
+    public function eliminarReserva($id_reserva){
+        $sql="DELETE FROM reserva AS r WHERE r.id = ?";
+        $conexion_bbdd=$this->conexion->prepare($sql);
+        $resultado=$conexion_bbdd->execute([$id_reserva]);
+        if ($resultado) {
+            return true; // La consulta se ejecutó correctamente
+        } else {
+            return false; // Hubo un error al ejecutar la consulta
+        }
+    }
+    /**
+     * Funcion encargada de traer todas aquellas notificaciones
+     * de aviso de finalizacion del tiempo de estadia de la 
+     * reservacion
+     *  */    
+    public function getNotificaciones()
+    {
+        $sql = "SELECT np.*
          FROM notificaciones_pendientes np, users u
          WHERE enviado = 0 
          AND DATE(fecha_notificacion) = CURDATE()";
@@ -165,7 +281,15 @@ class ReservaModel extends ConectionModel
         $resultado = $servicio->fetchAll(PDO::FETCH_ASSOC);
         return $resultado;
     }
-    public function hayDisponibilidad($limite) {
+    /**
+     * Funcion que devuelve si hay disponibilidad de reservas
+     * si hay mas o menos que el limite pasado
+     * @param int $limite es el numero minimo de parcelas encontradas que debe haber para
+     * que se considere que ahy disponibilidad
+     * @return boolean devuelve true o false si hay disponibilidad
+     */
+    public function hayDisponibilidad($limite)
+    {
         $sql = "SELECT COUNT(p.id) AS total
                 FROM parcela AS p
                 LEFT JOIN reserva_parcela AS rp ON p.id = rp.id_parcela
@@ -175,13 +299,25 @@ class ReservaModel extends ConectionModel
         $resultado = $servicio->fetch(PDO::FETCH_ASSOC);
         return $resultado['total'] > $limite ? true : false;
     }
-    public function deleteNotificacion($id){
-        $sql="DELETE FROM notificaciones_pendientes WHERE id = ?";
+    /**
+     * Funcion encargada de borrar aquella notificacion que reciba como parametro su id
+     * @param int $id id de la notificacion que se debe borrar
+     */
+    public function deleteNotificacion($id)
+    {
+        $sql = "DELETE FROM notificaciones_pendientes WHERE id = ?";
         $servicio = $this->conexion->prepare($sql);
         $servicio->execute([$id]);
     }
-    public function estaReservada($id_p){
-        $sql="SELECT COUNT(rp.id_parcela)
+    /**
+     * Verifica si una parcela está reservada en el momento actual.
+     *
+     * @param int $id_p El ID de la parcela a verificar.
+     * @return bool Retorna true si la parcela está reservada actualmente, false en caso contrario.
+     */
+    public function estaReservada($id_p)
+    {
+        $sql = "SELECT COUNT(rp.id_parcela)
               FROM reserva_parcela AS rp, reserva AS r
               ON(rp.id_reserva=r.id)
               WHERE (rp.id_parcela=?)
@@ -191,8 +327,15 @@ class ReservaModel extends ConectionModel
         $resultado = $consulta->fetchColumn(PDO::FETCH_ASSOC);
         return $resultado > 0 ? true : false;
     }
-    public function marcarNoDisponibleParcela($id_p){
-        $sql="UPDATE parcela SET disponible='no disponible' WHERE id=?";
+    /**
+     * Marca una parcela como no disponible.
+     *
+     * @param int $id_p El ID de la parcela a marcar como no disponible.
+     * @return void
+     */
+    public function marcarNoDisponibleParcela($id_p)
+    {
+        $sql = "UPDATE parcela SET disponible='no disponible' WHERE id=?";
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([$id_p]);
     }
