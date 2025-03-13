@@ -1,0 +1,17 @@
+<?php include 'header.phtml'; ?>
+
+<h2>Restablecer contraseña</h2>
+<form action="resetPassword" method="post">
+    <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
+    <label for="password">Nueva contraseña:</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Restablecer contraseña</button>
+</form>
+
+
+
+<?php
+ include 'whatsapp.phtml'; 
+ include 'footer.phtml';
+
+?>

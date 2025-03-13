@@ -7,6 +7,7 @@ class AuthView {
     private $users;
     private $error;
     private $user;
+    private $token;
 
     public function showLogin($error = null) {
         $this->error = $error;
@@ -42,5 +43,10 @@ class AuthView {
         $this->user = $user;
         $this->rol = $rol;
         require './templates/perfil.phtml';
+    }
+
+    public function renderPassForm($token){
+        $this->token = $token;
+            require './templates/resetPass.phtml';
     }
 }

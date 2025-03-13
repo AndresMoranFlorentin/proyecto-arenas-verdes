@@ -37,7 +37,7 @@ class PassResetController {
             ]);
 
             // Enviar correo
-            $resetLink = "http://tu-dominio.com/password/reset/" . $token;
+            $resetLink = "http://localhost/PPS/proyecto-arenas-verdes/newPassword/" . $token;
             $subject = "Recupera tu contraseña";
             $message = "Haz clic en este enlace para restablecer tu contraseña: $resetLink";
             mail($email, $subject, $message); // Puedes usar una librería como PHPMailer
@@ -51,7 +51,7 @@ class PassResetController {
         $reset = $this->model->findByToken($token);
 
         if ($reset && strtotime($reset->expires) > time()) {
-            require 'views/reset_password_form.phtml'; // Cargar la vista del formulario
+            $this->view->renderPassForm($token); // Cargar la vista del formulario
         } else {
             echo "El enlace no es válido o ha expirado.";
         }

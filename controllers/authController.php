@@ -4,6 +4,7 @@ require_once './views/authView.php';
 require_once './views/reservaView.php';
 require_once './models/authModel.php';
 require_once './helpers/sessionHelper.php';
+require_once './models/passResetModel.php'; 
 
 class AuthController
 {
@@ -11,6 +12,7 @@ class AuthController
     private $model;
     private $helper;
     private $viewRes;
+    private $passModel;
 
     function __construct()
     {
@@ -18,6 +20,7 @@ class AuthController
         $this->view = new AuthView();
         $this->helper = new SessionHelper();
         $this->viewRes = new ReservaView();
+        $this->passModel = new PassResetModel();
     }
 
     public function showLogin()
@@ -81,6 +84,24 @@ class AuthController
             $logueado = $this->helper->checkUser();
             $rol = $this->helper->getRol();
             $this->view->renderHome($logueado, $rol);
+        }
+    }
+
+    public function resetPassword(){
+        $token = $_POST['token'];
+        $newPassword = $_POST['password'];
+        $reset = $this->passModel->findByToken($token);
+        if ($reset && strtotime($reset->expires) > time()) {
+            $user = $this->model->getPerfilUser($reset->user_id);
+            $user->password = password_hash($newPassword, PASSWORD_BCRYPT);
+            $user->save();
+            $this->passModel->deleteByToken($token);
+            $logueado = $this->helper->checkUser();
+            $rol = $this->helper->getRol();
+            $this->viewRes->showHome($logueado, $rol);
+        } else {
+            $error = "El enlace no es válido o ha expirado.";
+            $this->view->renderError($error);
         }
     }
 

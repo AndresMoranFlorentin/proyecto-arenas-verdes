@@ -2,6 +2,7 @@
 // router.php
 require_once './controllers/reservaController.php';
 require_once './controllers/authController.php';
+require_once './controllers/resetPassController.php';
 
 
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
@@ -13,6 +14,7 @@ if (!empty($_GET['action'])) {
 
 $reservaController = new ReservaController();
 $authController = new AuthController();
+$passController = new PassResetController();
 
 $params = explode('/', $action);
 
@@ -61,6 +63,15 @@ switch ($params[0]) {
         break;
     case 'editarUser':
         $authController->editarUser();
+        break;
+    case 'resetPassword':
+        $authController->resetPassword();
+        break;
+    case 'olvideContraseña':
+        $passController->sendRecoveryEmail();
+        break;
+    case 'newPassword':
+        $passController->showResetForm($params[1]);
         break;
 
     default:
