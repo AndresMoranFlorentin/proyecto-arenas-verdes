@@ -3,6 +3,11 @@
 require_once './views/authView.php';
 require_once './models/authModel.php';
 require_once './helpers/sessionHelper.php';
+require_once 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 
 class PassResetController {
 
@@ -38,12 +43,35 @@ class PassResetController {
 
             // Enviar correo
             $resetLink = "http://localhost/PPS/proyecto-arenas-verdes/newPassword/" . $token;
-            $subject = "Recupera tu contraseña";
-            $message = "Haz clic en este enlace para restablecer tu contraseña: $resetLink";
-            mail($email, $subject, $message); // Puedes usar una librería como PHPMailer
+            try {
+                // Crear una instancia de PHPMailer
+                $mail = new PHPMailer(true);
+    
+                // Configuración del servidor SMTP
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Servidor SMTP (puedes usar el de tu proveedor)
+                $mail->SMTPAuth = true;
+                $mail->Username = 'tuemail@gmail.com'; // Tu correo electrónico
+                $mail->Password = 'tucontraseña'; // Contraseña o App Password de tu cuenta
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Tipo de encriptación (TLS)
+                $mail->Port = 587; // Puerto (587 para TLS)
+    
+                // Configuración del correo
+                $mail->setFrom('tuemail@gmail.com', 'Base Campamento Arenas Verdes');
+                $mail->addAddress($email); // Dirección del destinatario
+    
+                $mail->Subject = 'Recupera tu contraseña';
+                $mail->Body = "Haz clic en este enlace para restablecer tu contraseña: $resetLink";
+                
+                // Enviar el correo
+                $mail->send();
+            } catch (Exception $e) {
+                echo "Error al enviar el correo: {$mail->ErrorInfo}";
+            }
+        } else {
+            echo "El correo no está registrado.";
         }
-
-        echo "Si el correo está registrado, recibirás un enlace de recuperación.";
+        
     }
 
     public function showResetForm($token) {
