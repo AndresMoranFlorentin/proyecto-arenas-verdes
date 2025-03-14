@@ -94,4 +94,12 @@ class AuthModel extends ConectionModel {
         $sentencia->execute([$nombre, $apellido, $email, $localidad, $phone, $dni, $id]);
     }
 
+    public function updatePassword($id, $newPassword) {
+        $query = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
+        $query->bindParam(':password', $newPassword, PDO::PARAM_STR);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+    }
+    
+
 }

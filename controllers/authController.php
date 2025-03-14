@@ -87,24 +87,6 @@ class AuthController
         }
     }
 
-    public function resetPassword(){
-        $token = $_POST['token'];
-        $newPassword = $_POST['password'];
-        $reset = $this->passModel->findByToken($token);
-        if ($reset && strtotime($reset->expires) > time()) {
-            $user = $this->model->getPerfilUser($reset->user_id);
-            $user->password = password_hash($newPassword, PASSWORD_BCRYPT);
-            $user->save();
-            $this->passModel->deleteByToken($token);
-            $logueado = $this->helper->checkUser();
-            $rol = $this->helper->getRol();
-            $this->viewRes->showHome($logueado, $rol);
-        } else {
-            $error = "El enlace no es válido o ha expirado.";
-            $this->view->renderError($error);
-        }
-    }
-
     public function getUsers()
     {
         $logueado = $this->helper->checkUser();

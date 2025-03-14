@@ -24,7 +24,8 @@ class PassResetModel extends ConectionModel {
         
         $query = $this->db->prepare("SELECT * FROM password_resets WHERE token = :token");
         $query->execute([':token' => $token]);
-        return $query->fetch(PDO::FETCH_ASSOC);
+        return $query->fetch(PDO::FETCH_OBJ); // Devuelve un objeto
+
     }
 
     function deleteByToken($token) {

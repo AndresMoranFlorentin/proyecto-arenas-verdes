@@ -65,7 +65,7 @@ switch ($params[0]) {
         $authController->editarUser();
         break;
     case 'resetPassword':
-        $authController->resetPassword();
+        $passController->resetPassword();
         break;
     case 'olvideContraseña':
         $passController->sendRecoveryEmail();

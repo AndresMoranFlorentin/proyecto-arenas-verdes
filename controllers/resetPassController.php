@@ -51,13 +51,13 @@ class PassResetController {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com'; // Servidor SMTP (puedes usar el de tu proveedor)
                 $mail->SMTPAuth = true;
-                $mail->Username = 'tuemail@gmail.com'; // Tu correo electrónico
-                $mail->Password = 'tucontraseña'; // Contraseña o App Password de tu cuenta
+                $mail->Username = 'llamenza@alumnos.exa.unicen.edu.ar'; // Tu correo electrónico
+                $mail->Password = 'lautaguardiola'; // Contraseña o App Password de tu cuenta
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Tipo de encriptación (TLS)
                 $mail->Port = 587; // Puerto (587 para TLS)
     
                 // Configuración del correo
-                $mail->setFrom('tuemail@gmail.com', 'Base Campamento Arenas Verdes');
+                $mail->setFrom('llamenza@alumnos.exa.unicen.edu.ar', 'Base Campamento Arenas Verdes');
                 $mail->addAddress($email); // Dirección del destinatario
     
                 $mail->Subject = 'Recupera tu contraseña';
@@ -65,6 +65,7 @@ class PassResetController {
                 
                 // Enviar el correo
                 $mail->send();
+                echo "Revise su correo electronico para reestablecer su contraseña.";
             } catch (Exception $e) {
                 echo "Error al enviar el correo: {$mail->ErrorInfo}";
             }
@@ -95,8 +96,8 @@ class PassResetController {
         if ($reset && strtotime($reset->expires) > time()) {
             // Actualizar contraseña del usuario
             $user = $this->userModel->getPerfilUser($reset->user_id);
-            $user->password = password_hash($newPassword, PASSWORD_BCRYPT);
-            $user->save();
+            $this->userModel->updatePassword($user->id, password_hash($newPassword, PASSWORD_BCRYPT));
+
 
             // Eliminar el token
             $this->model->deleteByToken($token);
