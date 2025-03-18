@@ -101,6 +101,12 @@ switch ($params[0]) {
         $controller->inhabilitarParcela();
         break;
 
+    case 'mostrar_reservas':
+        //Muestra todas las reservas de un usuario
+        $controller = new ParcelaController();
+        $controller -> mostrarReservas();
+        break;
+
     case 'cancelar_reserva':
         // Cancela una reserva
         $controller = new ReservaController();
