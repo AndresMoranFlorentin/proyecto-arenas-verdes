@@ -33,11 +33,13 @@ switch ($params[0]) {
      */
     case 'home':
         // Muestra la página principal
+        $reservaController=new ReservaController();
         $reservaController->showHome();
         break;
 
     case 'precios':
         // Muestra la página de precios
+        $reservaController=new ReservaController();
         $reservaController->renderPrecios();
         break;
 
