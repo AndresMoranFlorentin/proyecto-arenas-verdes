@@ -139,12 +139,12 @@ class ReservaModel extends ConectionModel
      * @param string $identificador Un identificador único para la reserva.
      * @return int El ID de la nueva reserva creada en la base de datos.
      */
-    public function nuevaReserva($id_user, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador)
+    public function nuevaReserva($id_user,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador)
     {
-        $sql = 'INSERT INTO reserva (id_usuario, fecha_inicio, fecha_fin,tipo_vehiculo, id_servicio, estado, identificador) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO reserva (id_usuario,menores_de_4,menores_de_12,mayores_de_12, fecha_inicio, fecha_fin,tipo_vehiculo, id_servicio, estado, identificador) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $sentencia = $this->conexion->prepare($sql);
-        $sentencia->execute([$id_user, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador]);
+        $sentencia->execute([$id_user,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador]);
         // Obtener el ID de la nueva reserva
         $nuevo_id = $this->conexion->lastInsertId();
         return $nuevo_id;
@@ -241,7 +241,8 @@ class ReservaModel extends ConectionModel
      * @return boolean retorna true si realizo la operacion o no
      */
     public function eliminarRelacionParcelaReserva($id_reserva){
-        $sql="DELETE FROM reserva_parcela AS rp WHERE rp.id_reserva = ?";
+        $sql="DELETE FROM reserva_parcela
+              WHERE id_reserva = ? ";
         $conexion_bbdd=$this->conexion->prepare($sql);
         $resultado=$conexion_bbdd->execute([$id_reserva]);
         if ($resultado) {
@@ -256,7 +257,7 @@ class ReservaModel extends ConectionModel
      * @return boolean retorna true si pudo eliminar la reserva con exito
      */
     public function eliminarReserva($id_reserva){
-        $sql="DELETE FROM reserva AS r WHERE r.id = ?";
+        $sql="DELETE FROM reserva WHERE id = ?";
         $conexion_bbdd=$this->conexion->prepare($sql);
         $resultado=$conexion_bbdd->execute([$id_reserva]);
         if ($resultado) {

@@ -107,7 +107,7 @@ class ServicioReserva
             $precio_final += $tabla_precios['costoxvehiculoxdia'] * $tiempo_estancia;
         }
         //se le agrega al monto el costo de la estadia por dia
-        $precio_final += ($tabla_precios['costo_estancia_xdia'] * $tiempo_estancia);
+        //$precio_final += ($tabla_precios['costo_estancia_xdia'] * $tiempo_estancia);
 
         return $precio_final;
     }
