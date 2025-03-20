@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-03-2025 a las 19:30:19
+-- Tiempo de generación: 20-03-2025 a las 18:21:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -94,6 +94,19 @@ INSERT INTO `parcela` (`id`, `descripcion`, `imagen`, `id_servicio`, `sector`, `
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `expires` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `precios`
 --
 
@@ -127,7 +140,7 @@ INSERT INTO `precios` (`id`, `edad_ninos4`, `edad_ninos12`, `edad_ninos20`, `cos
 
 CREATE TABLE `reserva` (
   `id` bigint(20) NOT NULL,
-  `id_usuario` bigint(20) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `menores_de_4` int(20) NOT NULL DEFAULT 0,
   `menores_de_12` int(20) NOT NULL DEFAULT 0,
   `mayores_de_12` int(20) NOT NULL DEFAULT 1,
@@ -138,17 +151,6 @@ CREATE TABLE `reserva` (
   `estado` enum('pendiente','confirmada','cancelada') DEFAULT 'pendiente',
   `identificador` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `reserva`
---
-
-INSERT INTO `reserva` (`id`, `id_usuario`, `menores_de_4`, `menores_de_12`, `mayores_de_12`, `fecha_inicio`, `fecha_fin`, `tipo_vehiculo`, `id_servicio`, `estado`, `identificador`) VALUES
-(182, 4, 1, 3, 2, '2025-03-15', '2025-03-22', 'auto', 1, 'pendiente', 'A55AF1DAEF8B217DA17E'),
-(183, 5, 1, 2, 2, '2025-03-21', '2025-03-26', 'auto', 5, 'pendiente', '49A620D31121A575CF46'),
-(184, 6, 2, 2, 2, '2025-03-27', '2025-04-05', 'auto', 1, 'pendiente', '14FEB42D0F621558B5DC'),
-(185, 6, 2, 2, 2, '2025-03-27', '2025-04-05', 'auto', 5, 'pendiente', '428591C70777D7ABF65A'),
-(186, 4, 2, 1, 2, '2025-03-27', '2025-04-05', 'sin_vehiculo', 3, 'pendiente', 'FD3AAAD2BF3822C7025B');
 
 --
 -- Disparadores `reserva`
@@ -193,17 +195,6 @@ CREATE TABLE `reserva_parcela` (
   `id_reserva` bigint(20) NOT NULL,
   `id_parcela` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `reserva_parcela`
---
-
-INSERT INTO `reserva_parcela` (`id_reserva`, `id_parcela`) VALUES
-(182, 1),
-(183, 3),
-(184, 1),
-(185, 3),
-(186, 2);
 
 -- --------------------------------------------------------
 
@@ -251,25 +242,26 @@ CREATE TABLE `tarifa` (
 --
 
 CREATE TABLE `users` (
-  `id_usuario` bigint(20) NOT NULL,
+  `id` int(11) NOT NULL,
   `rol` varchar(50) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `dni` bigint(20) NOT NULL,
-  `phone` bigint(20) DEFAULT NULL,
-  `email` varchar(150) NOT NULL,
-  `localidad` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
+  `nombre` varchar(200) NOT NULL,
+  `apellido` varchar(200) NOT NULL,
+  `dni` int(11) NOT NULL,
+  `phone` int(11) NOT NULL,
+  `email` varchar(500) NOT NULL,
+  `localidad` varchar(200) NOT NULL,
+  `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id_usuario`, `rol`, `nombre`, `apellido`, `dni`, `phone`, `email`, `localidad`, `password`) VALUES
-(4, 'user', 'Andres', 'Moran', 44830876, 2262644038, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
-(5, 'user', 'Mateo', 'Foglionni', 44888777, 2262677666, 'mateofoglionni@gmail.com', 'Necochea', 'Maqueta'),
-(6, 'user', 'Laula', 'sofirio', 22333444, 2262344356, 'sofini56j@gmail.com', 'Balcarce', 'Nona');
+INSERT INTO `users` (`id`, `rol`, `nombre`, `apellido`, `dni`, `phone`, `email`, `localidad`, `password`) VALUES
+(1, 'Admin', 'Administrador', 'BaseCamp', 0, 0, 'base@gmail.com', 'Loberia', '$2a$12$sQbpXaU3IruUNF.BU7iKj.YeXS.DEJuUB1Jqx3VzaHQglC4i6L/Ee'),
+(4, 'user', 'Andres', 'Moran', 44830876, 2147483647, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
+(5, 'user', 'Mateo', 'Foglionni', 44888777, 2147483647, 'mateofoglionni@gmail.com', 'Necochea', 'Maqueta'),
+(6, 'user', 'Laula', 'sofirio', 22333444, 2147483647, 'sofini56j@gmail.com', 'Balcarce', 'Nona');
 
 --
 -- Índices para tablas volcadas
@@ -287,6 +279,13 @@ ALTER TABLE `notificaciones_pendientes`
 ALTER TABLE `parcela`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_servicio` (`id_servicio`);
+
+--
+-- Indices de la tabla `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indices de la tabla `precios`
@@ -326,7 +325,7 @@ ALTER TABLE `tarifa`
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_usuario`),
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `dni` (`dni`),
   ADD UNIQUE KEY `email` (`email`);
 
@@ -345,6 +344,12 @@ ALTER TABLE `notificaciones_pendientes`
 --
 ALTER TABLE `parcela`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `password_resets`
+--
+ALTER TABLE `password_resets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `precios`
@@ -371,12 +376,6 @@ ALTER TABLE `tarifa`
   MODIFY `id_tarifa` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-  MODIFY `id_usuario` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- Restricciones para tablas volcadas
 --
 
@@ -387,11 +386,17 @@ ALTER TABLE `parcela`
   ADD CONSTRAINT `parcela_ibfk_1` FOREIGN KEY (`id_servicio`) REFERENCES `servicioreserva` (`id_servicio`);
 
 --
+-- Filtros para la tabla `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `reserva`
 --
 ALTER TABLE `reserva`
   ADD CONSTRAINT `FK_Reserva_ServicioReserva` FOREIGN KEY (`id_servicio`) REFERENCES `servicioreserva` (`id_servicio`),
-  ADD CONSTRAINT `reserva_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id_usuario`);
+  ADD CONSTRAINT `reserva_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `reserva_parcela`
