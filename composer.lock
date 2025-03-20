@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "0ec04ca3abb0eec992547b81001eb1da",
+    
     "packages": [
         {
             "name": "phpmailer/phpmailer",

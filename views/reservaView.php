@@ -16,18 +16,23 @@ class ReservaView
         require './templates/home.phtml';
     }
 
-    public function renderPrecios($logueado, $rol,$dispo){
+    public function renderPrecios($logueado, $rol, $dispo){
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/precios.phtml';
     }
-
-    public function pregFrec($dispo) {
+     
+    
+    public function pregFrec($rol, $logueado, $dispo) {
+        $this->logueado = $logueado;
+        $this->rol = $rol;
         require './templates/preguntas.phtml';
      }
      
-     public function reservacion($dispo) {
-         require './templates/reservacion.phtml';
+     public function reservacion($rol, $logueado, $dispo) {
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/reservacion.phtml';
      }
      public function mostrarParcelasDisponibles($reservaciones,$parcelas_por_sector,$fechaInicio,$fechaFin,$dispo){
         require './templates/reservacion.phtml';

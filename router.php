@@ -11,6 +11,7 @@
 require_once './controllers/ReservaController.php';
 require_once './controllers/authController.php';
 require_once './controllers/ParcelaController.php';
+require_once './controllers/resetPassController.php';
 
 // Define la URL base de la aplicación
 // Ejemplo: http://localhost:8080/miApp/
@@ -24,6 +25,11 @@ if (!empty($_GET['action'])) {
     $action = $_GET['action'];
 }
 // Divide la acción en parámetros utilizando '/' como delimitador
+
+$reservaController = new ReservaController();
+$authController = new AuthController();
+$passController = new PassResetController();
+
 $params = explode('/', $action);
 // Enrutamiento de las acciones
 switch ($params[0]) {
@@ -77,6 +83,8 @@ switch ($params[0]) {
         // Muestra las preguntas frecuentes
         $controller = new ReservaController();
         $controller->preguntasFrec();
+    case 'preguntas':
+        $reservaController->preguntasFrec();
         break;
 
     case 'reservacion':
@@ -103,11 +111,11 @@ switch ($params[0]) {
         $controller->inhabilitarParcela();
         break;
 
-    case 'mostrar_reservas':
+    //case 'mostrar_reservas':
         //Muestra todas las reservas de un usuario
-        $controller = new ParcelaController();
-        $controller -> mostrarReservas();
-        break; 
+        //$controller = new ParcelaController();
+        //$controller -> mostrarReservas();
+        //break; 
 
     case 'cancelar_reserva':
         // Cancela una reserva
@@ -118,6 +126,9 @@ switch ($params[0]) {
     /**
      * --- Funciones del AuthController ---
      */
+        $reservaController->reservacion();
+        break;
+        //*****AUTH CONTROLLER **************  
     case 'login':
         // Muestra el formulario de inicio de sesión
         $authController->showLogin();
@@ -138,6 +149,7 @@ switch ($params[0]) {
         $authController->register();
         break;
 
+        
     case 'logout':
         // Cierra la sesión del usuario
         $authController->logout();
@@ -156,6 +168,21 @@ switch ($params[0]) {
     case 'deleteUser':
         // Elimina un usuario (requiere un parámetro adicional)
         $authController->deleteUser($params[1]);
+        break;
+    case 'perfil':
+        $authController->verPerfil();
+        break;
+    case 'editarUser':
+        $authController->editarUser();
+        break;
+    case 'resetPassword':
+        $passController->resetPassword();
+        break;
+    case 'olvideContraseña':
+        $passController->sendRecoveryEmail();
+        break;
+    case 'newPassword':
+        $passController->showResetForm($params[1]);
         break;
 
     /**

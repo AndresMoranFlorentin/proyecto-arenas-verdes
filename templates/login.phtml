@@ -1,26 +1,28 @@
- <!--SECCION DEL FORMULARIO DE LOGIN-->
- <div class="overlay" id="overlay">
-      <div class="form-container">
-        <h2>Inicio sesión</h2>
-        <form id="loginForm" action="auth" method="post">
-         
-          <input
-            type="email"
-            
-            name="email"
-            placeholder="E-mail"
-            required
-          />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="password"
-            required
-          />
-          <button type="submit" id="loginBtn" >Iniciar sesión</button>
-          <a href="home" class="btn btn-secondary" role="button">Cancelar</a>
-        </form>
-        <p><?= htmlspecialchars($error) ?></p>
+<?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
+<!--SECCION DEL FORMULARIO DE LOGIN-->
+<main>
+  <div class="form-container">
+    <h2>Inicio sesión</h2>
+    <form id="loginForm" action="auth" method="post">
+
+      <input
+        type="email"
+        name="email"
+        placeholder="E-mail"
+        required />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="password"
+        required />
+      <div>
+      <button type="submit" id="loginBtn">Iniciar sesión</button>
+      <a href="home" class="btn btn-secondary" role="button">Cancelar</a>
       </div>
-    </div>
+      
+    </form>
+    <p><?= htmlspecialchars($error) ?></p>
+  </div>
+  <?php include 'footer.phtml'; ?>

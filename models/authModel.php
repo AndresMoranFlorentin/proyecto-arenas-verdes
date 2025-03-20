@@ -83,4 +83,30 @@ class AuthModel extends ConectionModel {
         $sentencia->execute([$id]);
     }
 
+    function getPerfilUser($id)
+    {
+        $sql = 'select * from users where id = ?';
+        $sentencia = $this->db->prepare($sql);
+        $sentencia->execute([$id]);
+        $user = $sentencia->fetch(PDO::FETCH_OBJ);
+        return $user;
+    }
+
+    function editarUser($nombre, $apellido, $email, $localidad, $phone, $dni, $id)
+    {
+        $sql = "UPDATE users SET nombre = ?, apellido = ?, email = ?, localidad = ?, phone = ?, dni = ?
+        WHERE id = ?";
+
+        $sentencia = $this->db->prepare($sql);
+        $sentencia->execute([$nombre, $apellido, $email, $localidad, $phone, $dni, $id]);
+    }
+
+    public function updatePassword($id, $newPassword) {
+        $query = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
+        $query->bindParam(':password', $newPassword, PDO::PARAM_STR);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+    }
+    
+
 }

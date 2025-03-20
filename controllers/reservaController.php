@@ -72,7 +72,7 @@ class ReservaController
         ) {
             //vuelve a enviarte a la pagina de reservacion faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->reservacion(self::$disponibilidad);
+            $this->view->reservacion($rol, $logueado, self::$disponibilidad);
         }
         //captura de los datos enviados por el formulario:
         /** @var date fecha de inicio de cuando se encontraria disponible la parcela */    
@@ -335,14 +335,18 @@ class ReservaController
      */
     public function preguntasFrec()
     {
-        $this->view->pregFrec(self::$disponibilidad);
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->pregFrec($rol, $logueado, self::$disponibilidad);
     }
       /**
      * Funcion que lleva a la seccion de la pagina que muestra las preguntas mas frecuentes
      */
     public function reservacion()
     {
-        $this->view->reservacion(self::$disponibilidad);
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->reservacion($rol, $logueado, self::$disponibilidad);
     }
     /**
      * Funcion para modificar la disponibilidad de reservas desde otro sitio
