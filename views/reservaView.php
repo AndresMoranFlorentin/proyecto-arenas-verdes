@@ -43,13 +43,9 @@ class ReservaView
     public function formSolicitarReservacion($id_parcela=null,$dispo){
         $this->mensaje="";
         $this->tipo_mensaje="";
-        require './templates/header.phtml';
         require './templates/formParaReservacion.phtml';
-        require './templates/footer.phtml';
     }
     public function mostrarFormularioReservacion($mensaje, $tipo_mensaje,$dispo) {
-        require './templates/header.phtml';
         require './templates/formParaReservacion.phtml';
-        require './templates/footer.phtml';
     }
 }

@@ -130,21 +130,23 @@ class ReservaModel extends ConectionModel
     /**
      * Crea una nueva reserva en la base de datos.
      *
-     * @param int $id_user El ID del usuario que realiza la reserva.
+     * @param int $id_usuario El ID del usuario que realiza la reserva.
      * @param string $fecha_inicio La fecha de inicio de la reserva en formato 'YYYY-MM-DD'.
      * @param string $fecha_fin La fecha de fin de la reserva en formato 'YYYY-MM-DD'.
      * @param string $tipo_de_vehiculo El tipo de vehículo asociado con la reserva.
      * @param int $id_servicio El ID del servicio asociado con la reserva.
      * @param string $estado El estado de la reserva ('confirmada', 'pendiente').
      * @param string $identificador Un identificador único para la reserva.
-     * @return int El ID de la nueva reserva creada en la base de datos.
+     *return El ID de la nueva reserva creada en la base de datos.
      */
-    public function nuevaReserva($id_user,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador)
+    public function nuevaReserva($id_usuario,$menores_de_4,$menores_de_12,$mayores_de_12, $fecha_inicio, $fecha_fin,$tipo_vehiculo, $id_servicio, $estado, $identificador)
     {
+        echo "<script>console.log('".addslashes("entro a la funcion, id user-> ".$id_usuario)."');</script>";
+
         $sql = 'INSERT INTO reserva (id_usuario,menores_de_4,menores_de_12,mayores_de_12, fecha_inicio, fecha_fin,tipo_vehiculo, id_servicio, estado, identificador) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $sentencia = $this->conexion->prepare($sql);
-        $sentencia->execute([$id_user,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, $estado, $identificador]);
+        $sentencia->execute([$id_usuario,$menores_de_4,$menores_de_12,$mayores_de_12, $fecha_inicio, $fecha_fin,$tipo_vehiculo, $id_servicio, $estado, $identificador]);
         // Obtener el ID de la nueva reserva
         $nuevo_id = $this->conexion->lastInsertId();
         return $nuevo_id;
@@ -275,7 +277,7 @@ class ReservaModel extends ConectionModel
     {
         $sql = "SELECT np.*
          FROM notificaciones_pendientes np, users u
-         WHERE enviado = 0 
+         WHERE np.enviado = 0 
          AND DATE(fecha_notificacion) = CURDATE()";
         $servicio = $this->conexion->prepare($sql);
         $servicio->execute();

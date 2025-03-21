@@ -29,7 +29,13 @@ class AuthModel extends ConectionModel {
         $user = $query->fetch(PDO::FETCH_OBJ);
         return $user;
     }
-
+    function userIsResident($id_user)
+    {
+        $query = $this->db->prepare('select * FROM users WHERE id = ?');
+        $query->execute([$id_user]);
+        $user = $query->fetch(PDO::FETCH_OBJ);
+        return $user;
+    }
     function register($nombre, $apellido, $email, $localidad, $dni, $phone, $rol, $password)
     {
         $sql = 'INSERT INTO users (nombre, apellido, email, localidad, dni, phone, rol, password) 

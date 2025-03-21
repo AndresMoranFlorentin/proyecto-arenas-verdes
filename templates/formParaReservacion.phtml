@@ -1,7 +1,8 @@
+<?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
 <br>
 <br>
-<section class="introduccion">
-    <?php if (!empty($mensaje)) : ?>
+<?php if (!empty($mensaje)) : ?>
     <div class="mensaje <?= $tipo_mensaje; ?>">
         <p><?= $mensaje; ?></p>
         <?php if ($tipo_mensaje == 'exito') : ?>
@@ -11,139 +12,149 @@
         <?php endif; ?>
     </div>
 <?php endif; ?>
-
-    <form action="generar_reservacion" class="form-inline formulario" id="buscadorForm" method="post">
-        <div class="form-group">
-            <div>
-                <label>Reservacion a Nombre de :</label>
-                <br>
-                <label>Nombre :</label>
-                <input type="text" name="nombre">
-                <label>Apellido :</label>
-                <input type="text" name="apellido">
-                <label>Dni :</label>
-                <input type="number" name="dni">
-            </div>
-            <div>
-            </div>
+<main>
+    <section class="introduccion">
+        <form action="generar_reservacion" class="form-inline formulario" id="buscadorForm" method="post">
             <div class="form-group">
-                <label>Tiempo de Estadia </label>
-                <div class="form-group">
-                    <label for="inicio">Fecha de inicio:</label>
-                    <input type="date" id="inicio" name="inicio" required />
+                <div>
+                    <label>Reservacion a Nombre de :</label>
+                    <br>
+                    <label>Nombre :</label>
+                    <input type="text" name="nombre">
+                    <label>Apellido :</label>
+                    <input type="text" name="apellido">
+                    <label>Dni :</label>
+                    <input type="number" name="dni">
+                </div>
+                <div>
                 </div>
                 <div class="form-group">
-                    <label for="fecha_fin">Fecha de fin:</label>
-                    <input type="date" id="fecha_fin" name="fecha_fin" required />
+                    <label>Tiempo de Estadia </label>
+                    <div class="form-group">
+                        <label for="inicio">Fecha de inicio:</label>
+                        <input type="date" id="inicio" name="inicio" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha_fin">Fecha de fin:</label>
+                        <input type="date" id="fecha_fin" name="fecha_fin" required />
+                    </div>
                 </div>
-            </div>
-            <div class="edad-selector">
-                <div> <label for="menores">Menores de 4 años:</label>
-                 <select id="menores" name="menores">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select> </div>
-                <div> <label for="cuatroDoce">De 4 a 12 años:</label>
-                    <select id="cuatroDoce" name="cuatroDoce">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-                <div> 
-                    <label for="doceMas">12 años y más:</label>
-                    <select id="doceMas" name="doceMas">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
-                    <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
-                        <option value="sin_vehiculo">Sin vehiculo</option>
-                        <option value="auto">Auto</option>
-                        <option value="camioneta">Camioneta</option>
-                        <option value="motorhome">Motorhome</option>
-                        <option value="casilla">Casilla</option>
+                <div class="edad-selector">
+                    <div> <label for="menores">Menores de 4 años:</label>
+                        <select id="menores" name="menores">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    <div> <label for="cuatroDoce">De 4 a 12 años:</label>
+                        <select id="cuatroDoce" name="cuatroDoce">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="doceMas">12 años y más:</label>
+                        <select id="doceMas" name="doceMas">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
+                        <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
+                            <option value="sin_vehiculo">Sin vehiculo</option>
+                            <option value="auto">Auto</option>
+                            <option value="camioneta">Camioneta</option>
+                            <option value="motorhome">Motorhome</option>
+                            <option value="casilla">Casilla</option>
 
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Características de la parcela:</label>
-                    <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox1" value="fogon">
-                        <label for="inlineCheckbox1">Con Fogón</label>
-                    </div>
-                    <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox2" value="tomaElectrica">
-                        <label for="inlineCheckbox2">Con Toma Eléctrica</label>
-                    </div>
-                    <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox3" value="sombra">
-                        <label for="inlineCheckbox3">Con Sombra</label>
-                    </div>
-                    <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox4" value="agua">
-                        <label for="inlineCheckbox4">Con Agua</label>
-                    </div>
-                    <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox5" value="con_ducha">
-                        <label for="inlineCheckbox4">Con Ducha</label>
-                    </div>
-                    <div>
-                        <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox6" value="con_sanitario">
-                        <label for="inlineCheckbox4">Con Sanitario</label>
+                        </select>
                     </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <button type="submit" class="btn btn-success">Reservar</button>
-            </div>
-    </form>
-    <br>
-</section>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Características de la parcela:</label>
+                        <div>
+                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox1" value="fogon">
+                            <label for="inlineCheckbox1">Con Fogón</label>
+                        </div>
+                        <div>
+                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox2" value="tomaElectrica">
+                            <label for="inlineCheckbox2">Con Toma Eléctrica</label>
+                        </div>
+                        <div>
+                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox3" value="sombra">
+                            <label for="inlineCheckbox3">Con Sombra</label>
+                        </div>
+                        <div>
+                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox4" value="agua">
+                            <label for="inlineCheckbox4">Con Agua</label>
+                        </div>
+                        <div>
+                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox5" value="con_ducha">
+                            <label for="inlineCheckbox4">Con Ducha</label>
+                        </div>
+                        <div>
+                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox6" value="con_sanitario">
+                            <label for="inlineCheckbox4">Con Sanitario</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-success">Reservar</button>
+                </div>
+        </form>
+        <br>
+    </section>
+</main>
+
 <script>
     function resetForm() {
-    document.getElementById('buscadorForm').reset();
-}
-
-function cerrarMensajeYResetear() {
-    resetForm();
-    cerrarMensaje();
-}
-
-function cerrarMensaje() {
-    var mensaje = document.querySelector('.mensaje');
-    if (mensaje) {
-        mensaje.style.display = 'none';
+        document.getElementById('buscadorForm').reset();
     }
 
-    var formulario = document.querySelector('.formulario');
-    if (formulario) {
-        formulario.style.display = 'block';
+    function cerrarMensajeYResetear() {
+        resetForm();
+        cerrarMensaje();
     }
-}
+
+    function cerrarMensaje() {
+        var mensaje = document.querySelector('.mensaje');
+        if (mensaje) {
+            mensaje.style.display = 'none';
+        }
+
+        var formulario = document.querySelector('.formulario');
+        if (formulario) {
+            formulario.style.display = 'block';
+        }
+    }
 </script>
+<?php
+
+include 'whatsapp.phtml';
+include 'footer.phtml';
+
+?>

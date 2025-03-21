@@ -143,18 +143,18 @@
       </div>
       <button type="submit" class="btn btn-primary">Calcular</button>
     </form>
-  </section>
-  <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
+      <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
   <div class="container">
     <?php if (!empty($precio_final)): ?>
       <div class="alert alert-success">
         <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
       </div>
+    <?php else: ?>
+      <br>
+    <?php endif; ?>
   </div>
-<?php else: ?>
-  <br>
-<?php endif; ?>
-
+  </section>
+</main>
 <?php
 include 'whatsapp.phtml';
 include 'footer.phtml';
