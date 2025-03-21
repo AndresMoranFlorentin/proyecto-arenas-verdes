@@ -52,7 +52,7 @@ class PassResetController {
                 $mail->Host = 'smtp.gmail.com'; // Servidor SMTP (puedes usar el de tu proveedor)
                 $mail->SMTPAuth = true;
                 $mail->Username = 'llamenza@alumnos.exa.unicen.edu.ar'; // Tu correo electrónico
-                $mail->Password = '---'; // Contraseña o App Password de tu cuenta
+                $mail->Password = 'lautaguardiola'; // Contraseña o App Password de tu cuenta
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Tipo de encriptación (TLS)
                 $mail->Port = 587; // Puerto (587 para TLS)
     
