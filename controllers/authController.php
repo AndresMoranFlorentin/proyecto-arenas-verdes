@@ -23,16 +23,6 @@ class AuthController
         $this->passModel = new PassResetModel();
     }
 
-    public function showLogin()
-    {
-        $this->view->showLogin();
-    }
-
-    public function showRegisForm()
-    {
-        $this->view->showRegisForm();
-    }
-
     public function auth()
     {
         $usuario = $_POST['email'];
@@ -40,7 +30,7 @@ class AuthController
 
         if (empty($usuario) || empty($password)) {
             $error = "Faltan completar datos";
-            $this->view->showLogin($error);
+            $this->view->renderError($error);
             return;
         }
 
@@ -52,7 +42,7 @@ class AuthController
             $this->viewRes->showHome($logueado, $rol,null);
         } else {
             $error = "Usuario o contraseña invalidos";
-            $this->view->showLogin($error);
+            $this->view->renderError($error);
         }
     }
 
@@ -61,7 +51,7 @@ class AuthController
         if (empty($_POST['nombre']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['apellido']) || empty($_POST['localidad']) || empty($_POST['phone']) || empty($_POST['dni'])) {
             $logueado = $this->helper->checkUser();
             $error = "Complete los campos";
-            $this->view->showRegisForm($error);
+            $this->view->renderError($error);
             die();
         }
         $nombre = $_POST['nombre'];
@@ -76,7 +66,7 @@ class AuthController
         if ($check[0] > 0) {
             $logueado = $this->helper->checkUser();
             $error = "El usuario ya existe";
-            $this->view->showRegisForm($error);
+            $this->view->renderError($error);
         } else {
             $userPassword = password_hash($clave, PASSWORD_BCRYPT);
             $this->model->register($nombre, $apellido, $email, $localidad, $dni, $phone, $rol, $userPassword);
