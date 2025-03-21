@@ -5,14 +5,14 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 300px;
+  width: 100%;
   text-align: center;
   z-index: 1001;
   /* Aseguramos que esté por encima del overlay */
 }
 
 .form-container input {
-  width: 275px;
+  width: 90%;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;

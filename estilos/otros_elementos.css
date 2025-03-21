@@ -109,18 +109,20 @@ COMO EL MAPA:**/
 }
 
 /* Ocultar el formulario cuando el mensaje está presente */
-body>*:not(.mensaje) {
-  opacity: 0.5;
-  /* Ajustar la opacidad para superponer */
-  pointer-events: none;
-  /* Desactivar la interactividad */
-}
+/*
+      body>*:not(.mensaje) {
+        opacity: 0.5;
+        /* Ajustar la opacidad para superponer 
+        pointer-events: none;
+        /* Desactivar la interactividad 
+      }
 
-/* Restablecer el formulario cuando el mensaje no está presente */
-body>*:not(.mensaje):not([class="mensaje-"]) {
-  opacity: 1;
-  pointer-events: auto;
-}
+      /* Restablecer el formulario cuando el mensaje no está presente 
+      body>*:not(.mensaje):not([class="mensaje-"]) {
+        opacity: 1;
+        pointer-events: auto;
+      }
+*/
 
 .formulario {
   display: none;
