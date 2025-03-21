@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-03-2025 a las 18:21:09
+-- Tiempo de generación: 21-03-2025 a las 20:33:08
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,21 +40,6 @@ CREATE TABLE `notificaciones_pendientes` (
 --
 
 INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fecha_notificacion`, `enviado`) VALUES
-(31, 'Andres Moran', 'moranandres729@gmail.com', '2025-01-23 00:00:00', 0),
-(32, 'Andres Moran', 'moranandres729@gmail.com', '2025-02-04 00:00:00', 0),
-(33, 'Andres Moran', 'moranandres729@gmail.com', '2025-02-06 00:00:00', 0),
-(34, 'Andres Moran', 'moranandres729@gmail.com', '2025-02-09 00:00:00', 0),
-(35, 'Andres Moran', 'moranandres729@gmail.com', '2025-02-11 00:00:00', 0),
-(36, 'Andres Moran', 'moranandres729@gmail.com', '2025-02-11 00:00:00', 0),
-(38, 'Andres Moran', 'moranandres729@gmail.com', '2025-02-10 00:00:00', 0),
-(39, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-09 00:00:00', 0),
-(40, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-10 00:00:00', 0),
-(41, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-10 00:00:00', 0),
-(42, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-10 00:00:00', 0),
-(43, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-08 00:00:00', 0),
-(44, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-10 00:00:00', 0),
-(45, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-14 00:00:00', 0),
-(46, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-14 00:00:00', 0),
 (47, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-14 00:00:00', 0),
 (48, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-17 00:00:00', 0),
 (49, 'Andres Moran', 'moranandres729@gmail.com', '2025-04-04 00:00:00', 0),
@@ -62,7 +47,9 @@ INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fech
 (51, 'Mateo Foglionni', 'mateofoglionni@gmail.com', '2025-03-25 00:00:00', 0),
 (52, 'Laula sofirio', 'sofini56j@gmail.com', '2025-04-04 00:00:00', 0),
 (53, 'Laula sofirio', 'sofini56j@gmail.com', '2025-04-04 00:00:00', 0),
-(54, 'Andres Moran', 'moranandres729@gmail.com', '2025-04-04 00:00:00', 0);
+(54, 'Andres Moran', 'moranandres729@gmail.com', '2025-04-04 00:00:00', 0),
+(56, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-27 00:00:00', 0),
+(57, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-28 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -153,6 +140,13 @@ CREATE TABLE `reserva` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `reserva`
+--
+
+INSERT INTO `reserva` (`id`, `id_usuario`, `menores_de_4`, `menores_de_12`, `mayores_de_12`, `fecha_inicio`, `fecha_fin`, `tipo_vehiculo`, `id_servicio`, `estado`, `identificador`) VALUES
+(199, 4, 1, 2, 3, '2025-03-21', '2025-03-29', 'auto', 1, 'pendiente', '63F8DF93A1B498E12107');
+
+--
 -- Disparadores `reserva`
 --
 DELIMITER $$
@@ -163,23 +157,27 @@ CREATE TRIGGER `notificacion_fin_estancia_reservacion` AFTER INSERT ON `reserva`
     DECLARE nombre_completo VARCHAR(255);
 
     -- Obtener el email del usuario 
-    SELECT u.email INTO email FROM users AS u WHERE u.id_usuario = NEW.id_usuario;
+    SELECT u.email INTO email 
+    FROM users AS u 
+    WHERE u.id = NEW.id_usuario;
 
     -- Obtener el nombre y el apellido del usuario 
-    SELECT u.nombre, u.apellido INTO nombre, apellido FROM users AS u WHERE u.id_usuario = NEW.id_usuario;
+    SELECT u.nombre, u.apellido INTO nombre, apellido 
+    FROM users AS u 
+    WHERE u.id = NEW.id_usuario;
 
-    -- Verificar que el email no sea NULL
+    -- Verificar que el email, nombre y apellido no sean NULL
     IF email IS NOT NULL AND nombre IS NOT NULL AND apellido IS NOT NULL THEN
-        -- Unir el nombre y el apellido 
+        -- Combinar nombre y apellido 
         SET nombre_completo = CONCAT(nombre, ' ', apellido);
 
         -- Insertar en la tabla de notificaciones pendientes
         INSERT INTO notificaciones_pendientes (nombre_completo, email, fecha_notificacion)
         VALUES (nombre_completo, email, DATE_SUB(NEW.fecha_fin, INTERVAL 1 DAY));
     ELSE
-        -- Manejar el caso cuando email es NULL
+        -- Lanzar un error si faltan datos
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'El email, nombre, o apellido no puede ser NULL';
+        SET MESSAGE_TEXT = 'El email, nombre o apellido no puede ser NULL';
     END IF;
 END
 $$
@@ -195,6 +193,13 @@ CREATE TABLE `reserva_parcela` (
   `id_reserva` bigint(20) NOT NULL,
   `id_parcela` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `reserva_parcela`
+--
+
+INSERT INTO `reserva_parcela` (`id_reserva`, `id_parcela`) VALUES
+(199, 1);
 
 -- --------------------------------------------------------
 
@@ -337,7 +342,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `notificaciones_pendientes`
 --
 ALTER TABLE `notificaciones_pendientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT de la tabla `parcela`
@@ -361,7 +366,7 @@ ALTER TABLE `precios`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
 
 --
 -- AUTO_INCREMENT de la tabla `servicioreserva`
@@ -374,6 +379,12 @@ ALTER TABLE `servicioreserva`
 --
 ALTER TABLE `tarifa`
   MODIFY `id_tarifa` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
