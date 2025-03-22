@@ -13,6 +13,8 @@ require_once '../models/ReservaModel.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+file_put_contents("cron_log.txt", date("Y-m-d H:i:s") . " - Script ejecutado\n", FILE_APPEND);
+
 //Datos del remitente (pueden cambiarse por otros):
 //nombre de la cuenta:
 $nombre_cuenta = 'mateo oscuro';
