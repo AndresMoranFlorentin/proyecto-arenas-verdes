@@ -1,9 +1,10 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 // Incluir PHPMailer
-require 'vendor/autoload.php'; // Si usas Composer
 /**
  * Este archivo contiene funciones que sus funcionalidades
  * pueden ser usadas por distintos archivos tales como
@@ -11,7 +12,7 @@ require 'vendor/autoload.php'; // Si usas Composer
  * -->enviar un pdf a un email
  */
 class ToolsHelper
-{   
+{
     /**
      * nombre de la cuenta de gmail remitente
      */
@@ -20,7 +21,7 @@ class ToolsHelper
      * email de la cuenta de gmail remitente:
      */
     private $email_remitente = 'mateooscuro43@gmail.com';
-    
+
     /**
      * //contraseña de la cuenta de gmail remitente:
      */
@@ -116,6 +117,39 @@ class ToolsHelper
             return true;
         } catch (Exception $e) {
             error_log("Error al enviar el correo: " . $mail->ErrorInfo);
+            return false;
+        }
+    }
+    /**Funcion que sirve para enviar un mensaje de mail para alertar a los usuarios de que
+     * la reservacion finalizara*/
+    function enviarEmail($nombre_destinatario, $email_destinatario)
+    {
+        $mail = new PHPMailer(true);
+
+        try {
+            // Configuración del servidor SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'mateooscuro43@gmail.com'; // el correo Gmail remitente
+            $mail->Password = 'xfmj dbla oxqk reaq '; // contraseña del remitente
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            // Destinatarios
+            $mail->setFrom('mateooscuro43@gmail.com', 'mateo oscuro');
+            $mail->addAddress($email_destinatario, $nombre_destinatario); // Añadir destinatario
+
+            // Contenido del correo
+            $mail->isHTML(true); // Habilitar HTML
+            $mail->Subject = 'Recordatorio de Reservación';
+            $mail->Body    = '<p>Hola,</p>' . $nombre_destinatario . '<p>Te recordamos que tu reservación termina <strong>mañana</strong>. ¡Gracias por elegirnos!</p>';
+            $mail->AltBody = 'Hola, Te recordamos que tu reservación termina mañana. ¡Gracias por elegirnos!';
+
+            // Enviar correo 
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
             return false;
         }
     }

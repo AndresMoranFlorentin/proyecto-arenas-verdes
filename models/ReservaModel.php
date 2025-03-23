@@ -274,9 +274,9 @@ class ReservaModel extends ConectionModel
      * reservacion
      *  */    
     public function getNotificaciones()
-    {
-        $sql = "SELECT np.*
-         FROM notificaciones_pendientes np, users u
+    {        
+        $sql = "SELECT DISTINCT np.*
+         FROM notificaciones_pendientes np
          WHERE np.enviado = 0 
          AND DATE(fecha_notificacion) = CURDATE()";
         $servicio = $this->conexion->prepare($sql);

@@ -1,9 +1,9 @@
 <?php
 
-require_once './helpers/ToolsHelper.php';
 require_once './servicios/ServicioReserva.php';
 require_once './views/reservaView.php';
 require_once './models/authModel.php';
+require_once './helpers/ToolsHelper.php';
 require_once './helpers/sessionHelper.php';
 require_once './models/ReservaModel.php';
 /**
