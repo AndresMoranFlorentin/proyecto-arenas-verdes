@@ -33,7 +33,7 @@ switch ($params[0]) {
      */
     case 'home':
         // Muestra la página principal
-        $reservaController=new ReservaController();
+        $reservaController=new reservaController();
         $reservaController->showHome();
         break;
 
@@ -107,7 +107,7 @@ switch ($params[0]) {
         //Muestra todas las reservas de un usuario
         $controller = new ParcelaController();
         $controller -> mostrarReservas();
-        break; 
+        break;
 
     case 'cancelar_reserva':
         // Cancela una reserva
