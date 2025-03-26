@@ -29,7 +29,7 @@ $toolHelper= new ToolsHelper();
 $notificaciones = $modelo->getNotificaciones();
 //en esta variable(que se deberia mantener fija)esta el numero
 //de parcelas que se considera baja disponibilidad
-$num_min_parce_dispo = 5;
+$num_min_parce_dispo = 1;
 
 //se recorren todas aquellas notificaciones encontradas en la fecha actual
 if (isset($notificaciones)) {
