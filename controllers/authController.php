@@ -63,8 +63,7 @@ class AuthController
         $clave = $_POST['password'];
         $rol = 'user';
         $check = $this->model->existEmail($email);
-        $check2 = $this->model->existDni($dni);
-        if (($check[0] > 0)||($check2[0] > 0)) {
+        if ($check[0] > 0) {
             $logueado = $this->helper->checkUser();
             $error = "El usuario ya existe";
             $this->view->renderError($error);

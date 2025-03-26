@@ -9,7 +9,8 @@
       <p class="juvenil">Sector juvenil: <?= htmlspecialchars($parcelas_por_sector['Joven']) ?></p>
       <p class="campamento_familiar">Sector campamento familiar: <?= htmlspecialchars($parcelas_por_sector['Carpa Fam']) ?></p>
 </div>
-
+<br>
+    <div id="calendar"></div>
     <br>
     <h4>Lista de parcelas encontradas con mas detalle:</h4>
     <br>
@@ -33,8 +34,6 @@
   <?php else: ?> <p class="alert alert-danger">No se encontraron parcelas disponibles.</p>
   <?php endif; ?>
 </div>
-<br>
-    <div id="calendar"></div>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
