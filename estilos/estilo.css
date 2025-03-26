@@ -1,3 +1,4 @@
+
 /* HEADER */
 header {
   display: flex;
@@ -58,6 +59,8 @@ nav ul li.active {
 nav .btn_login {
   margin-left: auto;
 }
+
+
 /**boton del login **/
 .btn_login {
   display: contents;
@@ -72,7 +75,7 @@ nav .btn_login {
 }
 /** SECCION CUERPO BODY**/
 body {
-  height: 120%;
+  height: 100%;
   margin: 0;
   padding: 0;
   display: flex;
@@ -90,8 +93,8 @@ main {
   background-color: #ffffff;
 }
 .introduccion {
-  padding-right: 15%;
-  padding-left: 15%;
+  padding-right: 10%;
+  padding-left: 10%;
   padding-bottom: 5%;
 }
 /** SECCION FOOTER**/
@@ -100,7 +103,7 @@ footer {
   width: 100vw; /* Usa la vista completa del ancho */
   max-width: 100%; /* Evita que se sobrepase */
   margin: 0;
-  padding: 20px;
+  padding: 20px 0;
   justify-content: center;
   flex-direction: column;
   align-items: center;

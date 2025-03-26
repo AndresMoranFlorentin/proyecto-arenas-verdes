@@ -1,12 +1,96 @@
 <?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
+
 <?php if ($dispo == false): ?>
   <?php include 'cartel_baja_disponibilidad.phtml'; ?>
 <?php else: ?>
-  <br>
 <?php endif; ?>
 <main>
   <section class="introduccion" id="content">
-    <br>
+    <h1>TARIFAS BASE DE CAMPAMENTO</h1>
+    <table class="table">
+      <tbody>
+        <thead>
+          <th></th>
+          <th>NO RESIDENTES</th>
+          <th>RESIDENTES DE LOBERIA</th>
+          <th></th>
+        </thead>
+        <tr>
+          <td>Menores 4 años</td>
+          <td>sin costo</td>
+          <td>sin costo</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>de 4 a 12 años</td>
+          <td>$ 4700</td>
+          <td>$ 500</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>Mayores 12 años</td>
+          <td>$ 8500</td>
+          <td>$ 900</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>Vehiculo</td>
+          <td>$ 1200</td>
+          <td>$ 300</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>Estadia diaria Casillas</td>
+          <td>$ 3000</td>
+          <td>$ 1300</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>Estadia Mensual Casillas</td>
+          <td>$ 60000</td>
+          <td>$ 30000</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>Pasar el día</td>
+          <td>$ 1300</td>
+          <td>$ 400</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>Uso de duchas</td>
+          <td>$ 900</td>
+          <td>$ 250</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+        <tr>
+          <td>Uso de sanitarios</td>
+          <td>$ 200</td>
+          <td>$ 100</td>
+          <?php if(($this->logueado)&&($this->rol == "admin")): ?>
+          <td><button class="btn btn-primary">Editar</button></td>
+          <?php endif; ?>
+        </tr>
+      </tbody>
+    </table>
+    <p>*Las tarifas son por día y por persona</p>
     <h2>Simulador de precios: </h2>
     <form class="form-inline" action="simular_precios" method="post">
       <div class="form-group">
@@ -57,24 +141,21 @@
       </div>
       <div>
       </div>
-      <button type="submit" class="btn btn-primary">calcular</button>
+      <button type="submit" class="btn btn-primary">Calcular</button>
     </form>
-  </section>
-  <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
+      <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
   <div class="container">
     <?php if (!empty($precio_final)): ?>
       <div class="alert alert-success">
         <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
       </div>
+    <?php else: ?>
+      <br>
+    <?php endif; ?>
   </div>
-<?php else: ?>
-  <br>
-<?php endif; ?>
-
+  </section>
 </main>
 <?php
-
 include 'whatsapp.phtml';
 include 'footer.phtml';
-
 ?>

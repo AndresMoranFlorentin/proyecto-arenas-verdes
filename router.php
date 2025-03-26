@@ -11,6 +11,7 @@
 require_once './controllers/ReservaController.php';
 require_once './controllers/authController.php';
 require_once './controllers/ParcelaController.php';
+require_once './controllers/resetPassController.php';
 
 // Define la URL base de la aplicación
 // Ejemplo: http://localhost:8080/miApp/
@@ -24,6 +25,12 @@ if (!empty($_GET['action'])) {
     $action = $_GET['action'];
 }
 // Divide la acción en parámetros utilizando '/' como delimitador
+
+$reservaController = new ReservaController();
+$authController = new AuthController();
+$passController = new PassResetController();
+$parcelaController = new ParcelaController();
+
 $params = explode('/', $action);
 // Enrutamiento de las acciones
 switch ($params[0]) {
@@ -33,111 +40,85 @@ switch ($params[0]) {
      */
     case 'home':
         // Muestra la página principal
-        $reservaController=new reservaController();
         $reservaController->showHome();
         break;
 
     case 'precios':
-        // Muestra la página de precios
-        $reservaController=new ReservaController();
+        // Muestra la página de precios;
         $reservaController->renderPrecios();
         break;
 
     case 'simular_precios':
         // Simula el precio de una reserva
-        $controller = new ReservaController();
-        $controller->simularPrecioReserva();
+        $reservaController->simularPrecioReserva();
         break;
 
     case 'buscarParcelasDispo':
         // Busca las parcelas disponibles para reservar
-        $controller = new ReservaController();
-        $controller->buscarParcelasDispo();
+        $reservaController->buscarParcelasDispo();
         break;
-
     case 'pedir_reservacion':
         // Solicita una reservación
-        $controller = new ReservaController();
-        $controller->pedirReservacion();
+        $reservaController->pedirReservacion();
         break;
 
     case 'generar_reservacion':
         // Genera una nueva reservación
-        $controller = new ReservaController();
-        $controller->generarReservacion();
+        $reservaController->generarReservacion();
         break;
-
     case 'parcelas':
-        // Muestra las parcelas disponibles
-        $controller = new ParcelaController();
-        $controller->sectoresParcelas();
+        // Muestra las parcelas disponibles       
+        $parcelaController->sectoresParcelas();
         break;
-
     case 'preguntas':
         // Muestra las preguntas frecuentes
-        $controller = new ReservaController();
-        $controller->preguntasFrec();
+        $reservaController->preguntasFrec();
         break;
-
     case 'reservacion':
         // Muestra los detalles de una reservación
-        $controller = new ReservaController();
-        $controller->reservacion();
+        $reservaController->reservacion();
         break;
-
     case 'crt_parcelas':
         // Muestra la sección de parcelas
-        $controller = new ParcelaController();
-        $controller->seccionParcelas();
+        $parcelaController->seccionParcelas();
         break;
-
     case 'habilitar':
         // Habilita una parcela
-        $controller = new ParcelaController();
-        $controller->habilitarParcela();
+        $parcelaController->habilitarParcela();
         break;
-
     case 'inhabilitar':
         // Inhabilita una parcela
-        $controller = new ParcelaController();
-        $controller->inhabilitarParcela();
+        $parcelaController->inhabilitarParcela();
         break;
 
-    case 'mostrar_reservas':
+    //case 'mostrar_reservas':
         //Muestra todas las reservas de un usuario
-        $controller = new ParcelaController();
-        $controller -> mostrarReservas();
-        break;
+        //$controller = new ParcelaController();
+        //$controller -> mostrarReservas();
+        //break; 
 
     case 'cancelar_reserva':
         // Cancela una reserva
-        $controller = new ReservaController();
-        $controller->cancelarReserva();
+        $reservaController->cancelarReserva();
+        break;
+    case 'reservacion':
+        $reservaController->reservacion();
         break;
 
     /**
      * --- Funciones del AuthController ---
      */
-    case 'login':
-        // Muestra el formulario de inicio de sesión
-        $authController->showLogin();
-        break;
-
+        
+        //*****AUTH CONTROLLER **************  
+    
     case 'auth':
         // Procesa la autenticación del usuario
         $authController->auth();
         break;
-
-    case 'newUser':
-        // Muestra el formulario de registro de usuario
-        $authController->showRegisForm();
-        break;
-
     case 'register':
         // Registra un nuevo usuario
         $authController->register();
-        break;
-
+        break;  
     case 'logout':
         // Cierra la sesión del usuario
         $authController->logout();
@@ -152,10 +133,24 @@ switch ($params[0]) {
         // Edita el rol de un usuario (requiere un parámetro adicional)
         $authController->editRol($params[1]);
         break;
-
     case 'deleteUser':
         // Elimina un usuario (requiere un parámetro adicional)
         $authController->deleteUser($params[1]);
+        break;
+    case 'perfil':
+        $authController->verPerfil();
+        break;
+    case 'editarUser':
+        $authController->editarUser();
+        break;
+    case 'resetPassword':
+        $passController->resetPassword();
+        break;
+    case 'olvideContraseña':
+        $passController->sendRecoveryEmail();
+        break;
+    case 'newPassword':
+        $passController->showResetForm($params[1]);
         break;
 
     /**

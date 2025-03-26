@@ -72,7 +72,7 @@ class ReservaController
         ) {
             //vuelve a enviarte a la pagina de reservacion faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->reservacion(self::$disponibilidad);
+            $this->view->reservacion($rol, $logueado, self::$disponibilidad);
         }
         //captura de los datos enviados por el formulario:
         /** @var date fecha de inicio de cuando se encontraria disponible la parcela */    
@@ -197,13 +197,19 @@ class ReservaController
         $con_sanitario = in_array('con_sanitario', $caracteristicas) ? 1 : 0;
         //suma de la cantidad de personas en total
         $cantPersonas = $menores + $cuatroDoce + $doceMas;
+
         //funcion que calcula los dias de estancia de la reservacion
         $dias_de_estancia = $this->servicioR->retornarDiasDeDiferencia($fecha_inicio, $fecha_fin);
         //de nuevo se calcula el precio del costo de la reservacion
-        $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha, $con_sanitario, $tipo_de_vehiculo, $_POST['personas']);
+        $datos_user = $this->modelUser->findUserByDni($dni);
+        $id_user=$datos_user->id;
+        $residente=$this->modelUser->userIsResident($id_user)? 1 : 0;
+        echo "<script>console.log('".addslashes("llego bien-> ".$cantPersonas."|".$dni."|es residente: ".$residente.",user: ".$id_user)."');</script>";
+
+        $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha, $con_sanitario, $tipo_de_vehiculo, $residente);
 
         // Validar si el usuario existe mediante su dni
-        $id_user = $this->modelUser->findUserByDni($dni);
+        echo "<script>console.log('".addslashes("id user-> ".$id_user)."');</script>";
 
         if (empty($id_user)) {
             $mensaje = "Debe registrarse primero para poder hacer una reservación.";
@@ -212,7 +218,7 @@ class ReservaController
             return;
         }
         //se obtiene el email del usuario
-        $email_user=$id_user->email;
+        $email_user=$datos_user->email;
         // Buscar la parcela disponible
         $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
         // busca si el servicio es encontrado en la bbdd
@@ -226,7 +232,10 @@ class ReservaController
             // se genera el identificador de la reservacion
             $identificador = $this->toolsHelper->generarIdentificador();
             // en esta funcion se genera la reserva y a su vez se devuelve el id de la reserva que se genero
-            $id_nueva_reserva = $this->model->nuevaReserva($id_user->id_usuario,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
+            echo "<script>console.log('".addslashes("identificador-> ".$identificador)."');</script>";
+            echo "<script>console.log('".addslashes("id user-> ".$id_user)."');</script>";
+
+            $id_nueva_reserva = $this->model->nuevaReserva($id_user,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
             // se realiza la conexion entre la nueva reserva y la parcela que sera ocupada
             $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
             // ya la reservacion fue creada, en el siguiente paso se genera un comprobante pdf
@@ -335,14 +344,18 @@ class ReservaController
      */
     public function preguntasFrec()
     {
-        $this->view->pregFrec(self::$disponibilidad);
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->pregFrec($rol, $logueado, self::$disponibilidad);
     }
       /**
      * Funcion que lleva a la seccion de la pagina que muestra las preguntas mas frecuentes
      */
     public function reservacion()
     {
-        $this->view->reservacion(self::$disponibilidad);
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+        $this->view->reservacion($rol, $logueado, self::$disponibilidad);
     }
     /**
      * Funcion para modificar la disponibilidad de reservas desde otro sitio

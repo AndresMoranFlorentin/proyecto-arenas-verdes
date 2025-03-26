@@ -29,7 +29,13 @@ class AuthModel extends ConectionModel {
         $user = $query->fetch(PDO::FETCH_OBJ);
         return $user;
     }
-
+    function userIsResident($id_user)
+    {
+        $query = $this->db->prepare('select * FROM users WHERE id = ?');
+        $query->execute([$id_user]);
+        $user = $query->fetch(PDO::FETCH_OBJ);
+        return $user;
+    }
     function register($nombre, $apellido, $email, $localidad, $dni, $phone, $rol, $password)
     {
         $sql = 'INSERT INTO users (nombre, apellido, email, localidad, dni, phone, rol, password) 
@@ -48,9 +54,20 @@ class AuthModel extends ConectionModel {
         return $cuenta;
     }
 
+    function existDni($dni)
+    {
+        $query = $this->db->prepare('select COUNT(*) FROM users WHERE dni = ?');
+        $query->execute([$dni]);
+        $cuenta = $query->fetch(PDO::FETCH_NUM);
+
+        return $cuenta;
+    }
+
     function checkRol($id)
     {
-        $sql = 'select rol from users where id_usuario=?';
+        //sentencia anterior 
+        //$sql = 'select rol from users where id_usuario=?';
+        $sql = 'select rol from users where id = ?';
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([$id]);
         $rol = $sentencia->fetch(PDO::FETCH_OBJ);
@@ -77,10 +94,37 @@ class AuthModel extends ConectionModel {
 
     function deleteUser($id)
     {
-        $sql = "DELETE FROM users WHERE id_usuario = ?";
-
+        //sentencia anterior
+        //$sql = "DELETE FROM users WHERE id_usuario = ?";
+        $sql = "DELETE FROM users WHERE id = ?";
         $sentencia = $this->db->prepare($sql);
         $sentencia->execute([$id]);
     }
+
+    function getPerfilUser($id)
+    {
+        $sql = 'select * from users where id = ?';
+        $sentencia = $this->db->prepare($sql);
+        $sentencia->execute([$id]);
+        $user = $sentencia->fetch(PDO::FETCH_OBJ);
+        return $user;
+    }
+
+    function editarUser($nombre, $apellido, $email, $localidad, $phone, $dni, $id)
+    {
+        $sql = "UPDATE users SET nombre = ?, apellido = ?, email = ?, localidad = ?, phone = ?, dni = ?
+        WHERE id = ?";
+
+        $sentencia = $this->db->prepare($sql);
+        $sentencia->execute([$nombre, $apellido, $email, $localidad, $phone, $dni, $id]);
+    }
+
+    public function updatePassword($id, $newPassword) {
+        $query = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
+        $query->bindParam(':password', $newPassword, PDO::PARAM_STR);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+    }
+    
 
 }

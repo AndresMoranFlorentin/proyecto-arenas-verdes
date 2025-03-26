@@ -1,4 +1,6 @@
 <?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
+
 <?php if ($dispo == false): ?>
   <?php include 'cartel_baja_disponibilidad.phtml'; ?>
 <?php else: ?>
@@ -16,6 +18,7 @@
                     <span>Parcela <?php echo $parcela['id']; ?></span>
                     <span style="border-left:solid 1px black; margin:10px;"> <?php echo $parcela['disponible']; ?></span>
 
+                    <?php if(($this->logueado)&&($this->rol == "admin")): ?>
                     <div class="botones">
                         <?php if ($parcela['disponible'] == 'disponible'): ?>
                             <button class="boton inhabilitar">
@@ -27,6 +30,7 @@
                             </button>
                         <?php endif; ?>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endforeach; ?>

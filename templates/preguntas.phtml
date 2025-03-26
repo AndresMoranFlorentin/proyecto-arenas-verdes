@@ -1,11 +1,14 @@
 <?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
 <?php if ($dispo == false): ?>
   <?php include 'cartel_baja_disponibilidad.phtml'; ?>
 <?php else: ?>
   <br>
 <?php endif; ?>
-<main class="introduccion" id="content">
 
+
+
+<main class="introduccion" id="content">
   <div class="acordion_preg">
     <h1 id="titulo_faq">Preguntas Frecuentes</h1>
     <div class="content_box">
@@ -42,7 +45,6 @@
                   <p>
                     <span style="font-size: 12px">RESIDENTES&nbsp;</span>
                   </p>
-
                   <p><span style="font-size: 12px">DE LOBERIA</span></p>
                 </td>
               </tr>
@@ -191,7 +193,6 @@
         </p>
       </div>
     </div>
-
     <div class="content_box">
       <div class="pregunta">
         ✍️ ¿Hay que reservar previamente una parcela?
@@ -203,7 +204,6 @@
         </p>
       </div>
     </div>
-
     <div class="content_box">
       <div class="pregunta">✍️ ¿Las parcelas tienen fogón y parrilla?</div>
       <div class="contenido">
@@ -214,7 +214,6 @@
         </p>
       </div>
     </div>
-
     <div class="content_box">
       <div class="pregunta">
         ✍️ ¿Se puede hacer fuego en otro lado si los fogones están ocupados?
@@ -223,7 +222,6 @@
         <p>Se debe consultar con los encargados del lugar.</p>
       </div>
     </div>
-
     <div class="content_box">
       <div class="pregunta">
         ✍️ ¿Durante el alojamiento puedo recibir visitas?
@@ -235,7 +233,6 @@
         </p>
       </div>
     </div>
-
     <div class="content_box">
       <div class="pregunta">✍️ Sobre Vestuarios y Duchas</div>
       <div class="contenido">
@@ -254,7 +251,6 @@
         </p>
       </div>
     </div>
-
     <div class="content_box">
       <div class="pregunta">✍️ Sobre Horarios de Descanso</div>
       <div class="contenido">
@@ -269,7 +265,6 @@
         </p>
       </div>
     </div>
-
     <div class="content_box">
       <div class="pregunta">✍️ Sobre Mascotas</div>
       <div class="contenido">
@@ -281,11 +276,9 @@
       </div>
     </div>
   </div>
-  <script src="js/formulario.js"></script>
+  
 </main>
 <?php
-
 include 'whatsapp.phtml';
 include 'footer.phtml';
-
 ?>
