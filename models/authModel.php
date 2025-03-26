@@ -54,15 +54,6 @@ class AuthModel extends ConectionModel {
         return $cuenta;
     }
 
-    function existDni($dni)
-    {
-        $query = $this->db->prepare('select COUNT(*) FROM users WHERE dni = ?');
-        $query->execute([$dni]);
-        $cuenta = $query->fetch(PDO::FETCH_NUM);
-
-        return $cuenta;
-    }
-
     function checkRol($id)
     {
         //sentencia anterior 
