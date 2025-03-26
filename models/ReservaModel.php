@@ -292,7 +292,7 @@ class ReservaModel extends ConectionModel
      * @return boolean devuelve true o false si hay disponibilidad
      */
     public function hayDisponibilidad($limite)
-    {
+    { 
         $sql = "SELECT COUNT(p.id) AS total
                 FROM parcela AS p
                 LEFT JOIN reserva_parcela AS rp ON p.id = rp.id_parcela

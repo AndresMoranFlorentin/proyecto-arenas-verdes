@@ -7,12 +7,9 @@
  * pagina(mediante un cartel flotante) en caso
  * de baja disponibilidad de reservas al usuario
  */
-
-
- require_once __DIR__ . '/../../models/ReservaModel.php';
- require_once __DIR__ . '/../../helpers/ToolsHelper.php';
- //require_once '/./controllers/reservaController.php';
-
+require_once __DIR__ . '/../../models/ReservaModel.php';
+require_once __DIR__ . '/../../helpers/ToolsHelper.php';
+require_once __DIR__ . '/../../controllers/BaseController.php'; // Incluir el controlador
 
 //Datos del remitente (pueden cambiarse por otros):
 //nombre de la cuenta:
@@ -21,6 +18,8 @@ $nombre_cuenta = 'mateo oscuro';
 $email_remitente = 'mateooscuro43@gmail.com';
 //contraseña:
 $password_remitente = 'xfmj dbla oxqk reaq ';
+
+
 //instancia de la clase modelo
 $modelo = new ReservaModel();
 //instancia de la clase tool helper quien tiene las funciones de email
@@ -30,13 +29,7 @@ $toolHelper= new ToolsHelper();
 $notificaciones = $modelo->getNotificaciones();
 //en esta variable(que se deberia mantener fija)esta el numero
 //de parcelas que se considera baja disponibilidad
-$num_min_parce_dispo = 4;
-//se busca enm la bbdd si hay disponibilidad de parcelas o no
-//$disponibilidad = $modelo->hayDisponibilidad($num_min_parce_dispo);
-
-//$dispo =mostrarCartel($disponibilidad);
-
-
+$num_min_parce_dispo = 5;
 
 //se recorren todas aquellas notificaciones encontradas en la fecha actual
 if (isset($notificaciones)) {
@@ -53,16 +46,20 @@ if (isset($notificaciones)) {
     }
 }
 //en esta seccion se consulta a la base de datos la disponibilidad de parcelas
+//se busca enm la bbdd si hay disponibilidad de parcelas o no
+$disponibilidad = $modelo->hayDisponibilidad($num_min_parce_dispo);
 
-/*function mostrarCartel($disponibilidad)
-{
-    if ($disponibilidad) { //en caso de que haya disponibilidad
-        //lo sigue mostrando en true
-        ReservaController::setDisponibilidad(true);
-    } else { //en caso de que haya baja disponibilidad
-        //se seteara con false la variable de disponibilidad
-        //para que se muestre el cartel
-        ReservaController::setDisponibilidad(false);
+if ($disponibilidad) { //en caso de que haya disponibilidad
+    //lo sigue mostrando en true
+    BaseController::setDisponibilidad(true);
+    echo "disponibilidad->|true |";
+    echo "ahora esta en -> ",BaseController::getDisponibilidad();
     }
-}*/
+else { //en caso de que haya baja disponibilidad
+     //se seteara con false la variable de disponibilidad
+    //para que se muestre el cartel
+    BaseController::setDisponibilidad(false);
+    echo "disponibilidad->|false |";
+    echo "ahora esta en -> ",BaseController::getDisponibilidad();
+    }
 

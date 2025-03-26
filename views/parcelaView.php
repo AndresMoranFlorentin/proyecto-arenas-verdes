@@ -5,7 +5,7 @@ class parcelaView{
     private $parcelas;
     private $dispo;
     
-    public function mostrarControlParcelas($parcelas=null,$dispo, $logueado, $rol) {
+    public function mostrarControlParcelas($parcelas=null, $logueado, $rol,$dispo) {
         $this->logueado = $logueado;
         $this->rol = $rol;
         $this->parcelas = $parcelas;
@@ -13,7 +13,7 @@ class parcelaView{
 
         require './templates/control_parcelas.phtml';
     }
-    public function parcelas($dispo=true, $logueado, $rol) {
+    public function parcelas($logueado, $rol,$dispo=true) {
         $this->dispo = $dispo;
         $this->logueado = $logueado;
         $this->rol = $rol;

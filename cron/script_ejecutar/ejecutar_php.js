@@ -4,19 +4,19 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const scriptPath = path.join(__dirname, 'notificacion_diaria.php');
-const logPath = path.join(__dirname, 'log_cron.txt');
+//const logPath = path.join(__dirname, 'log_cron.txt');
 const phpPath = "C:/xampp/php/php.exe";
 
 // Función para registrar logs
-function registrarEjecucion(mensaje) {
+/*function registrarEjecucion(mensaje) {
     const fechaHora = new Date().toISOString();
     fs.appendFileSync(logPath, `[${fechaHora}] ${mensaje}\n`, 'utf8');
-}
+}*/
 
 // Programar el cron job
-cron.schedule('* * * * * *', () => {
-    console.log('Ejecutando script PHP...');
-    registrarEjecucion('Iniciando ejecución de script PHP');
+//por ahora se ejecuta cada 1 minuto
+cron.schedule('* * * * *', () => {
+    //console.log('Ejecutando script PHP...');
 
     exec(`${phpPath} "${scriptPath}"`, (error, stdout, stderr) => {
         if (error) {

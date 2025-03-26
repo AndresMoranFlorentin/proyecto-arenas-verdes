@@ -1,18 +1,17 @@
 <?php
-
-require_once './servicios/ServicioReserva.php';
-require_once './views/reservaView.php';
-require_once './models/authModel.php';
-require_once './helpers/ToolsHelper.php';
-require_once './helpers/sessionHelper.php';
+require_once 'BaseController.php'; // Incluir la clase abstracta
 require_once './models/ReservaModel.php';
+require_once './models/authModel.php';
+require_once './views/reservaView.php';
+require_once './helpers/sessionHelper.php';
+require_once './helpers/ToolsHelper.php';
+require_once './servicios/ServicioReserva.php';
 /**
  * Este archivo(Controlador) es el encargado de todas aquellas funciones 
  * que gestionan las reservas(crearlas, mostrarlas etc)
  */
-class ReservaController
-{   //variable booleana si la disponibilidad de reservas esta baja o no
-    private static $disponibilidad=true;
+class ReservaController extends BaseController
+{ 
     /** @var string numero de washapp*/
     private $cel_washapp = "+54 9 2262 30-1388";
     /** @var reservaView la vista de reservacion*/
@@ -32,7 +31,7 @@ class ReservaController
     {
         $this->model = new ReservaModel();
         $this->modelUser = new authModel();
-        $this->view = new ReservaView();
+        $this->view = new reservaView();
         $this->helper = new SessionHelper();
         $this->toolsHelper = new ToolsHelper();
         $this->servicioR = new ServicioReserva();
@@ -45,7 +44,7 @@ class ReservaController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->showHome($logueado, $rol,self::$disponibilidad);
+        $this->view->showHome($logueado, $rol,BaseController::getDisponibilidad());
     }
     /**
      * Funcion encargada de mostrar la pagina de precios 
@@ -54,7 +53,7 @@ class ReservaController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->renderPrecios($logueado, $rol,self::$disponibilidad);
+        $this->view->renderPrecios($logueado, $rol,BaseController::getDisponibilidad());
     }
     /**
      * Funcion encargada de buscar aquellas parcelas que se encuentren disponibles
@@ -72,7 +71,7 @@ class ReservaController
         ) {
             //vuelve a enviarte a la pagina de reservacion faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->reservacion($rol, $logueado, self::$disponibilidad);
+            $this->view->reservacion($rol, $logueado, BaseController::getDisponibilidad());
         }
         //captura de los datos enviados por el formulario:
         /** @var date fecha de inicio de cuando se encontraria disponible la parcela */    
@@ -108,7 +107,7 @@ class ReservaController
         //pero agrupadas por los 5 sectores
         $parcelas_por_sector=$this->servicioR->agruparPorSector($parcelas); 
         //se muestra todas aquellas parcelas encontradas en detalle y por sector       
-        $this->view->mostrarParcelasDisponibles($parcelas,$parcelas_por_sector,$inicio,$fecha_fin,self::$disponibilidad);
+        $this->view->mostrarParcelasDisponibles($parcelas,$parcelas_por_sector,$inicio,$fecha_fin,BaseController::getDisponibilidad());
     }
     /**
      * Funcion encargada de calcular el precio de una reserva
@@ -123,7 +122,7 @@ class ReservaController
             !isset($_POST['edad_ninos4']) && !isset($_POST['edad_ninos12'])
             && !isset($_POST['edad_ninos20']) && (!isset($_POST['estancia']) && $_POST['estancia'] <= 0)
         ) {
-            $this->view->renderPrecios($logueado, $rol,self::$disponibilidad);
+            $this->view->renderPrecios($logueado, $rol,BaseController::getDisponibilidad());
         }
         $edadninos4 = $_POST['edad_ninos4']; //cantidad de personas de hasta 4 años
         $edadninos12 = $_POST['edad_ninos12']; //cantidad de personas entre 4 y 12 años
@@ -157,7 +156,7 @@ class ReservaController
             $residente_loberia
         );
 
-        $this->view->mostrarPrecioParcela($precio_final,self::$disponibilidad);
+        $this->view->mostrarPrecioParcela($precio_final,BaseController::getDisponibilidad());
     }
     /**
      * Funcion encargada de generar una reservacion en linea con
@@ -171,7 +170,7 @@ class ReservaController
         if (!$this->servicioR->validacionDatosReservacion($_POST)) {
             $mensaje = "Por favor, completa todos los campos obligatorios.";
             $tipo_mensaje = "error";
-            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
             return;
         }
 
@@ -243,7 +242,7 @@ class ReservaController
             if (empty($nombre) || empty($apellido) || empty($identificador) || empty($precio_reserva) || empty($this->cel_washapp)) {
                 $mensaje = "Reservación creada exitosamente. Datos incompletos para generar el comprobante y enviarlo a su email";
                 $tipo_mensaje="cuidado";
-                $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+                $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
             } else {
                 try {
                     //se genera el archivo pdf con los datos pasados
@@ -263,30 +262,30 @@ class ReservaController
                         } else {
                             $mensaje = "Reservacion Exitosa. Error al enviar el correo.";
                             $tipo_mensaje = "cuidado";
-                            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+                            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
                         }
                     } else {
                         $mensaje = "Reservacion Exitosa. Error al generar el comprobante de reserva.";
                         $tipo_mensaje = "cuidado";
-                        $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+                        $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
                     }
                     // Mostrar mensaje de éxito y redirigir
                     $mensaje = "Reservación creada exitosamente. El comprobante fue enviado a su correo electronico";
                     $tipo_mensaje="exito";
-                    $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+                    $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
 
                 } catch (Exception $e) {
                     //echo "Error al generar el PDF: " . $e->getMessage();
                     $mensaje = "Reservación creada exitosamente. Error al generar el PDF";
                     $tipo_mensaje="cuidado";
-                    $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+                    $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
                 }
             }
         } 
         else{
             $mensaje = "No se ha encontrado una parcela con las características indicadas.";
             $tipo_mensaje = "error";
-            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
         }
     }
     /**
@@ -337,7 +336,7 @@ class ReservaController
     */
     public function pedirReservacion()
     {
-        $this->view->formSolicitarReservacion(null,self::$disponibilidad);
+        $this->view->formSolicitarReservacion(null,BaseController::getDisponibilidad());
     }
     /**
      * Funcion que lleva a la seccion de la pagina que muestra las preguntas mas frecuentes
@@ -346,7 +345,7 @@ class ReservaController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->pregFrec($rol, $logueado, self::$disponibilidad);
+        $this->view->pregFrec($rol, $logueado, BaseController::getDisponibilidad());
     }
       /**
      * Funcion que lleva a la seccion de la pagina que muestra las preguntas mas frecuentes
@@ -355,20 +354,7 @@ class ReservaController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->reservacion($rol, $logueado, self::$disponibilidad);
+        $this->view->reservacion($rol, $logueado, BaseController::getDisponibilidad());
     }
-    /**
-     * Funcion para modificar la disponibilidad de reservas desde otro sitio
-     */
-    public static function setDisponibilidad($valor){
-        self::$disponibilidad = $valor; // Acceso a variable estática
-    }
-    /**
-     * Funcion que devuelve el valor de la disponibilidad
-     * @return boolean devuelve el valor de disponibilidad
-     */
-    public static function obtenerDisponibilidad()
-    {
-        return self::$disponibilidad;
-    }
+    
 }
