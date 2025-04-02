@@ -59,19 +59,81 @@ nav .btn_login {
   margin-left: auto;
 }
 
-
 /**boton del login **/
-.btn_login {
-  display: contents;
-  margin-left: 10%;
-  background: rgb(153, 225, 206);
-  font-size: 5px;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  margin: auto;
-  cursor: grab; /* Cambia el cursor al pasar sobre el botón */
+/* Estilos generales para los botones de autenticación */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
+
+/* Estilo base para los botones */
+.btn-auth {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Botón de Iniciar Sesión */
+.btn-login {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+.btn-login:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+}
+
+/* Botón de Registro */
+.btn-register {
+  background: linear-gradient(135deg, #28a745, #1c7d32);
+  color: white;
+}
+
+.btn-register:hover {
+  background: linear-gradient(135deg, #1c7d32, #145523);
+}
+
+/* Icono de perfil */
+.btn-profile {
+  font-size: 24px;
+  color: white;
+  background: #6a7ecf;
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.btn-profile:hover {
+  transform: scale(1.1);
+  background: #4f5fa9;
+}
+
+/* Botón de Logout */
+.btn-logout {
+  background: linear-gradient(135deg, #dc3545, #a71d2a);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.btn-logout:hover {
+  background: linear-gradient(135deg, #a71d2a, #7a131e);
+}
+
 /** SECCION CUERPO BODY**/
 body {
   height: 100%;
@@ -235,7 +297,7 @@ footer {
 }
 
 .sin-border-box {
-  box-sizing: content-box; 
+  box-sizing: content-box;
 }
 
 /* INFORMES */
