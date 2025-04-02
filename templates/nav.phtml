@@ -5,7 +5,8 @@
       <img src="./img/logos/logo_loberia.png" alt="Logo Lobería" class="logo" />
     </a>
     <!-- Botón de menú en pantallas pequeñas -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Enlaces del menú -->
@@ -14,7 +15,7 @@
         <li class="nav-item">
           <a class="nav-link" href="home">Inicio</a>
         </li>
-              <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link" href="parcelas">Parcelas</a>
         </li>
         <li class="nav-item">
@@ -23,11 +24,11 @@
         <li class="nav-item">
           <a class="nav-link" href="precios">Precios</a>
         </li>
-        <?php if(($this->logueado)&&($this->rol == "admin")): ?>
-        <li class="nav-item">
-          <a class="nav-link" href="crt_parcelas">Control Parcelas</a>
-        </li>
-        
+        <?php if (($this->logueado) && ($this->rol == "admin")): ?>
+          <li class="nav-item">
+            <a class="nav-link" href="crt_parcelas">Control Parcelas</a>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="users">Usuarios</a>
           </li>
@@ -41,24 +42,27 @@
       </ul>
       <!-- Botón de Login para registrarse -->
       <?php if (!$this->logueado): ?>
-        <!-- Button login trigger modal -->
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">
-          Iniciar Sesión
-        </button>
+        <div class="auth-buttons">
+          <!-- Botón Iniciar Sesión -->
+          <button type="button" class="btn-auth btn-login" data-bs-toggle="modal" data-bs-target="#loginModal">
+            Iniciar Sesión
+          </button>
 
-        <!-- Button regitro usuario trigger modal -->
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#regisModal">
-          Registrarse
-        </button>
-
-
+          <!-- Botón Registrarse -->
+          <button type="button" class="btn-auth btn-register" data-bs-toggle="modal" data-bs-target="#regisModal">
+            Registrarse
+          </button>
+        </div>
       <?php else: ?>
-        <li class="nav-item btn btn-secondary">
-          <a href="perfil"><i class="bi bi-person-circle"></i></a>
-        </li>
-        <li class="nav-item  btn btn-secondary">
-          <a class="nav-link" href="logout">Logout</a>
-        </li>
+        <div class="auth-buttons">
+          <!-- Icono de perfil -->
+          <a href="perfil" class="btn-auth btn-profile">
+            <i class="bi bi-person-circle"></i>
+          </a>
+
+          <!-- Botón Logout -->
+          <a class="btn-auth btn-logout" href="logout">Logout</a>
+        </div>
       <?php endif; ?>
     </div>
   </div>
@@ -76,27 +80,18 @@
         </div>
         <div class="modal-body">
 
-          <form id="loginForm" action="auth" method="post" class="form-container" >
+          <form id="loginForm" action="auth" method="post" class="form-container">
             <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              required />
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="password"
-              required />
+              <input type="email" name="email" placeholder="E-mail" required />
+              <input type="password" id="password" name="password" placeholder="password" required />
             </div>
-            
+
             <div>
               <a href="#" data-bs-toggle="modal" data-bs-target="olvideModal">Olvide mi contraseña</a>
-            <button type="submit" class="btn btn-primary" id="loginBtn">Iniciar sesión</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="loginBtn">Iniciar sesión</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             </div>
-            
+
           </form>
         </div>
         <div class="modal-footer">
@@ -116,18 +111,14 @@
         </div>
         <div class="modal-body">
 
-          <form id="olvideForm" action="olvideContraseña" method="post" class="form-container" >
+          <form id="olvideForm" action="olvideContraseña" method="post" class="form-container">
             <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              required />
-            
-            <button type="submit" class="btn btn-primary" >Enviar</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <input type="email" name="email" placeholder="E-mail" required />
+
+              <button type="submit" class="btn btn-primary">Enviar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             </div>
-            
+
           </form>
         </div>
         <div class="modal-footer">
@@ -148,51 +139,16 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form  id="registrationForm" action="register" method="post" class="form-container">
-            
-            <input
-              type="text"
-              id="name"
-              name="nombre"
-              placeholder="Nombre"
-              required />
-            
-            <input
-              type="text"
-              id="apellido"
-              name="apellido"
-              placeholder="Apellido"
-              required />
-              <input 
-              type="number" 
-              id="dni" name="dni" 
-              placeholder="DNI" 
-              required />
-            <input
-              type="number"
-              min="00000"
-              id="phone"
-              name="phone"
-              placeholder="Celular"
-              required />
-            <input
-              type="password"
-              id="pass"
-              name="password"
-              placeholder="Contraseña"
-              required />
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="E-mail"
-              required />
-            <input
-              type="text"
-              id="localidad"
-              name="localidad"
-              placeholder="Localidad"
-              required />
+          <form id="registrationForm" action="register" method="post" class="form-container">
+
+            <input type="text" id="name" name="nombre" placeholder="Nombre" required />
+
+            <input type="text" id="apellido" name="apellido" placeholder="Apellido" required />
+            <input type="number" id="dni" name="dni" placeholder="DNI" required />
+            <input type="number" min="00000" id="phone" name="phone" placeholder="Celular" required />
+            <input type="password" id="pass" name="password" placeholder="Contraseña" required />
+            <input type="email" id="email" name="email" placeholder="E-mail" required />
+            <input type="text" id="localidad" name="localidad" placeholder="Localidad" required />
             <button type="submit" class="btn btn-primary">Registrarse</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           </form>
