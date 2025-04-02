@@ -12,13 +12,14 @@ require_once './controllers/ReservaController.php';
 require_once './controllers/authController.php';
 require_once './controllers/ParcelaController.php';
 require_once './controllers/resetPassController.php';
+require_once './controllers/InformeController.php';
 
 // Define la URL base de la aplicación
 // Ejemplo: http://localhost:8080/miApp/
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
 
 // Establece la acción por defecto a 'home'
-$action = 'home'; 
+$action = 'home';
 
 // Si hay una acción especificada en la URL, la utiliza
 if (!empty($_GET['action'])) {
@@ -30,6 +31,7 @@ $reservaController = new ReservaController();
 $authController = new AuthController();
 $passController = new PassResetController();
 $parcelaController = new ParcelaController();
+$informeController = new InformeController(); // Instancia del controlador de informes
 
 $params = explode('/', $action);
 // Enrutamiento de las acciones
@@ -82,6 +84,9 @@ switch ($params[0]) {
         // Muestra la sección de parcelas
         $parcelaController->seccionParcelas();
         break;
+    case 'generar_informes':
+        $informeController->mostrarVistaInformes();
+        break;
     case 'habilitar':
         // Habilita una parcela
         $parcelaController->habilitarParcela();
@@ -92,25 +97,21 @@ switch ($params[0]) {
         break;
 
     //case 'mostrar_reservas':
-        //Muestra todas las reservas de un usuario
-        //$controller = new ParcelaController();
-        //$controller -> mostrarReservas();
-        //break; 
+    //Muestra todas las reservas de un usuario
+    //$controller = new ParcelaController();
+    //$controller -> mostrarReservas();
+    //break; 
 
     case 'cancelar_reserva':
         // Cancela una reserva
         $reservaController->cancelarReserva();
         break;
-    case 'reservacion':
-        $reservaController->reservacion();
-        break;
-
     /**
      * --- Funciones del AuthController ---
      */
-        
-        //*****AUTH CONTROLLER **************  
-    
+
+    //*****AUTH CONTROLLER **************  
+
     case 'auth':
         // Procesa la autenticación del usuario
         $authController->auth();
@@ -118,7 +119,7 @@ switch ($params[0]) {
     case 'register':
         // Registra un nuevo usuario
         $authController->register();
-        break;  
+        break;
     case 'logout':
         // Cierra la sesión del usuario
         $authController->logout();
