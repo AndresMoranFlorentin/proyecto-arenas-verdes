@@ -1,12 +1,13 @@
 
 <?php
+require_once 'BaseController.php';
 require_once './views/authView.php';
 require_once './views/reservaView.php';
 require_once './models/authModel.php';
 require_once './helpers/sessionHelper.php';
 require_once './models/passResetModel.php'; 
 
-class AuthController
+class AuthController extends BaseController
 {
     private $view;
     private $model;
@@ -39,7 +40,7 @@ class AuthController
             $this->helper->logIn($user);
             $logueado = $this->helper->checkUser();
             $rol = $this->helper->getRol();
-            $this->viewRes->showHome($logueado, $rol,null);
+            $this->viewRes->showHome($logueado, $rol,BaseController::getDisponibilidad());
         } else {
             $error = "Usuario o contraseña invalidos";
             $this->view->renderError($error);
@@ -74,7 +75,7 @@ class AuthController
             $this->helper->logIn($email);
             $logueado = $this->helper->checkUser();
             $rol = $this->helper->getRol();
-            $this->view->renderHome($logueado, $rol);
+            $this->view->renderHome($logueado, $rol,BaseController::getDisponibilidad());
         }
     }
 

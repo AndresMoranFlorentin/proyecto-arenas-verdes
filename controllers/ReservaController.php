@@ -213,7 +213,7 @@ class ReservaController extends BaseController
         if (empty($id_user)) {
             $mensaje = "Debe registrarse primero para poder hacer una reservación.";
             $tipo_mensaje = "error";
-            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,self::$disponibilidad);
+            $this->view->mostrarFormularioReservacion($mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
             return;
         }
         //se obtiene el email del usuario
