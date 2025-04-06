@@ -29,8 +29,12 @@
           <p>Sanitarios: <?= htmlspecialchars($parcela['sanitarios_distancia']) ?></p>
           <div><button class="button">Reservar</button></div>
         </div>
-      </div> <?php endforeach; ?>
-  <?php else: ?> <p class="alert alert-danger">No se encontraron parcelas disponibles.</p>
+      </div> 
+  <?php endforeach; ?>
+  <?php elseif (isset($reservaciones)): ?>
+    <p class="alert alert-danger">No se encontraron parcelas disponibles con esas características.</p>
+  <?php else: ?>
+    
   <?php endif; ?>
 </div>
 <br>
