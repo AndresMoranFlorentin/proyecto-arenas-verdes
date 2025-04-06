@@ -9,7 +9,7 @@ COMO EL MAPA:**/
 /*-----ESTILO PARA EL BOTON QUE GUIARA AL USUARIO HA HACER LA RESERVACION*/
 .presentacionReservacion {
   width: 100%;
-  height: 300px;
+  height: 450px;
   background-image: url('../img/arenas verdes/arenas_verdes.jpg');
   position: relative;
   display: flex;
