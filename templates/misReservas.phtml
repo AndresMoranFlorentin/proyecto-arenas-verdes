@@ -1,0 +1,18 @@
+<?php
+require_once './controllers/ReservaController.php';
+
+// Instanciar el controlador
+$reservaController = new ReservaController();
+
+// Obtener el ID del usuario desde la sesión
+$id_usuario = $_SESSION['id'] ?? null;
+?>
+<div class="contenedor-reservas">
+<h2>Mis Reservas</h2>
+<?php if ($id_usuario) {
+    $reservaController->mostrarReservasDeUsuario($id_usuario);
+} else {
+    echo "<p>No hay usuario identificado.</p>";
+}
+?>
+</div>

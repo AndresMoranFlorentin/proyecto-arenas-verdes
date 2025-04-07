@@ -1,7 +1,11 @@
+  <link rel="shortcut icon"
+    href="https://www.turismoloberia.gov.ar/sites/default/files/logo_footer_iso.png" 
+    type="image/png" />
+<body>
 <?php include 'header.phtml'; ?>
-    <?php include 'nav.phtml'; ?>
-
-    <section>
+<?php include 'nav.phtml'; ?>
+<main>
+    <section class="introduccion" id="content">
     <h2>Perfil de <?= htmlspecialchars($user->apellido . ' ' . htmlspecialchars($user->nombre)) ?></h2>
        
     
@@ -80,14 +84,15 @@
         <div class="modal-footer">
 
 
-        </div>
+      </div>
       </div>
     </div>
   </div>
+  <?php include 'misReservas.phtml'; ?>
+  </main>
 
-    
+<?php include 'whatsapp.phtml'; ?>
 
-    
-    <?php include 'whatsapp.phtml'; ?>
+<?php include 'footer.phtml'; ?>
 
- <?php include 'footer.phtml'; ?>
+</body>

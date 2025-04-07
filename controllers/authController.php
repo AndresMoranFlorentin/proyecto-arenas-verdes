@@ -6,6 +6,7 @@ require_once './views/reservaView.php';
 require_once './models/authModel.php';
 require_once './helpers/sessionHelper.php';
 require_once './models/passResetModel.php'; 
+require_once './models/ReservaModel.php';
 
 class AuthController extends BaseController
 {

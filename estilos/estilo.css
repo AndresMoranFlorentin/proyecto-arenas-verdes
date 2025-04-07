@@ -1,26 +1,23 @@
-/* HEADER */
-header {
+
+nav {
   display: flex;
+  background: #6a7ecf;
+  text-align: center;
   justify-content: space-between;
   align-items: center;
-  text-align: center;
+  min-width: 100%;
+  padding: 10px 20px;
+  z-index: 2;
   width: 100%;
-  background: #6a7ecf;
-  top: 0;
+   top: 0;
   left: 0;
   right: 0;
   z-index: 1;
 }
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  z-index: 2;
-  width: 100%;
-}
 
 nav ul {
+  
+  overflow: hidden;
   display: flex;
   list-style: none;
   overflow: hidden;
@@ -35,7 +32,7 @@ nav ul li {
   margin-right: 20px; /* Espaciado entre los elementos del menú */
 }
 
-nav ul li a {
+nav ul div li a {
   list-style: none;
   display: block;
   color: #fefdfd;

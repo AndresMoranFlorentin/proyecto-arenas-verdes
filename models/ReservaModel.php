@@ -342,4 +342,13 @@ class ReservaModel extends ConectionModel
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([$id_p]);
     }
+/*Se encarga de buscar las reservas del usuario filtrando por idUsuario*/
+public function obtenerReservasDelUsuario($id_usuario)
+{
+    $sql = "SELECT * FROM reserva WHERE id_usuario = ?";
+    $consulta = $this->conexion->prepare($sql);
+    $consulta->execute([$id_usuario]);
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }

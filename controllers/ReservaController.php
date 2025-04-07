@@ -313,6 +313,14 @@ class ReservaController extends BaseController
             echo 'mostrar que debido a un error de conexion no se pudo eliminar la reservacion';
         }
     }
+    public function mostrarReservasDeUsuario($id_user){
+                // Obtener reservas de la base de datos
+        $reservas = $this->model->obtenerReservasDelUsuario($id_user);
+
+        // Llamar a la vista para mostrarlas
+        $this->view->mostrarReservas($reservas);
+    }
+
     /**
      * Funcion encargada de buscar aquellos servicios que proveen ciertas parcelas
      * @param int $fogon (0 o 1 false o true) 

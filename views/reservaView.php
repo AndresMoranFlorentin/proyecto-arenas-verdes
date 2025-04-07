@@ -48,4 +48,15 @@ class ReservaView
     public function mostrarFormularioReservacion($mensaje, $tipo_mensaje,$dispo) {
         require './templates/formParaReservacion.phtml';
     }
+public function mostrarReservas($reservas)
+{
+    if (!empty($reservas)) {
+        foreach ($reservas as $reserva) {
+            echo "<p>Reserva ID: {$reserva['id']} - Fecha inicio: {$reserva['fecha_inicio']} - Fecha fin: {$reserva['fecha_fin']}</p>";
+        }
+    } else {
+        echo "<p>No hay reservas para este usuario.</p>";
+    }
+}
+
 }
