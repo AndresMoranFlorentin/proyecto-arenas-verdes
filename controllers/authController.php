@@ -73,7 +73,8 @@ class AuthController extends BaseController
         } else {
             $userPassword = password_hash($clave, PASSWORD_BCRYPT);
             $this->model->register($nombre, $apellido, $email, $localidad, $dni, $phone, $rol, $userPassword);
-            $this->helper->logIn($email);
+            $user = $this->model->findUser($email);
+            $this->helper->logIn($user);
             $logueado = $this->helper->checkUser();
             $rol = $this->helper->getRol();
             $this->view->renderHome($logueado, $rol,BaseController::getDisponibilidad());
