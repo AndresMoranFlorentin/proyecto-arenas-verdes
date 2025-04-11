@@ -7,6 +7,7 @@ class ReservaView
     private $mensaje="";
     private $tipo_mensaje="";
     private $urlPdf="";
+    private $precios;
 
     public function showHome($logueado, $rol,$dispo)
     {
@@ -16,9 +17,10 @@ class ReservaView
         require './templates/home.phtml';
     }
 
-    public function renderPrecios($logueado, $rol, $dispo){
+    public function renderPrecios($logueado, $rol, $precios, $dispo){
         $this->logueado = $logueado;
         $this->rol = $rol;
+        $this->precios = $precios;
         require './templates/precios.phtml';
     }
      

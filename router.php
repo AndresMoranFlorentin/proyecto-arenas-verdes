@@ -49,6 +49,10 @@ switch ($params[0]) {
         // Muestra la página de precios;
         $reservaController->renderPrecios();
         break;
+    case 'editarPrecios':
+        // Edita el precio de una parcela)
+        $reservaController->editarPrecio();
+        break;
 
     case 'simular_precios':
         // Simula el precio de una reserva

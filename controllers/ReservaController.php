@@ -6,6 +6,7 @@ require_once './views/reservaView.php';
 require_once './helpers/sessionHelper.php';
 require_once './helpers/ToolsHelper.php';
 require_once './servicios/ServicioReserva.php';
+require_once './views/authView.php';
 /**
  * Este archivo(Controlador) es el encargado de todas aquellas funciones 
  * que gestionan las reservas(crearlas, mostrarlas etc)
@@ -26,6 +27,8 @@ class ReservaController extends BaseController
     private $model;
     /** @var authModel  el modelo de usuarios*/
     private $modelUser;
+    /** @var authView el modelo de la vista de autenticacion*/
+    private $authView;
     
     function __construct()
     {
@@ -36,6 +39,7 @@ class ReservaController extends BaseController
         $this->toolsHelper = new ToolsHelper();
         $this->servicioR = new ServicioReserva();
         $this->cel_washapp == "+54 9 2262 30-1388";
+        $this->authView = new authView();
     }
     /**
      * Funcion encargada de devolver la vista del home(el inicio de la pagina)
@@ -53,7 +57,8 @@ class ReservaController extends BaseController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->renderPrecios($logueado, $rol,BaseController::getDisponibilidad());
+        $precios = $this->model->getPreciosLista();
+        $this->view->renderPrecios($logueado, $rol, $precios,BaseController::getDisponibilidad());
     }
     /**
      * Funcion encargada de buscar aquellas parcelas que se encuentren disponibles
@@ -122,7 +127,8 @@ class ReservaController extends BaseController
             !isset($_POST['edad_ninos4']) && !isset($_POST['edad_ninos12'])
             && !isset($_POST['edad_ninos20']) && (!isset($_POST['estancia']) && $_POST['estancia'] <= 0)
         ) {
-            $this->view->renderPrecios($logueado, $rol,BaseController::getDisponibilidad());
+            $precios = $this->model->getPreciosLista();
+            $this->view->renderPrecios($logueado, $rol, $precios, BaseController::getDisponibilidad());
         }
         $edadninos4 = $_POST['edad_ninos4']; //cantidad de personas de hasta 4 años
         $edadninos12 = $_POST['edad_ninos12']; //cantidad de personas entre 4 y 12 años
@@ -356,5 +362,63 @@ class ReservaController extends BaseController
         $rol = $this->helper->getRol();
         $this->view->reservacion($rol, $logueado, BaseController::getDisponibilidad());
     }
+
+    /**
+     * Funcionalidad para editar los precios
+     */
+    public function editarPrecio() {
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
     
+        if ($rol === 'admin' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Procesar los datos enviados por el formulario
+            $data = $_POST;
+    
+            // Validar las columnas permitidas
+            $columnasPermitidas = [
+                'edad_ninos4_no_residentes', 'edad_ninos4_residentes',
+                'edad_ninos12_no_residentes', 'edad_ninos12_residentes',
+                'edad_ninos20_no_residentes', 'edad_ninos20_residentes',
+                'costoxvehiculoxdia_no_residentes', 'costoxvehiculoxdia_residentes',
+                'costoxcasillaxdia_no_residentes', 'costoxcasillaxdia_residentes',
+                'costoxmescasilla_no_residentes', 'costoxmescasilla_residentes',
+                'costo_estancia_xdia_no_residentes', 'costo_estancia_xdia_residentes',
+                'costo_ducha_no_residentes', 'costo_ducha_residentes',
+                'costo_sanitario_no_residentes', 'costo_sanitario_residentes'
+            ];
+    
+            // Procesar cada columna enviada en el formulario
+            foreach ($data as $columna => $valor) {
+                if (in_array($columna, $columnasPermitidas)) {
+                    // Identificar si es residente o no residente
+                    $tipoResidente = strpos($columna, '_no_residentes') !== false ? 0 : 1;
+                    $columnaBase = str_replace(['_no_residentes', '_residentes'], '', $columna);
+    
+                    // Actualizar la base de datos
+                    $actualizado = $this->model->editarPrecio($columnaBase, $valor, $tipoResidente);
+    
+                    if (!$actualizado) {
+                        $mensaje = "Error al actualizar la columna $columna.";
+                        $this->authView->renderError($mensaje);
+                        return;
+                    }
+                } else {
+                    $mensaje = "Columna no válida: $columna.";
+                    $this->authView->renderError($mensaje);
+                    return;
+                }
+            }
+    
+            // Recargar la vista con los precios actualizados
+            $precios = $this->model->getPrecioSLista(); // Obtiene nuevamente los precios divididos
+            $this->view->renderPrecios($logueado, $rol, $precios, BaseController::getDisponibilidad());
+        } else {
+            // Manejo de acceso denegado
+            $mensaje = "No tienes permisos para acceder a esta sección.";
+            $this->authView->renderError($mensaje);
+        }
+    }
+    
+       
+       
 }
