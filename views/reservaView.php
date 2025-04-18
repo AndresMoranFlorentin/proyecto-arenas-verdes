@@ -36,8 +36,14 @@ class ReservaView
         $this->rol = $rol;
         require './templates/reservacion.phtml';
      }
+     public function mostrarParcela($rol, $logueado, $dispo) {
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/parcelas.phtml';
+     }
      public function mostrarParcelasDisponibles($reservaciones,$parcelas_por_sector,$fechaInicio,$fechaFin,$dispo){
-        require './templates/reservacion.phtml';
+        //require './templates/reservacion.phtml';
+        require './templates/parcelas.phtml';
     }
     public function mostrarPrecioParcela($precio_final,$dispo){
         require './templates/precios.phtml';
@@ -48,6 +54,6 @@ class ReservaView
         require './templates/formParaReservacion.phtml';
     }
     public function mostrarFormularioReservacion($mensaje, $tipo_mensaje,$dispo) {
-        require './templates/formParaReservacion.phtml';
+        require './templates/reservacion.phtml';
     }
 }

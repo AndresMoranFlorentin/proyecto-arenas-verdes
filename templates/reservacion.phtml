@@ -1,19 +1,18 @@
 <?php include 'header.phtml'; ?>
 <?php include 'nav.phtml'; ?>
 <?php if ($dispo == false): ?>
-    <?php include 'cartel_baja_disponibilidad.phtml'; ?>
-  <?php else: ?>
-    <br>
-  <?php endif; ?>
+  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+<?php else: ?>
+  <br>
+<?php endif; ?>
 <main>
   <section class="introduccion" id="content">
-    <h1 style="align-items: center;">Haz tu Reserva Hoy Mismo </h1>
-
-  </section>
-  <?php
-      include 'formParaReservacion.phtml';
+    <h1 style="text-align: center;">Haz tu Reserva Hoy Mismo </h1>
+    <br>
+    <?php
+    include 'formParaReservacion.phtml';
     ?>
-
+  </section>
 </main>
 
 <?php

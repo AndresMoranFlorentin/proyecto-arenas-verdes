@@ -1,0 +1,59 @@
+
+ 
+ <!--SECCION DEL FORMULARIO DE REGISTRO-->
+ <div class="overlay" id="overlay">
+      <div class="form-container">
+        <h2>Registro</h2>
+        <form id="registrationForm" action="register" method="post">
+          <input type="number" id="dni" name="dni" placeholder="DNI" required />
+          <input
+            type="text"
+            id="name"
+            name="nombre"
+            placeholder="Nombre"
+            required
+          />
+          <input
+            type="text"
+            id="apellido"
+            name="apellido"
+            placeholder="Apellido"
+            required
+          />
+          <input
+            type="number"
+            min="00000"
+            id="phone"
+            name="phone"
+            placeholder="Celular"
+            required
+          />
+          <input
+            type="password"
+            id="pass"
+            name="password"
+            placeholder="Contraseña"
+            required
+          />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="E-mail"
+            required
+          />
+          <input
+            type="text"
+            id="localidad"
+            name="localidad"
+            placeholder="Localidad"
+            required
+          />
+          <button type="submit" class="btn btn-secondary">Registrarse</button>
+          <a href="home" class="btn btn-secondary" role="button">Cancelar</a> 
+        </form>
+        <p><?= htmlspecialchars($error) ?></p>
+      </div>
+    </div>
+
+    

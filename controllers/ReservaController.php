@@ -76,7 +76,7 @@ class ReservaController extends BaseController
         ) {
             //vuelve a enviarte a la pagina de reservacion faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->reservacion($rol, $logueado, BaseController::getDisponibilidad());
+            $this->view->mostrarParcela($rol, $logueado, BaseController::getDisponibilidad());
         }
         //captura de los datos enviados por el formulario:
         /** @var date fecha de inicio de cuando se encontraria disponible la parcela */    
@@ -237,8 +237,8 @@ class ReservaController extends BaseController
             // se genera el identificador de la reservacion
             $identificador = $this->toolsHelper->generarIdentificador();
             // en esta funcion se genera la reserva y a su vez se devuelve el id de la reserva que se genero
-            echo "<script>console.log('".addslashes("identificador-> ".$identificador)."');</script>";
-            echo "<script>console.log('".addslashes("id user-> ".$id_user)."');</script>";
+            //echo "<script>console.log('".addslashes("identificador-> ".$identificador)."');</script>";
+           // echo "<script>console.log('".addslashes("id user-> ".$id_user)."');</script>";
 
             $id_nueva_reserva = $this->model->nuevaReserva($id_user,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
             // se realiza la conexion entre la nueva reserva y la parcela que sera ocupada
