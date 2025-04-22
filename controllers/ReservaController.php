@@ -300,14 +300,6 @@ class ReservaController extends BaseController
        }
     }
     /**
-     * Funcion que lleve al usuario a la pagina donde se muestre las reservaciones del usuario
-     */
-    public function mostrarMisReservas(){
-        $logueado = $this->helper->checkUser();
-        $rol = $this->helper->getRol();
-        $this->view->irSeccionAMisReservas($rol, $logueado,BaseController::getDisponibilidad());
-    }
-    /**
      * Funcion que permite al usuario cancelar aquella reservacion que le 
      * interese
      * ---notar que falta agregarle el logueo para que solo el usuario registrado
