@@ -52,11 +52,27 @@ public function mostrarReservas($reservas)
 {
     if (!empty($reservas)) {
         foreach ($reservas as $reserva) {
-            echo "<p>Reserva ID: {$reserva['id']} - Fecha inicio: {$reserva['fecha_inicio']} - Fecha fin: {$reserva['fecha_fin']}</p>";
+            echo "<div class='reserva d-flex justify-content-between align-items-center p-2 border rounded mb-2'>";
+            
+            echo "<div class='me-3'>";
+            echo "<p class='mb-0'>Reserva ID: {$reserva['id']} - Fecha inicio: {$reserva['fecha_inicio']} - Fecha fin: {$reserva['fecha_fin']}</p>";
+            echo "</div>";
+
+            // Formulario que llama a cancelarReserva() usando POST
+            echo "<form method='POST' action='' class='m-0'>";
+            echo "<input type='hidden' name='id_reserva' value='{$reserva['id']}'>";
+            echo "<button type='submit' name='eliminar_reserva' class='btn btn-outline-danger btn-sm' title='Eliminar'>";
+            echo "<i class='bi bi-trash'></i>";
+            echo "</button>";
+            echo "</form>";
+
+            echo "</div>";
         }
     } else {
         echo "<p>No hay reservas para este usuario.</p>";
     }
 }
+
+
 
 }

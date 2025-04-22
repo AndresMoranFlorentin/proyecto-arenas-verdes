@@ -295,24 +295,37 @@ class ReservaController extends BaseController
      * ---o el superadmin pueda acceder a el, y al usuario solo se le permitira 
      * ---cancelar sus reservas dentro de un plazo de tiempo
      */
-    public function cancelarReserva(){
-        //falta comprobar que estes logueado
-        $id_reserva=$_GET['id'];
+   public function cancelarReserva()
+{
+    // Verificar si se recibió por POST y si hay una sesión activa
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_reserva'])) {
+
+        $id_reserva = $_POST['id_reserva'];
+
         echo "<script>console.log('".addslashes("id reserva-> ".$id_reserva)."');</script>";
-        //primero se debe eliminar la relacion reserva parcela
-        $elimino_relacion=$this->model->eliminarRelacionParcelaReserva($id_reserva);
-        //luego eliminar la reservacion
-        if($elimino_relacion){
-            //se procede a eliminar la reserva
-            $elimino_reserva=$this->model->eliminarReserva($id_reserva);
-            if($elimino_reserva){
-                echo "mostrar en la vista que se elimino la reservacion con exito";
+
+        // Primero eliminar la relación reserva-parcela
+        $elimino_relacion = $this->model->eliminarRelacionParcelaReserva($id_reserva);
+
+        if ($elimino_relacion) {
+            // Luego eliminar la reserva
+            $elimino_reserva = $this->model->eliminarReserva($id_reserva);
+
+            if ($elimino_reserva) {
+                echo "<div class='alert alert-success'>La reservación fue eliminada con éxito.</div>";
+            } else {
+                echo "<div class='alert alert-danger'>Error al eliminar la reservación.</div>";
             }
+
+        } else {
+            echo "<div class='alert alert-warning'>No se pudo eliminar la relación con la parcela. Intente más tarde.</div>";
         }
-        else{
-            echo 'mostrar que debido a un error de conexion no se pudo eliminar la reservacion';
-        }
+
+    } else {
+        echo "<div class='alert alert-danger'>No se recibió una solicitud válida para cancelar la reserva.</div>";
     }
+}
+
     public function mostrarReservasDeUsuario($id_user){
                 // Obtener reservas de la base de datos
         $reservas = $this->model->obtenerReservasDelUsuario($id_user);
