@@ -49,6 +49,10 @@ switch ($params[0]) {
         // Muestra la página de precios;
         $reservaController->renderPrecios();
         break;
+    case 'editarPrecios':
+        // Edita el precio de una parcela)
+        $reservaController->editarPrecio();
+        break;
 
     case 'simular_precios':
         // Simula el precio de una reserva
@@ -59,14 +63,25 @@ switch ($params[0]) {
         // Busca las parcelas disponibles para reservar
         $reservaController->buscarParcelasDispo();
         break;
-    case 'pedir_reservacion':
+    /**********************************
+     * * SECCION DE GENERAR RESERVACION
+     *********************************/
+    case 'seccion_reservacion':
         // Solicita una reservación
-        $reservaController->pedirReservacion();
+        $reservaController->irAReservacion();
         break;
-
     case 'generar_reservacion':
         // Genera una nueva reservación
         $reservaController->generarReservacion();
+        break;
+    //Muestra todas las reservas de un usuario es especifico
+    case 'mostrar_mis_reservas':
+        $controller = new ReservaController();
+        $controller->mostrarMisReservas();
+        break; 
+    case 'cancelar_reserva':
+        // Cancela una reserva
+        $reservaController->cancelarReserva();
         break;
     case 'parcelas':
         // Muestra las parcelas disponibles       
@@ -75,10 +90,6 @@ switch ($params[0]) {
     case 'preguntas':
         // Muestra las preguntas frecuentes
         $reservaController->preguntasFrec();
-        break;
-    case 'reservacion':
-        // Muestra los detalles de una reservación
-        $reservaController->reservacion();
         break;
     case 'crt_parcelas':
         // Muestra la sección de parcelas
@@ -94,17 +105,6 @@ switch ($params[0]) {
     case 'inhabilitar':
         // Inhabilita una parcela
         $parcelaController->inhabilitarParcela();
-        break;
-
-    //case 'mostrar_reservas':
-    //Muestra todas las reservas de un usuario
-    //$controller = new ParcelaController();
-    //$controller -> mostrarReservas();
-    //break; 
-
-    case 'cancelar_reserva':
-        // Cancela una reserva
-        $reservaController->cancelarReserva();
         break;
     /**
      * --- Funciones del AuthController ---

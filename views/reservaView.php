@@ -7,6 +7,7 @@ class ReservaView
     private $mensaje="";
     private $tipo_mensaje="";
     private $urlPdf="";
+    private $precios;
 
     public function showHome($logueado, $rol,$dispo)
     {
@@ -16,9 +17,10 @@ class ReservaView
         require './templates/home.phtml';
     }
 
-    public function renderPrecios($logueado, $rol, $dispo){
+    public function renderPrecios($logueado, $rol, $precios, $dispo){
         $this->logueado = $logueado;
         $this->rol = $rol;
+        $this->precios = $precios;
         require './templates/precios.phtml';
     }
      
@@ -28,25 +30,32 @@ class ReservaView
         $this->rol = $rol;
         require './templates/preguntas.phtml';
      }
-     
-     public function reservacion($rol, $logueado, $dispo) {
+     public function mostrarParcela($rol, $logueado, $dispo) {
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/parcelas.phtml';
+     }
+     public function mostrarParcelasDisponibles($rol, $logueado,$reservaciones,$parcelas_por_sector,$fechaInicio,$fechaFin,$dispo){
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/parcelas.phtml';
+    }
+    public function mostrarPrecioParcela($rol, $logueado,$precio_final=null,$precios,$dispo){
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/precios.phtml';
+    }
+    public function ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje=null,$tipo_mensaje=null,$dispo,){
+        $this->mensaje="";
+        $this->tipo_mensaje="";
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/reservacion.phtml';
-     }
-     public function mostrarParcelasDisponibles($reservaciones,$parcelas_por_sector,$fechaInicio,$fechaFin,$dispo){
-        require './templates/reservacion.phtml';
     }
-    public function mostrarPrecioParcela($precio_final,$dispo){
-        require './templates/precios.phtml';
-    }
-    public function formSolicitarReservacion($id_parcela=null,$dispo){
-        $this->mensaje="";
-        $this->tipo_mensaje="";
-        require './templates/formParaReservacion.phtml';
-    }
-    public function mostrarFormularioReservacion($mensaje, $tipo_mensaje,$dispo) {
-        require './templates/formParaReservacion.phtml';
+    public function irSeccionAMisReservas($rol, $logueado,$dispo) {
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/mis_reservas.phtml';
     }
 public function mostrarReservas($reservas)
 {
