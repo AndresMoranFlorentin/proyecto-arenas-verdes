@@ -11,8 +11,6 @@ $id_usuario = $_SESSION['id'] ?? null;
 <h2>Mis Reservas</h2>
 <?php if ($id_usuario) {
     $reservaController->mostrarReservasDeUsuario($id_usuario);
-} else {
-    echo "<p>No hay usuario identificado.</p>";
 }
 ?>
 </div>
