@@ -350,5 +350,25 @@ public function obtenerReservasDelUsuario($id_usuario)
     $consulta->execute([$id_usuario]);
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
+ /**
+     * Obtener la lista de precios
+     */
+    public function getPrecioSLista() {
+        $sql = "SELECT * FROM precios WHERE residente_local = 1";
+        $stmtResidentes = $this->conexion->prepare($sql);
+        $stmtResidentes->execute();
+        $residentes = $stmtResidentes->fetch(PDO::FETCH_ASSOC);
+
+        $sqlNoResidentes = "SELECT * FROM precios WHERE residente_local = 0";
+        $stmtNoResidentes = $this->conexion->prepare($sqlNoResidentes);
+        $stmtNoResidentes->execute();
+        $noResidentes = $stmtNoResidentes->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'residentes' => $residentes,
+            'no_residentes' => $noResidentes,
+        ];
+    }
+
 
 }
