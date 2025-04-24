@@ -274,11 +274,8 @@ class ReservaController extends BaseController
                             $tipo_mensaje = "cuidado";
                             $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
                        }
-                    } else {
-                        $mensaje = "Reservacion Exitosa. Error al generar el comprobante de reserva.";
-                        $tipo_mensaje = "cuidado";
-                        $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
-                    }
+                    } 
+
                     // Mostrar mensaje de éxito y redirigir
                     $mensaje = "Reservación creada exitosamente. El comprobante fue enviado a su correo electronico";
                     $tipo_mensaje="exito";
@@ -306,7 +303,7 @@ class ReservaController extends BaseController
      * ---o el superadmin pueda acceder a el, y al usuario solo se le permitira 
      * ---cancelar sus reservas dentro de un plazo de tiempo
      */
-   public function cancelarReserva()
+  public function cancelarReserva()
 {
     // Verificar si se recibió por POST y si hay una sesión activa
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_reserva'])) {
@@ -323,27 +320,23 @@ class ReservaController extends BaseController
             $elimino_reserva = $this->model->eliminarReserva($id_reserva);
 
             if ($elimino_reserva) {
-                echo "<div class='alert alert-success'>La reservación fue eliminada con éxito.</div>";
+                $_SESSION['mensaje_reserva'] = ['tipo' => 'success', 'texto' => 'La reservación fue eliminada con éxito.'];
             } else {
-                echo "<div class='alert alert-danger'>Error al eliminar la reservación.</div>";
+                $_SESSION['mensaje_reserva'] = ['tipo' => 'danger', 'texto' => 'Error al eliminar la reservación.'];
             }
 
         } else {
-            echo "<div class='alert alert-warning'>No se pudo eliminar la relación con la parcela. Intente más tarde.</div>";
+            $_SESSION['mensaje_reserva'] = ['tipo' => 'warning', 'texto' => 'No se pudo eliminar la relación con la parcela. Intente más tarde.'];
         }
-
     } else {
-        echo "<div class='alert alert-danger'>No se recibió una solicitud válida para cancelar la reserva.</div>";
+        $_SESSION['mensaje_reserva'] = ['tipo' => 'danger', 'texto' => 'No se recibió una solicitud válida para cancelar la reserva.'];
     }
+
+    // Redirigir a la página de reservas después de realizar la acción
+    header("Location: " . BASE_URL . "generar_reservacion");
+    exit;
 }
 
-    public function mostrarReservasDeUsuario($id_user){
-                // Obtener reservas de la base de datos
-        $reservas = $this->model->obtenerReservasDelUsuario($id_user);
-
-        // Llamar a la vista para mostrarlas
-        $this->view->mostrarReservas($reservas);
-    }
 
     /**
      * Funcion encargada de buscar aquellos servicios que proveen ciertas parcelas
