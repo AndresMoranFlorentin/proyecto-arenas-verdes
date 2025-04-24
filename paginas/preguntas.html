@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link href="^5^" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+    />
+
+    <link rel="stylesheet" href="../estilos/estilo.css" />
+    <link rel="stylesheet" href="../estilos/formulario.css" />
+    <title>Reservaciones Arenas Verdes</title>
+  </head>
+  <body>
+    <!--SECCION DE CABEZAL EL MENU-->
+    <header>
+      <nav>
+        <a href="https://www.turismoloberia.gov.ar"
+          ><img src="../img/logos/logo_loberia.png"
+        /></a>
+        <ul>
+          <li><a href="principal.html">Inicio</a></li>
+          <li><a href="reservacion.html">Reservacion</a></li>
+          <li><a href="precios.html">Precios</a></li>
+          <li><a href="preguntas.html"> Preguntas Frecuentes</a></li>
+        </ul>
+        <!-- Botón de Login para registrarse -->
+        <button class="btn_login" id="loginBtn" type="button">
+          <img width="20px" src="../img/logos/login_1.png" alt="" />
+        </button>
+      </nav>
+    </header>
+    <!--SECCION CUERPO PRINCIPAL(INFORMACION RELEVANTE)-->
+    <main class="introduccion blurred-content" id="content">
+      <div class="acordion_preg">
+        <h1 id="titulo_faq">Preguntas Frecuentes</h1>
+        <div class="content_box">
+          <div class="pregunta">
+            ✍️ ¿Cuales son los tarifas de la Base Municipal de Campamentos?
+          </div>
+          <div class="contenido">
+            <p>
+              Cuando se trate de grupos escolares, se aplicará un 50% de
+              descuento del valor de referencia. Estos valores están vigentes a
+              partir del 01/01/2024
+            </p>
+            <div class="table-container">
+              <table id="tabla_preguntas" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td
+                      colspan="3"
+                      style="width: 606px; height: 21px; text-align: center"
+                    >
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong
+                            >TARIFAS BASE DE CAMPAMENTO (diarios por
+                            persona)</strong
+                          ></span
+                        >
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>&nbsp;</p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p><span style="font-size: 12px">NO RESIDENTES</span></p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px">RESIDENTES&nbsp;</span>
+                      </p>
+
+                      <p><span style="font-size: 12px">DE LOBERIA</span></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Menores 4 años</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p><span style="font-size: 12px">sin costo</span></p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p><span style="font-size: 12px">sin costo</span></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>de 4 a 12 años</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 4700</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$ 500</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Mayores 12 años</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 8500</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$&nbsp;900</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Vehiculo</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 1200</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$ 300</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Estadia diaria Casillas</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 3000</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$ 1300</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Estadia Mensual Casillas</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 60000</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$ 30000</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Pasar el día</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 1300</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$ 400</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Uso de duchas</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 900</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$ 250</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 226px; height: 21px">
+                      <p>
+                        <span style="font-size: 12px"
+                          ><strong>Uso de sanitarios</strong></span
+                        >
+                      </p>
+                    </td>
+                    <td style="width: 232px; height: 21px">
+                      <p>$ 200</p>
+                    </td>
+                    <td style="width: 144px; height: 21px">
+                      <p>$ 100</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="content_box">
+          <div class="pregunta">
+            ✍️ ¿Cuál es el horario de ingreso y egreso del complejo?
+          </div>
+          <div class="contenido">
+            <p>Para acampar podés ingresar entre las 08:00 y las 20:00 hs.</p>
+            <p>
+              Tenes que tener en cuenta que la estadía vence a las 10 hs
+              independientemente del horario en el que hayas ingresado por lo
+              que deberás dejar desocupada la porción del predio que se te
+              asignó.
+            </p>
+            <p>
+              Luego de vencida la estadía y en caso de no abandonar la misma una
+              hora después, se cobrará media estadía hasta las 12:00 y si la
+              desocupa más tarde estadía completa.
+            </p>
+            <p>
+              Si llegas luego de las 18:00 hasta las 10 am del día siguiente se
+              cobra ½ estadía.
+            </p>
+          </div>
+        </div>
+
+        <div class="content_box">
+          <div class="pregunta">
+            ✍️ ¿Hay que reservar previamente una parcela?
+          </div>
+          <div class="contenido">
+            <p>
+              Sugerimos que se comuniquen al cel de contacto para consultar
+              disponibilidad
+            </p>
+          </div>
+        </div>
+
+        <div class="content_box">
+          <div class="pregunta">✍️ ¿Las parcelas tienen fogón y parrilla?</div>
+          <div class="contenido">
+            <p>
+              El camping cuenta con algunos fogones y parrillas. No todas las
+              parcelas cuentan con estos elementos, si tenes alguna parrillita,
+              traela.
+            </p>
+          </div>
+        </div>
+
+        <div class="content_box">
+          <div class="pregunta">
+            ✍️ ¿Se puede hacer fuego en otro lado si los fogones están ocupados?
+          </div>
+          <div class="contenido">
+            <p>Se debe consultar con los encargados del lugar.</p>
+          </div>
+        </div>
+
+        <div class="content_box">
+          <div class="pregunta">
+            ✍️ ¿Durante el alojamiento puedo recibir visitas?
+          </div>
+          <div class="contenido">
+            <p>
+              Si, las visitas pueden permanecer en el complejo por el término de
+              2 horas sin cargo, pasada dicha hora, deberán abonar la estadía.
+            </p>
+          </div>
+        </div>
+
+        <div class="content_box">
+          <div class="pregunta">✍️ Sobre Vestuarios y Duchas</div>
+          <div class="contenido">
+            <p>Se informará en el camping el horario de duchas.</p>
+            <p>
+              Se recomienda Ingresar con los elementos mínimos posibles a las
+              duchas y no utilizar las duchas como vestuario.
+            </p>
+            <p>
+              Se establecerá un mecanismo para reducir el tiempo de ducha a 10
+              minutos.
+            </p>
+            <p>
+              Los usuarios deberán cambiarse en carpas u otras zonas que no sean
+              espacios comunes.
+            </p>
+          </div>
+        </div>
+
+        <div class="content_box">
+          <div class="pregunta">✍️ Sobre Horarios de Descanso</div>
+          <div class="contenido">
+            <p>
+              Se establece que el horario de descanso es de 23 hasta las 08:00,
+              por lo que se sugiere no tener elevado el volumen de la música
+              para no molestar al que viene a descansar.
+            </p>
+            <p>
+              Los cuatriciclos y motos deben salir del predio en sus respectivos
+              trailer.
+            </p>
+          </div>
+        </div>
+
+        <div class="content_box">
+          <div class="pregunta">✍️ Sobre Mascotas</div>
+          <div class="contenido">
+            <p>
+              Se permite el ingreso de mascotas en tanto sus dueños se hagan
+              responsables de su cuidado y especialmente que no molesten a otros
+              usuario en horarios de almuerzo/cena.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!--SECCION DEL FORMULARIO DE REGISTRO-->
+    <div class="overlay" id="overlay">
+      <div class="form-container">
+        <h2>Registro</h2>
+        <form id="registrationForm">
+          <input type="number" id="dni" name="dni" placeholder="DNI" required />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Nombre"
+            required
+          />
+          <input
+            type="text"
+            id="apellido"
+            name="apellido"
+            placeholder="Apellido"
+            required
+          />
+          <input
+            type="number"
+            id="phone"
+            name="phone"
+            placeholder="Celular"
+            required
+          />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="E-mail"
+            required
+          />
+          <input
+            type="text"
+            id="location"
+            name="location"
+            placeholder="Localidad"
+            required
+          />
+          <button type="submit">Registrarse</button>
+          <button type="button" class="cancel" id="cancelBtn">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+    <!--SECCION MODULO DE WHATSAPP-->
+    <a
+      href="https://api.whatsapp.com/send?phone=5492262301388"
+      class="btn_wsp"
+      target="_blank"
+    >
+      <img src="../img/logos/btn_wsp.png" class="icon_wsp" alt="" />
+    </a>
+
+    <!--SECCION PIE DE PAGINA(DEBE SER IGUAL PARA TODAS LAS PAGINAS)-->
+    <footer class="footer">
+      <!-- Redes sociales -->
+      <section class="buttons">
+        <a href="#" class="fa fa-facebook"></a>
+        <a href="#" class="fa fa-twitter"></a>
+        <a href="#" class="fa fa-instagram"></a>
+        <a href="#" class="fa fa-whatsapp"></a>
+      </section>
+    </footer>
+  </body>
+  <script src="../js/formulario.js"></script>
+</html>

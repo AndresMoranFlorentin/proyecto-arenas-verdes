@@ -4,6 +4,28 @@ COMO EL MAPA:**/
   height: 60vh;
   width: 100%;
 }
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*-----ESTILO PARA EL BOTON QUE GUIARA AL USUARIO HA HACER LA RESERVACION*/
+.presentacionReservacion {
+  width: 100%;
+  height: 450px;
+  background-image: url('../img/arenas verdes/arenas_verdes.jpg');
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+  background-size: cover;
+  transition: filter 0.3s;
+}
+
+/* Efecto blur cuando se pasa el mouse por el contenedor */
+.presentacionReservacion .botton {
+  filter: blur(5px);
+}
+
 /** AQUI ESTAN LOS MENSAJES DONDE SE MUESTRAN LAS NOTIFICACIONES DE SI EL MENSAJE FUE ENVIADO CORRECTAMENTE
 **  AL FORMULARIO DE REGISTRO O NO**/
 .notification {
@@ -35,9 +57,207 @@ COMO EL MAPA:**/
 .hidden {
   display: none;
 }
+
 .parcela_no_disponible {
   background-color: rgb(206, 124, 124);
   border-bottom: darkred;
+}
+
+/*************************************************************************/
+/***AQUI SE UBICA EL ESTILO DE LOS MENSAJES DE RESULTADO DE LAS RESERVAS**/
+/*************************************************************************/
+/* Centrar el mensaje en la pantalla */
+.mensaje {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  z-index: 1000;
+  background-color: #fff;
+}
+
+/* Estilos para el texto del mensaje */
+.mensaje p {
+  margin: 0 0 20px 0;
+  font-size: 1.5em;
+}
+
+/* Estilos para el mensaje de éxito */
+.mensaje.exito {
+  border: 2px solid green;
+}
+/* Estilos para el mensaje de cuidado, es decir que tiene un error menor */
+.mensaje.cuidado {
+  border: 2px solid #856404;
+}
+/* Estilos para el mensaje de error */
+.mensaje.error {
+  border: 2px solid red;
+}
+
+/* Estilos para los botones */
+.mensaje .btn {
+  font-size: 1em;
+  padding: 10px 20px;
+  margin-top: 20px;
+}
+
+/* Ocultar el formulario cuando el mensaje está presente */
+/*
+      body>*:not(.mensaje) {
+        opacity: 0.5;
+        /* Ajustar la opacidad para superponer 
+        pointer-events: none;
+        /* Desactivar la interactividad 
+      }
+
+      /* Restablecer el formulario cuando el mensaje no está presente 
+      body>*:not(.mensaje):not([class="mensaje-"]) {
+        opacity: 1;
+        pointer-events: auto;
+      }
+*/
+
+.formulario {
+  display: none;
+}
+
+/**** Caja de colores para diferenciar los distintos sectores en el resultado de disponibilidad **/
+.sectores_parcelas {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Alineación vertical */
+  align-items: flex-start; /* Alineación a la izquierda para mejor legibilidad */
+  gap: 10px; /* Espacio entre los elementos */
+  padding: 10px;
+}
+
+.sectores_parcelas .motorhome,
+.sectores_parcelas .familiar,
+.sectores_parcelas .juvenil,
+.sectores_parcelas .campamento_familiar {
+  color: white;
+  font-weight: bold;
+  padding: 10px; /* Más espacio para que el texto no se vea apretado */
+  border-radius: 5px; /* Bordes redondeados para un look más moderno */
+  margin-bottom: 10px; /* Espacio uniforme entre los elementos */
+  text-align: left; /* Alineación izquierda para mejor legibilidad */
+  font-size: 14px; /* Un tamaño de fuente más pequeño pero legible */
+  width: 35%; /* Ancho completo del contenedor */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para un efecto de profundidad */
+}
+
+.sectores_parcelas .motorhome {
+  background: rgb(100, 57, 100);
+}
+
+.sectores_parcelas .familiar {
+  background: rgb(71, 149, 71);
+}
+
+.sectores_parcelas .juvenil {
+  background: rgb(215, 162, 63);
+}
+
+.sectores_parcelas .campamento_familiar {
+  background: rgb(68, 68, 150);
+}
+/**ESTILO PARA EL LISTADO DE PARCELAS QUE SE HABILITAN O NO*/
+.parcela {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.parcela img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.botones {
+  margin-left: auto;
+}
+
+.boton {
+  background: none;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.boton.inhabilitar {
+  background-color: red;
+  color: white;
+  transition: transform 0.3s ease-in-out; 
+  background: linear-gradient(to bottom, #f30c0c, #e16b6b);
 
 }
 
+.boton.habilitar {
+  background-color: green;
+  background: linear-gradient(to bottom, #0e8501, #51a86e);
+  color: white;
+}
+.boton.inhabilitar:hover {
+  background: linear-gradient(to bottom, #a96969, #2d1010);
+
+ }
+.boton.habilitar:hover {
+  background: linear-gradient(to bottom, #4f9447, #0a170e);
+  /* Cambia el color al pasar el cursor sobre el botón */
+}
+/*----ESTILO PARA CARTEL DE BAJA DISPONIBILIDAD*/
+.cartel_baja_dispo1 {
+  background-color: #ffcccb; /* Fondo de color rojo claro */
+  border: 2px solid #d32f2f; /* Borde rojo oscuro */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 16px;
+  max-width: 900px; /* Ancho máximo del cartel */
+  margin: 20px auto; /* Centrar el cartel horizontalmente */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  font-family: Arial, sans-serif;
+  color: #333; /* Texto oscuro */
+  text-align: center; /* Centrar el texto */
+  font-size: 16px; /* Tamaño de letra */
+  line-height: 1.5; /* Espaciado entre líneas */
+}
+/*----ESTILO PARA CARTEL DE BAJA DISPONIBILIDAD*/
+.cartel_baja_dispo {
+  background-color: #1f1c1c; /* Fondo de color negro */
+  color: #fff; /* Texto de color blanco */
+  height: 50px; /* Altura fija */
+  width: 100%; /* Ancho completo del body */
+  box-sizing: border-box; /* Incluir padding y borde en el ancho total */
+  text-align: center; /* Centrar el texto */
+  font-family: Arial, sans-serif;
+  font-size: 16px; /* Tamaño de letra */
+  display: flex; /* Utilizar flexbox */
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centrar horizontalmente */
+  padding: 0 10px; /* Asegurarse de que el texto no toque los bordes */
+  box-shadow: 0px 4px 8px rgba(29, 21, 21, 0.015); /* Sombra sutil */
+}
+
+
+
+.cartel_baja_dispo strong {
+  color: #b71c1c; /* Color destacado para "Aviso" */
+  font-size: 20px; /* Tamaño un poco mayor */
+}
+
+.cartel_baja_dispo span {
+  color: #e2e60b; /* Color verde oscuro para la llamada a la acción */
+  font-weight: bold; /* Resaltar la acción */
+  font-size: 18px; /* Tamaño un poco mayor */
+
+}

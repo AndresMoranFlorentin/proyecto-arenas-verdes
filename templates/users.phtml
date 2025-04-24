@@ -1,8 +1,10 @@
+
+
 <?php include 'header.phtml'; ?>
-
-
+<?php include 'nav.phtml'; ?>
+<section>
 <h1>Lista de Usuarios</h1>
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Apellido y Nombre</th>
@@ -22,19 +24,18 @@
                 <td><?= htmlspecialchars($user->localidad) ?></td>
                 <td><?= htmlspecialchars($user->rol) ?></td>
                 <td>
-                    <a class="btn btn-edit" href="editRol/<?= htmlspecialchars($user->id) ?>">Editar Rol</a>
-                    <a class="btn btn-delete" href="deleteUser/<?= htmlspecialchars($user->id) ?>">Eliminar</a>
+                    <a class="btn btn-edit btn-info" href="editRol/<?= htmlspecialchars($user->id) ?>">Editar Rol</a>
+                    <a class="btn btn-delete btn-danger" href="deleteUser/<?= htmlspecialchars($user->id) ?>">Eliminar</a>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
-
-
-
+</section>
+</main>
 <?php
-
 include 'whatsapp.phtml';
 include 'footer.phtml';
-
 ?>
+
+</body>

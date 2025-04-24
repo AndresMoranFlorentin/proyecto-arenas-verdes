@@ -1,15 +1,21 @@
+<?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
 
+<?php if ($dispo == false): ?>
+  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+<?php else: ?>
+  <br>
+<?php endif; ?>
+<main>
 
-    <?php include 'header.phtml'; ?>
-
-    <main>
-      <section class="introduccion" id="content">
-        <h1>Bienvenido a Arenas Verdes</h1>
-        <p>
-          Explora nuestras opciones de reservaciones, descubre nuestras tarifas y
-          encuentra respuestas a tus preguntas. Disfruta de una experiencia única
-          en Arenas Verdes.
-        </p>
+  <section class="introduccion" id="content">
+  <div class="presentacionReservacion"></div>
+    
+    <p>
+      Explora nuestras opciones de reservaciones, descubre nuestras tarifas y
+      encuentra respuestas a tus preguntas. Disfruta de una experiencia única
+      en Arenas Verdes.
+    </p>
 
     <h1>Arenas Verdes, las playas de Lobería, te esperan</h1>
     <p>
@@ -56,16 +62,54 @@
       aves y
       llevarte imágenes de quienes nos visitan y siguen su camino.
     </p>
-        <a href="reservacion.html" class="boton-reserva">Reservar ahora</a>
-      </section>
-       
+    <a href="pedir_reservacion">
+        <button>Reserva Ya!!</button>
+      </a>
+  
+  <h2>Como llegar al campamento:</h2>
+    <br>
+    <div class="map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d1290.1275882236025!2d-58.561107743103506!3d-38.54099248594808!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x958f9b60ae001b45%3A0xf8bf938a9ba0b885!2sFC5R%2B96%2C%20Arenas%20Verdes%2C%20Provincia%20de%20Buenos%20Aires!3m2!1d-38.541587799999995!2d-58.5594359!5e1!3m2!1ses-419!2sar!4v1729623922339!5m2!1ses-419!2sar"
+        width="600"
+        height="450"
+        style="border: 0"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <br>
+    <br>
+    <br>
+    <h3>
+      Para llegar al Campamento Municipal de Arenas Verdes desde Lobería,
+      sigue estos pasos:
+    </h3>
+    <ul>
+      <li>Salida desde Lobería: Dirígete hacia la Ruta Provincial N° 88</li>
+      <li>
+        Recorrido: Sigue la Ruta Provincial N° 88 durante aproximadamente 60
+        km
+      </li>
+      <li>
+        Desvío hacia Arenas Verdes: Al llegar al km 108.5, toma un desvío
+        hacia la derecha en dirección a Arenas Verdes
+      </li>
+      <li>
+        Camino Entoscado: Continúa por un camino de 7 km que atraviesa un
+        bosque con árboles de gran edad
+      </li>
+      <li>
+        Llegada al Campamento: El campamento está ubicado en Avenida B y calle
+        12
+      </li>
+    </ul>
+    </section>
+</main>
 
-      </main>
-      
-    
-   
+
 <?php
- include 'whatsapp.phtml'; 
- include 'footer.phtml';
-
+include 'whatsapp.phtml';
+include 'footer.phtml';
 ?>

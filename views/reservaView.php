@@ -4,8 +4,12 @@ class ReservaView
 {
     private $logueado;
     private $rol;
+    private $mensaje="";
+    private $tipo_mensaje="";
+    private $urlPdf="";
+    private $precios;
 
-    public function showHome($logueado, $rol)
+    public function showHome($logueado, $rol,$dispo)
     {
 
         $this->logueado = $logueado;
@@ -13,27 +17,42 @@ class ReservaView
         require './templates/home.phtml';
     }
 
-    public function renderPrecios($logueado, $rol){
+    public function renderPrecios($logueado, $rol, $precios, $dispo){
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        $this->precios = $precios;
+        require './templates/precios.phtml';
+    }  
+    
+    public function pregFrec($rol, $logueado, $dispo) {
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/preguntas.phtml';
+     }
+
+     public function mostrarParcela($rol, $logueado, $dispo) {
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/parcelas.phtml';
+     }
+
+     public function mostrarParcelasDisponibles($rol, $logueado,$reservaciones,$parcelas_por_sector,$fechaInicio,$fechaFin,$dispo){
+        $this->logueado = $logueado;
+        $this->rol = $rol;
+        require './templates/parcelas.phtml';
+    }
+
+    public function mostrarPrecioParcela($rol, $logueado,$precio_final=null,$precios,$dispo){
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/precios.phtml';
     }
-
-    public function pregFrec() {
-        require './templates/preguntas.phtml';
-     }
-     
-     public function reservacion() {
-         require './templates/reservacion.phtml';
-     }
-     public function mostrarParcelasDisponibles($reservaciones){
+    
+    public function ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje=null,$tipo_mensaje=null,$dispo,){
+        $this->mensaje="";
+        $this->tipo_mensaje="";
+        $this->logueado = $logueado;
+        $this->rol = $rol;
         require './templates/reservacion.phtml';
     }
-    public function mostrarPrecioParcela($precio_final){
-        require './templates/precios.phtml';
-    }
-    
-        public function parcelas() {
-        require './templates/parcelas.phtml';
-     }
 }

@@ -1,0 +1,98 @@
+  <link rel="shortcut icon"
+    href="https://www.turismoloberia.gov.ar/sites/default/files/logo_footer_iso.png" 
+    type="image/png" />
+<body>
+<?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
+<main>
+    <section class="introduccion" id="content">
+    <h2>Perfil de <?= htmlspecialchars($user->apellido . ' ' . htmlspecialchars($user->nombre)) ?></h2>
+       
+    
+
+       <p><strong>Apellido:</strong> <?= htmlspecialchars($user->apellido) ?></p>
+       <p><strong>Nombre:</strong> <?= htmlspecialchars($user->nombre) ?></p>
+       <p><strong>Dni:</strong> <?= htmlspecialchars($user->dni) ?></p>
+       <p><strong>Localidad:</strong> <?= htmlspecialchars($user->localidad) ?></p>
+       <p><strong>Teléfono:</strong> <?= htmlspecialchars($user->phone) ?></p>
+       <p><strong>Mail:</strong> <?= htmlspecialchars($user->email) ?></p>
+   
+       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+        id="editUser"
+        data-nombre="<?= htmlspecialchars($user->nombre) ?>"
+        data-apellido="<?= htmlspecialchars($user->apellido) ?>"
+        data-dni="<?= htmlspecialchars($user->dni) ?>"
+        data-phone="<?= htmlspecialchars($user->phone) ?>"
+        data-email="<?= htmlspecialchars($user->email) ?>"
+        data-localidad="<?= htmlspecialchars($user->localidad) ?>"
+       >Editar</button>
+
+    </section>
+
+    <!-- Modal editar datos de usuaruio -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="editModalLabel">Editar datos de Usuario</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form  id="editForm" action="editarUser" method="post" class="form-container">
+          <label for="name">Nombre:</label>
+            <input
+              type="text"
+              id="editName"
+              name="nombre"
+              placeholder="Nombre"
+              required />
+              <label for="apellido">Apellido:</label>
+            <input
+              type="text"
+              id="editApellido"
+              name="apellido"
+              placeholder="Apellido"
+              required />
+            <label for="dni"> Dni:</label>
+            <input type="number" id="editDni" name="dni" placeholder="DNI" required />
+            <label for="celular">Celular:</label>
+            <input
+              type="number"
+              min="00000"
+              id="editPhone"
+              name="phone"
+              placeholder="Celular"
+              required />
+              <label for="email">Email:</label>
+            <input
+              type="email"
+              id="editEmail"
+              name="email"
+              placeholder="E-mail"
+              required />
+              <label for="localidad">Localidad:</label>
+            <input
+              type="text"
+              id="editLocalidad"
+              name="localidad"
+              placeholder="Localidad"
+              required />
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+
+
+      </div>
+      </div>
+    </div>
+  </div>
+ 
+  </main>
+
+<?php include 'whatsapp.phtml'; ?>
+
+<?php include 'footer.phtml'; ?>
+
+</body>

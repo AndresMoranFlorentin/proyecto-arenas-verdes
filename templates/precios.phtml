@@ -1,7 +1,118 @@
 <?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
+
+<?php if ($dispo == false): ?>
+  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+<?php else: ?>
+<?php endif; ?>
 <main>
-  <br>
   <section class="introduccion" id="content">
+    <h1>TARIFAS BASE DE CAMPAMENTO</h1>
+    <form action="editarPrecios" method="post">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Categoría</th>
+        <th>NO RESIDENTES</th>
+        <th>RESIDENTES DE LOBERIA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Menores 4 años</td>
+        <td class="editable" data-col="edad_ninos4_no_residentes">
+          <?= $precios['no_residentes']['edad_ninos4'] > 0 
+              ? "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos4']) 
+              : "sin costo" ?>
+        </td>
+        <td class="editable" data-col="edad_ninos4_residentes">
+          <?= $precios['residentes']['edad_ninos4'] > 0 
+              ? "$ " . htmlspecialchars($precios['residentes']['edad_ninos4']) 
+              : "sin costo" ?>
+        </td>
+      </tr>
+      <tr>
+        <td>De 4 a 12 años</td>
+        <td class="editable" data-col="edad_ninos12_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos12']) ?>
+        </td>
+        <td class="editable" data-col="edad_ninos12_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['edad_ninos12']) ?>
+        </td>
+      </tr>
+      <tr>
+        <td>Mayores 12 años</td>
+        <td class="editable" data-col="edad_ninos20_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos20']) ?>
+        </td>
+        <td class="editable" data-col="edad_ninos20_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['edad_ninos20']) ?>
+        </td>
+      </tr>
+      <tr>
+        <td>Vehículo</td>
+        <td class="editable" data-col="costoxvehiculoxdia_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxvehiculoxdia']) ?>
+        </td>
+        <td class="editable" data-col="costoxvehiculoxdia_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['costoxvehiculoxdia']) ?>
+        </td>
+      </tr>
+      <tr>
+        <td>Estadía diaria Casillas</td>
+        <td class="editable" data-col="costoxcasillaxdia_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxcasillaxdia']) ?>
+        </td>
+        <td class="editable" data-col="costoxcasillaxdia_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['costoxcasillaxdia']) ?>
+        </td>
+      </tr>
+      <tr>
+        <td>Estadía mensual Casillas</td>
+        <td class="editable" data-col="costoxmescasilla_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxmescasilla']) ?>
+        </td>
+        <td class="editable" data-col="costoxmescasilla_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['costoxmescasilla']) ?>
+        </td>
+      </tr>
+      <tr>
+        <td>Pasar el día</td>
+        <td class="editable" data-col="costo_estancia_xdia_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_estancia_xdia']) ?>
+        </td>
+        <td class="editable" data-col="costo_estancia_xdia_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['costo_estancia_xdia']) ?>
+        </td>
+      </tr>
+      <tr>
+        <td>Uso de duchas</td>
+        <td class="editable" data-col="costo_ducha_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_ducha']) ?>
+        </td>
+        <td class="editable" data-col="costo_ducha_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['costo_ducha']) ?>
+        </td>
+      </tr>
+      <tr>
+        <td>Uso de sanitarios</td>
+        <td class="editable" data-col="costo_sanitario_no_residentes">
+          <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_sanitario']) ?>
+        </td>
+        <td class="editable" data-col="costo_sanitario_residentes">
+          <?= "$ " . htmlspecialchars($precios['residentes']['costo_sanitario']) ?>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <?php if ($logueado && $rol === 'admin'): ?>
+    <button type="button" id="editar-todo" class="btn btn-primary">Editar Precios</button>
+    <button type="submit" id="guardar-todo" class="btn btn-success" style="display:none;">Guardar Cambios</button>
+    <button type="button" id="cancelar-todo" class="btn btn-danger" style="display:none;">Cancelar</button>
+  <?php endif; ?>
+</form>
+
+    <p>*Las tarifas son por día y por persona</p>
     <h2>Simulador de precios: </h2>
     <form class="form-inline" action="simular_precios" method="post">
       <div class="form-group">
@@ -21,44 +132,52 @@
         <input name="estancia" type="number" min="00"
           max="100" class="form-control">
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="residentes" id="exampleRadios1" value="1" checked>
-        <label class="form-check-label" for="exampleRadios1">
-          Si        
-        </label>
+      <div class="form-group">
+          <label for="personas">Procedencia:</label>
+            <select class="form-control" name="localidad" id="exampleFormControlSelect1">
+              <option value="loberia">Loberia</option>
+              <option value="necochea">Necochea</option>
+              <option value="tandil">Tandil</option>
+              <option value="mar_del_plata">Mar del Plata</option>
+              <option value="miramar">Miramar</option>
+              <option value="balcarce">Balcarce</option>
+              <option value="otra">Otra</option>
+            </select>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="residentes" id="exampleRadios2" value="0">
-        <label class="form-check-label" for="exampleRadios2">
-          No
-        </label>
-      </div>
+      <br>
       <div class="checkbox">
         <label>Caracteristicas adicionales: </label>
         <label><input name="caracteristicas[]" type="checkbox" value="ducha"> Ducha</label>
         <label><input name="caracteristicas[]" type="checkbox" value="sanitario"> Sanitario</label>
-        <label><input name="caracteristicas[]" type="checkbox" value="casilla">Espacio para casilla</label>
-        <label><input name="caracteristicas[]" type="checkbox" value="vehiculo"> Espacio para vehiculo </label>
+      </div>
+      <br>
+      <div class="form-group">
+        <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
+        <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
+          <option value="sin_vehiculo">Sin vehiculo</option>
+          <option value="auto">Auto</option>
+          <option value="camioneta">Camioneta</option>
+          <option value="motorhome">Motorhome</option>
+          <option value="casilla">Casilla</option>
+        </select>
       </div>
       <div>
       </div>
-      <button type="submit" class="btn btn-primary">calcular</button>
+      <button type="submit" class="btn btn-primary">Calcular</button>
     </form>
-  </section>
-  <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
+      <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
   <div class="container">
-      <?php if (!empty($precio_final)): ?>
-          <div class="alert alert-success">
-              <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
-          </div>
-          </div>
-      <?php else: ?> 
-        <br>
-      <?php endif; ?>
+    <?php if (!empty($precio_final)): ?>
+      <div class="alert alert-success">
+        <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
+      </div>
+    <?php else: ?>
+      <br>
+    <?php endif; ?>
+  </div>
+  </section>
 </main>
 <?php
-
 include 'whatsapp.phtml';
 include 'footer.phtml';
-
 ?>

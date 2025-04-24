@@ -1,26 +1,23 @@
-/* HEADER */
-header {
+
+nav {
   display: flex;
+  background: #6a7ecf;
+  text-align: center;
   justify-content: space-between;
   align-items: center;
-  text-align: center;
+  min-width: 100%;
+  padding: 10px 20px;
+  z-index: 2;
   width: 100%;
-  background: #6a7ecf;
-  top: 0;
+   top: 0;
   left: 0;
   right: 0;
   z-index: 1;
 }
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  z-index: 2;
-  width: 100%;
-}
 
 nav ul {
+  
+  overflow: hidden;
   display: flex;
   list-style: none;
   overflow: hidden;
@@ -35,7 +32,7 @@ nav ul li {
   margin-right: 20px; /* Espaciado entre los elementos del menú */
 }
 
-nav ul li a {
+nav ul div li a {
   list-style: none;
   display: block;
   color: #fefdfd;
@@ -58,18 +55,82 @@ nav ul li.active {
 nav .btn_login {
   margin-left: auto;
 }
+
 /**boton del login **/
-.btn_login {
-  display: contents;
-  margin-left: 10%;
-  background: rgb(153, 225, 206);
-  font-size: 5px;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  margin: auto;
-  cursor: grab; /* Cambia el cursor al pasar sobre el botón */
+/* Estilos generales para los botones de autenticación */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
+
+/* Estilo base para los botones */
+.btn-auth {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Botón de Iniciar Sesión */
+.btn-login {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+.btn-login:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+}
+
+/* Botón de Registro */
+.btn-register {
+  background: linear-gradient(135deg, #28a745, #1c7d32);
+  color: white;
+}
+
+.btn-register:hover {
+  background: linear-gradient(135deg, #1c7d32, #145523);
+}
+
+/* Icono de perfil */
+.btn-profile {
+  font-size: 24px;
+  color: white;
+  background: #6a7ecf;
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.btn-profile:hover {
+  transform: scale(1.1);
+  background: #4f5fa9;
+}
+
+/* Botón de Logout */
+.btn-logout {
+  background: linear-gradient(135deg, #dc3545, #a71d2a);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.btn-logout:hover {
+  background: linear-gradient(135deg, #a71d2a, #7a131e);
+}
+
 /** SECCION CUERPO BODY**/
 body {
   height: 100%;
@@ -85,15 +146,13 @@ body {
   font-size: 16px;
 }
 main {
-  height: 50%;
+  height: 100%;
   width: 80%;
   background-color: #ffffff;
-  display: flex;
-  flex: 1; 
 }
 .introduccion {
-  padding-right: 15%;
-  padding-left: 15%;
+  padding-right: 10%;
+  padding-left: 10%;
   padding-bottom: 5%;
 }
 /** SECCION FOOTER**/
@@ -102,7 +161,7 @@ footer {
   width: 100vw; /* Usa la vista completa del ancho */
   max-width: 100%; /* Evita que se sobrepase */
   margin: 0;
-  padding: 20px;
+  padding: 20px 0;
   justify-content: center;
   flex-direction: column;
   align-items: center;
@@ -235,5 +294,62 @@ footer {
 }
 
 .sin-border-box {
-  box-sizing: content-box; 
+  box-sizing: content-box;
+}
+
+/* INFORMES */
+.informes {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.informes h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.informes form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.informes label {
+  font-weight: bold;
+}
+
+.informes input,
+.informes select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.informes button {
+  padding: 10px 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.informes button:hover {
+  background: #0056b3;
+}
+
+.resultado-informe {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-left: 5px solid #007bff;
+  border-radius: 5px;
 }
