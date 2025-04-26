@@ -31,7 +31,7 @@ class ParcelaController extends BaseController
         $parcelas = $this->model->getParcelas();
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->mostrarControlParcelas($parcelas, $logueado, $rol,BaseController::getDisponibilidad());
+        $this->view->mostrarControlParcelas($parcelas,null, $logueado, $rol,BaseController::getDisponibilidad());
     }
      /**
      * Funcion encargada de marcar por parte del administrador como disponible
@@ -46,7 +46,7 @@ class ParcelaController extends BaseController
         $rol = $this->helper->getRol();
         //faltaria un pequeño control que diga si se pudo habilitar o no
         $parcelas = $this->model->getParcelas();
-        $this->view->mostrarControlParcelas($parcelas, $logueado, $rol,BaseController::getDisponibilidad());
+        $this->view->mostrarControlParcelas($parcelas,null, $logueado, $rol,BaseController::getDisponibilidad());
     }
     /**
      * Funcion encargada de marcar por parte del administrador como no disponible
@@ -54,14 +54,28 @@ class ParcelaController extends BaseController
      */
     public function inhabilitarParcela()
     {
-        $id=$_GET['id'];
-        $this->model->inhabilitarParcela($id);
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        //faltaria un pequeño control que diga si se pudo habilitar o no
-        $parcelas = $this->model->getParcelas();
-        $this->view->mostrarControlParcelas($parcelas, $logueado, $rol,BaseController::getDisponibilidad());
-    }
+
+        if($logueado && $rol=='admin'){
+            $id=$_GET['id'];
+            //busca si existe, el usuario que haya reservado esa parcela
+            //en la fecha actual
+            $esta_reservada_x=$this->model->estaReservadaParcela($id);
+            if(empty($esta_reservada_x)){
+                $this->model->inhabilitarParcela($id);
+                $parcelas = $this->model->getParcelas();
+                $this->view->mostrarControlParcelas($parcelas,"exito", $logueado, $rol,BaseController::getDisponibilidad());        
+            }
+            //en caso de que exista el usuario que la reservo se avisa de que la 
+            //parcela ya esta reservada y si se inhabilita se perdera la
+            //reservacion de dicho usuario 
+            $parcelas = $this->model->getParcelas();
+            $this->view->mostrarControlParcelas($parcelas,"reservada", $logueado, $rol,$id,BaseController::getDisponibilidad());        
+
+           }
+        $this->view->mostrarSeccionPublica();
+       }
      /**
      * Funcion que muestra los distintos sectores de las parcelas
      * */

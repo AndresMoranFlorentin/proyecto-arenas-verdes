@@ -45,6 +45,9 @@ class ReservaView
         $this->rol = $rol;
         require './templates/precios.phtml';
     }
+    public function seccionReservacionPublica($mensaje,$dispo){
+        require './templates/reservacion_publica.phtml';
+    }
     public function ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje=null,$tipo_mensaje=null,$dispo,){
         $this->mensaje="";
         $this->tipo_mensaje="";

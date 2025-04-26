@@ -357,8 +357,16 @@ class ReservaController extends BaseController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,null,null,BaseController::getDisponibilidad());
-    }
+        //si no esta logueado se mostrara un cartel de que debe 
+        //iniciar sesion para poder reservar
+        if($logueado && ($rol=='admin' || 'user')){
+            $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,null,null,BaseController::getDisponibilidad());
+        }
+        else{
+            $mensaje="debera iniciar sesion para poder reservar parcelas";
+            $this->view->seccionReservacionPublica($mensaje,BaseController::getDisponibilidad());    
+        }
+        }
     /**
      * Funcion que lleva a la seccion de la pagina que muestra las preguntas mas frecuentes
      */

@@ -16,6 +16,18 @@ class ParcelaModel extends ConectionModel{
 
         return $parcelas;
     }
+    function estaReservadaParcela($id){
+        $sql="SELECT u.* 
+        FROM users AS u, reserva_parcela AS rp, reserva AS r
+        WHERE (rp.id_parcela =?) 
+        AND (r.id = rp.id_reserva) 
+        AND (NOW() BETWEEN r.fecha_inicio AND r.fecha_fin)
+        AND (r.id_usuario = u.id) ";
+        $resultado = $this->conexion->prepare($sql);
+        $resultado->execute([$id]);
+        $usuario = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        return $usuario;
+    }
     function inhabilitarParcela($id){
         $sql="UPDATE parcela SET disponible='no disponible' WHERE id=? ";
         $resultado = $this->conexion->prepare($sql);

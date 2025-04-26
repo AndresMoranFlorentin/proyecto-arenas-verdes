@@ -1,0 +1,35 @@
+<?php include 'header.phtml'; ?>
+<?php include 'nav.phtml'; ?>
+
+<main>
+  <section class="introduccion" id="content">
+    <br>
+    <br>
+    <h1 style="text-align: center;">Acceso Restringido</h1>
+    <p style="text-align: center;">Para realizar una reservación, necesitas iniciar sesión en tu cuenta.</p>
+    <br>
+    <p style="text-align: center;">
+      ¿No tienes una cuenta? 
+      <button type="button" class="btn-auth btn-register" data-bs-toggle="modal" data-bs-target="#regisModal">
+        Regístrate aquí
+      </button>
+    </p>
+    <p style="text-align: center;">
+      ¿Ya tienes una cuenta? 
+      <button type="button" class="btn-auth btn-login" data-bs-toggle="modal" data-bs-target="#loginModal">
+        Inicia sesión
+      </button>
+    </p>
+    <br>
+    <p style="text-align: center; font-style: italic;">
+      Nos disculpamos por cualquier inconveniente. Reservas exclusivas para usuarios registrados.
+    </p>
+  </section>
+  <br>
+  <br>
+</main>
+
+<?php
+include 'whatsapp.phtml';
+include 'footer.phtml';
+?>
