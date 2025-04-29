@@ -8,7 +8,7 @@ $id_usuario = $_SESSION['id'] ?? null;
 $reservas = [];
 if ($id_usuario) {
     $modelo = new ReservaModel();
-    $reservas = $modelo->obtenerReservasDelUsuario($id_usuario); // método definido en tu modelo
+    $reservas = $modelo->obtenerReservasDelUsuario($id_usuario);
 }
 ?>
 
@@ -34,9 +34,8 @@ if ($id_usuario) {
                         Fecha fin: <?php echo $reserva['fecha_fin']; ?>
                     </p>
                 </div>
-                <form method="POST" action="cancelar_reserva" class="m-0">
-                    <input type="hidden" name="id_reserva" value="<?php echo $reserva['id']; ?>">
-                    <button type="submit" name="eliminar_reserva" class="btn btn-outline-danger btn-sm" title="Eliminar">
+                <form class="m-0 eliminar-form" data-id="<?php echo $reserva['id']; ?>">
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar" title="Eliminar">
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
@@ -46,3 +45,46 @@ if ($id_usuario) {
         <p>No hay reservas para este usuario.</p>
     <?php endif; ?>
 </div>
+
+<!-- SweetAlert2 + script de confirmación -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.querySelectorAll('.btn-eliminar').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const form = this.closest('.eliminar-form');
+        const id = form.getAttribute('data-id');
+
+        Swal.fire({
+            title: '¿Eliminar reserva?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+        }).then(result => {
+            if (result.isConfirmed) {
+                // Crear formulario y enviarlo
+                const formReal = document.createElement('form');
+                formReal.method = 'POST';
+                formReal.action = 'cancelar_reserva';
+
+                const inputId = document.createElement('input');
+                inputId.type = 'hidden';
+                inputId.name = 'id_reserva';
+                inputId.value = id;
+
+                const inputSubmit = document.createElement('input');
+                inputSubmit.type = 'hidden';
+                inputSubmit.name = 'eliminar_reserva';
+                inputSubmit.value = '1';
+
+                formReal.appendChild(inputId);
+                formReal.appendChild(inputSubmit);
+                document.body.appendChild(formReal);
+                formReal.submit();
+            }
+        });
+    });
+});
+</script>
