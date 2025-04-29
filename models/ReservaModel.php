@@ -164,6 +164,16 @@ class ReservaModel extends ConectionModel
 
         return $precios;
     }
+        /**
+     * Actualizar el precio de una parcela
+     */
+    public function editarPrecio($columna, $valor, $residente) {
+        $sql = "UPDATE precios SET $columna = :valor WHERE residente_local = :residente";
+        $stmt = $this->conexion->prepare($sql);
+        return $stmt->execute([':valor' => $valor, ':residente' => $residente]);
+    }
+    
+    
     /**
      * Busca el ID de un servicio de reserva que cumpla con las características especificadas.
      *
