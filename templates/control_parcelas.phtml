@@ -2,38 +2,54 @@
 <?php include 'nav.phtml'; ?>
 
 <?php if ($dispo == false): ?>
-  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+    <?php include 'cartel_baja_disponibilidad.phtml'; ?>
 <?php else: ?>
-  <br>
+    <br>
 <?php endif; ?>
 <main>
     <section class="introduccion" id="content">
         <br>
         <br>
         <h2>En esta seccion podra habilitar o desahabilitar las parcelas que desee:</h2>
-        <?php foreach ($parcelas as $parcela): ?>
-            <div class="parcelas">
-                <div class="parcela">
-                    <img src="<?php echo $parcela['imagen']; ?>" alt="<?php echo $parcela['imagen']; ?>">
-                    <span>Parcela <?php echo $parcela['id']; ?></span>
-                    <span style="border-left:solid 1px black; margin:10px;"> <?php echo $parcela['disponible']; ?></span>
+        <?php if (!empty($aviso_mensaje)): ?>
+            <?php if ($estado == 'exito'): ?>
+                <div class="alert alert-success">
+                    <p><?php echo $aviso_mensaje; ?></p>
+                </div>
+            <?php else: ?>
+                <div class="damager alert-success">
+                    <p><?php echo $aviso_mensaje; ?></p>
+                <?php endif; ?>
+            <?php endif; ?>
 
-                    <?php if(($this->logueado)&&($this->rol == "admin")): ?>
-                    <div class="botones">
-                        <?php if ($parcela['disponible'] == 'disponible'): ?>
-                            <button class="boton inhabilitar">
-                                <a style="text-decoration: none; color: inherit;" href="inhabilitar?id=<?php echo $parcela['id']; ?>">Inhabilitar</a>
-                            </button>
-                        <?php else: ?>
-                            <button class="boton habilitar">
-                                <a style="text-decoration: none; color: inherit;" href="habilitar?id=<?php echo $parcela['id']; ?>">Habilitar</a>
-                            </button>
+            <?php foreach ($parcelas as $parcela): ?>
+                <div class="parcelas">
+                    <div class="parcela">
+                        <img src="<?php echo $parcela['imagen']; ?>" alt="<?php echo $parcela['imagen']; ?>">
+                        <span>Parcela <?php echo $parcela['id']; ?></span>
+                        <span style="border-left:solid 1px black; margin:10px;"> <?php echo $parcela['disponible']; ?></span>
+
+                        <?php if (($this->logueado) && ($this->rol == "admin")): ?>
+                            <div class="botones">
+                                <?php if ($parcela['disponible'] == 'disponible'): ?>
+                                    <button class="boton inhabilitar"
+                                        data-bs-toggle="modal"
+                                        data-bs-target=""
+                                        data-id="<?php echo $parcela['id']; ?>"
+                                        data-reservada="<?php echo $parcela['reservada']; ?>">
+                                        Inhabilitar
+                                    </button>
+
+                                <?php else: ?>
+                                    <button class="boton habilitar">
+                                        <a style="text-decoration: none; color: inherit;" href="habilitar?id=<?php echo $parcela['id']; ?>">Habilitar</a>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
                         <?php endif; ?>
                     </div>
-                    <?php endif; ?>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
     </section>
     <br>
 </main>
@@ -41,5 +57,74 @@
 include 'generar_informes.phtml';
 include 'whatsapp.phtml';
 include 'footer.phtml';
-
 ?>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmNormalModal" tabindex="-1" aria-labelledby="confirmNormalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmNormalModalLabel">Confirmar Acción</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas inhabilitar esta parcela?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmNormalAction">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmReservadaModal" tabindex="-1" aria-labelledby="confirmReservadaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmReservadaModalLabel">Parcela Reservada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Esta parcela está actualmente reservada. Si la inhabilitas, se perderá la reservación del usuario. ¿Deseas continuar?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmReservadaAction">Confirmar</button>            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let currentParcelaId = null;
+
+        // Capturar el ID de la parcela cuando se hace clic en el botón de inhabilitar
+        document.querySelectorAll('.boton.inhabilitar').forEach(button => {
+            button.addEventListener('click', function() {
+                currentParcelaId = this.getAttribute('data-id');
+                const isReservada = this.getAttribute('data-reservada') === '1';
+
+                // Mostrar el modal adecuado
+                if (isReservada) {
+                    const reservadaModal = new bootstrap.Modal(document.getElementById('confirmReservadaModal'));
+                    reservadaModal.show();
+                } else {
+                    const normalModal = new bootstrap.Modal(document.getElementById('confirmNormalModal'));
+                    normalModal.show();
+                }
+            });
+        });
+
+        document.getElementById('confirmNormalAction').addEventListener('click', function() {
+        if (currentParcelaId) {
+            // Redirige a inhabilitar?id=<ID> sin 'force'
+            window.location.href = `inhabilitar?id=${currentParcelaId}`;
+        }
+        });
+        // Confirmar acción reservada y redirigir a PHP con el ID
+        document.getElementById('confirmReservadaAction').addEventListener('click', function() {
+            if (currentParcelaId) {
+                window.location.href = `inhabilitar?id=${currentParcelaId}&force=true`;
+            }
+        });
+    });
+</script>
