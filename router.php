@@ -77,15 +77,8 @@ switch ($params[0]) {
         $reservaController->generarReservacion();
         break;
     case 'cancelar_reserva' :
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_reserva'])) {
             $reservaController->cancelarReserva();
-        }
-        else {
-        // Manejar el caso cuando no se recibe una solicitud POST válida
-            echo "Solicitud inválida.";
-        }
         break;
-
     case 'parcelas' :
         // Muestra las parcelas disponibles       
         $parcelaController->sectoresParcelas();

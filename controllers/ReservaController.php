@@ -333,7 +333,7 @@ class ReservaController extends BaseController
     }
 
     // Redirigir a la página de reservas después de realizar la acción
-    header("Location: " . BASE_URL . "generar_reservacion");
+    header("Location: " . BASE_URL . "seccion_reservacion");
     exit;
 }
 
