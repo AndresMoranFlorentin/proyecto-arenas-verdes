@@ -317,7 +317,7 @@ class ReservaController extends BaseController
     public function cancelarReserva(){
         //falta comprobar que estes logueado
         $id_reserva=$_GET['id'];
-        echo "<script>console.log('".addslashes("id reserva-> ".$id_reserva)."');</script>";
+       // echo "<script>console.log('".addslashes("id reserva-> ".$id_reserva)."');</script>";
         //primero se debe eliminar la relacion reserva parcela
         $elimino_relacion=$this->model->eliminarRelacionParcelaReserva($id_reserva);
         //luego eliminar la reservacion
@@ -357,10 +357,25 @@ class ReservaController extends BaseController
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
+        $id_del_usuario=$this->helper->getId();
         //si no esta logueado se mostrara un cartel de que debe 
         //iniciar sesion para poder reservar
         if($logueado && ($rol=='admin' || 'user')){
-            $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,null,null,BaseController::getDisponibilidad());
+            $usuario_login=$this->modelUser->findUserById($id_del_usuario);
+            //si encontro al usuario entonces se cargan las 3 variables con los
+            //datos del usuario, para que el formulario al mostrarse ya tenga datos precargados
+            if(!empty($usuario_login)){
+                $nombre=$usuario_login['nombre'];
+                $apellido=$usuario_login['apellido'];
+                $dni=$usuario_login['dni'];
+
+                $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,null,null,BaseController::getDisponibilidad(),$nombre,$apellido,$dni);
+
+            }
+            else{
+                $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,null,null,BaseController::getDisponibilidad());
+            }
+            //die();
         }
         else{
             $mensaje="debera iniciar sesion para poder reservar parcelas";

@@ -141,8 +141,6 @@ class ReservaModel extends ConectionModel
      */
     public function nuevaReserva($id_usuario,$menores_de_4,$menores_de_12,$mayores_de_12, $fecha_inicio, $fecha_fin,$tipo_vehiculo, $id_servicio, $estado, $identificador)
     {
-        echo "<script>console.log('".addslashes("entro a la funcion, id user-> ".$id_usuario)."');</script>";
-
         $sql = 'INSERT INTO reserva (id_usuario,menores_de_4,menores_de_12,mayores_de_12, fecha_inicio, fecha_fin,tipo_vehiculo, id_servicio, estado, identificador) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $sentencia = $this->conexion->prepare($sql);
@@ -267,6 +265,16 @@ class ReservaModel extends ConectionModel
         } else {
             return false; // Hubo un error al ejecutar la consulta
         }
+    }
+    function getParcelaReservada($id_parcela, $id_usuario){
+        $sql="SELECT rp.id_reserva AS id
+              FROM reserva AS r, users AS u, reserva_parcela AS rp
+              WHERE (rp.id_parcela=? AND rp.id_reserva=r.id)
+              AND (r.id_usuario = ?)";
+        $resultado = $this->conexion->prepare($sql);
+        $resultado->execute([$id_parcela,$id_usuario]);
+        $id_reserva = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        return $id_reserva;
     }
     /**
      * Funcion encargada de traer todas aquellas notificaciones

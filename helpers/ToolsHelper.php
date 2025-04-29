@@ -160,5 +160,37 @@ class ToolsHelper
     {
         return strtoupper(bin2hex(random_bytes(10)));
     }
-   
+   /**Funcion que sirve para enviar un mensaje de mail para alertar al usuario de que
+     * su reservacion ha finalizado porque la parcela ha sido inhabilitada abruptamente*/
+    function notificarCancelacionReservaEmail($nombre_destinatario, $email_destinatario)
+    {
+        $mail = new PHPMailer(true);
+
+        try {
+            // Configuración del servidor SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'mateooscuro43@gmail.com'; // el correo Gmail remitente
+            $mail->Password = 'xfmj dbla oxqk reaq '; // contraseña del remitente
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            // Destinatarios
+            $mail->setFrom('mateooscuro43@gmail.com', 'mateo oscuro');
+            $mail->addAddress($email_destinatario, $nombre_destinatario); // Añadir destinatario
+
+            // Contenido del correo
+            $mail->isHTML(true); // Habilitar HTML
+            $mail->Subject = 'Aviso!!! su reservacion ha sido cancelada';
+            $mail->Body    = '<p>Hola,</p>' . $nombre_destinatario . '<p> debido a que la parcela <strong> no esta en condiciones de ser usada </strong>, lamentamos informarle que tu reservación ha sido <strong>cancelada</strong>. Pedimos disculpas por la situacion</p>';
+            $mail->AltBody = 'Hola, Le recordamos que tu reservación ha sido cancelada debido a que la parcela no esta disponible para su uso. ¡Pedimos disculpas por lo sucedido!';
+
+            // Enviar correo 
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
