@@ -182,8 +182,7 @@ class ReservaController extends BaseController
                 $tipo_mensaje = "error";
                 $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
                 return;
-            }
-
+            }      
             // Recopilar y procesar datos
             $nombre = $_POST['nombre']; //nombre de quien hace la reserva
             $apellido = $_POST['apellido']; //apellido de quien hace la reserva
@@ -219,86 +218,10 @@ class ReservaController extends BaseController
 
             // Validar si el usuario existe mediante su dni
 
-        if (empty($id_user)) {
-            $mensaje = "Debe registrarse primero para poder hacer una reservación.";
-            $tipo_mensaje = "error";
-            $this->view->//mostrarFormularioReservacion
-                ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
-            return;
-        }
-        //se obtiene el email del usuario
-        $email_user=$datos_user->email;
-        // Buscar la parcela disponible
-        $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
-        // busca si el servicio es encontrado en la bbdd
-        $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
-        //echo "<script>console.log('".addslashes("id parcela-> ".$id_parcela)."');</script>";
-        //echo "<script>console.log('".addslashes("id servicio-> ".$id_servicio)."');</script>";
-        //controla si se encontro una parcela indicada
-        if (!empty($id_parcela) && !empty($id_servicio)) {
-            // Si llega aquí, se encontro una parcela al menos que coincide con lo que buscaba el usuario
-            // Crea la reservación con los datos recolectados:
-            // se genera el identificador de la reservacion
-            $identificador = $this->toolsHelper->generarIdentificador();
-            // en esta funcion se genera la reserva y a su vez se devuelve el id de la reserva que se genero
-            //echo "<script>console.log('".addslashes("identificador-> ".$identificador)."');</script>";
-           // echo "<script>console.log('".addslashes("id user-> ".$id_user)."');</script>";
-
-            $id_nueva_reserva = $this->model->nuevaReserva($id_user,$menores,$cuatroDoce,$doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
-            // se realiza la conexion entre la nueva reserva y la parcela que sera ocupada
-            $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
-            // ya la reservacion fue creada, en el siguiente paso se genera un comprobante pdf
-            // Validacion de los datos antes de generar el PDF
-            if (empty($nombre) || empty($apellido) || empty($identificador) || empty($precio_reserva) || empty($this->cel_washapp)) {
-                $mensaje = "Reservación creada exitosamente. Datos incompletos para generar el comprobante y enviarlo a su email";
-                $tipo_mensaje="cuidado";
-                $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
-            } else {
-                try {
-                    //se genera el archivo pdf con los datos pasados
-                    $archivoPdf= $this->toolsHelper->generarPDF($nombre, $apellido, $identificador, $precio_reserva, $this->cel_washapp);
-                   //si pudo crearlo..
-                    if ($archivoPdf) {
-                        //envia a el correo el comprobante
-                        if ($this->toolsHelper->enviarCorreoConPDF($email_user, $nombre, $archivoPdf)) {
-                            //si lo envio entonces procede a eliminar el archivo
-                            if(unlink($archivoPdf)){
-                            }
-                            else{
-                                //en el futuro se deberia buscar volver a eliminar el archivo
-                                unlink($archivoPdf);
-                                //echo 'el archivo no se pudo eliminar';
-                            }
-                        } else {
-                            $mensaje = "Reservacion Exitosa. Error al enviar el correo.";
-                            $tipo_mensaje = "cuidado";
-                            $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
-                       }
-                    } 
-
-                    // Mostrar mensaje de éxito y redirigir
-                    $mensaje = "Reservación creada exitosamente. El comprobante fue enviado a su correo electronico";
-                    $tipo_mensaje="exito";
-                    $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
-               
-                } catch (Exception $e) {
-                    //echo "Error al generar el PDF: " . $e->getMessage();
-                    $mensaje = "Reservación creada exitosamente. Error al generar el PDF";
-                    $tipo_mensaje="cuidado";
-                    $this->view->//mostrarFormularioReservacion
-                    ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
-               }
-            }
-        } 
-        else{
-            $mensaje = "No se ha encontrado una parcela con las características indicadas.";
-            $tipo_mensaje = "error";
-            $this->view->ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje, $tipo_mensaje,BaseController::getDisponibilidad());
-       }
             if (empty($id_user)) {
                 $mensaje = "Debe registrarse primero para poder hacer una reservación.";
                 $tipo_mensaje = "error";
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
+                $this->irAReservacion();
                 return;
             }
             //se obtiene el email del usuario
@@ -307,6 +230,8 @@ class ReservaController extends BaseController
             $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
             // busca si el servicio es encontrado en la bbdd
             $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
+            //echo "<script>console.log('".addslashes("id parcela-> ".$id_parcela)."');</script>";
+            //echo "<script>console.log('".addslashes("id servicio-> ".$id_servicio)."');</script>";
             //controla si se encontro una parcela indicada
             if (!empty($id_parcela) && !empty($id_servicio)) {
                 // Si llega aquí, se encontro una parcela al menos que coincide con lo que buscaba el usuario
@@ -314,6 +239,7 @@ class ReservaController extends BaseController
                 // se genera el identificador de la reservacion
                 $identificador = $this->toolsHelper->generarIdentificador();
                 // en esta funcion se genera la reserva y a su vez se devuelve el id de la reserva que se genero
+                //echo "<script>console.log('".addslashes("identificador-> ".$identificador)."');</script>";
                 $id_nueva_reserva = $this->model->nuevaReserva($id_user, $menores, $cuatroDoce, $doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
                 // se realiza la conexion entre la nueva reserva y la parcela que sera ocupada
                 $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
@@ -322,7 +248,7 @@ class ReservaController extends BaseController
                 if (empty($nombre) || empty($apellido) || empty($identificador) || empty($precio_reserva) || empty($this->cel_washapp)) {
                     $mensaje = "Reservación creada exitosamente. Datos incompletos para generar el comprobante y enviarlo a su email";
                     $tipo_mensaje = "cuidado";
-                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
+                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
                 } else {
                     try {
                         //se genera el archivo pdf con los datos pasados
@@ -341,31 +267,25 @@ class ReservaController extends BaseController
                             } else {
                                 $mensaje = "Reservacion Exitosa. Error al enviar el correo.";
                                 $tipo_mensaje = "cuidado";
-                                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
+                                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
                             }
-                        } else {
-                            $mensaje = "Reservacion Exitosa. Error al generar el comprobante de reserva.";
-                            $tipo_mensaje = "cuidado";
-                            $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
                         }
+
                         // Mostrar mensaje de éxito y redirigir
                         $mensaje = "Reservación creada exitosamente. El comprobante fue enviado a su correo electronico";
                         $tipo_mensaje = "exito";
-                        $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
+                        $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
                     } catch (Exception $e) {
                         //echo "Error al generar el PDF: " . $e->getMessage();
                         $mensaje = "Reservación creada exitosamente. Error al generar el PDF";
                         $tipo_mensaje = "cuidado";
-                        $this->view-> //mostrarFormularioReservacion
-                            ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
+                        $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
                     }
                 }
             } else {
                 //si no se encontro la parcela, entonces se buscara aquellas condiciones que no se pudieron cumplir
                 //para que asi el usuario sepa porque razones no ha sido encontrada la parcela
                 $fallas = $this->model->analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
-               // var_dump($fallas);
-               // die();
                 if (!empty($fallas)) {
                     $mensaje = "<strong>No se pudo encontrar una parcela disponible, debido a: </strong><ul>";
                     foreach ($fallas as $falla) {
@@ -373,24 +293,16 @@ class ReservaController extends BaseController
                     }
                     $mensaje .= "</ul>";
                     $tipo_mensaje = "error";
-                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
-                    die();
+                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
                 }
-                //en caso de que la funcion no encontro las fallas,pero no se encontro la parcela igualmente
+
+                //en caso de que la funcion no encontro las fallas,pero no se pudo encontrar alguna para reservar
+                //entonces por defecto se envia el siguiente mensaje
                 $mensaje = "No se ha encontrado una parcela con las características indicadas.";
                 $tipo_mensaje = "error";
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
+                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
             }
         }
-    }
-    /**
-     * Funcion que lleve al usuario a la pagina donde se muestre las reservaciones del usuario
-     */
-    public function mostrarMisReservas()
-    {
-        $logueado = $this->helper->checkUser();
-        $rol = $this->helper->getRol();
-        $this->view->irSeccionAMisReservas($rol, $logueado, BaseController::getDisponibilidad());
     }
     /**
      * Funcion que permite al usuario cancelar aquella reservacion que le 
@@ -399,59 +311,39 @@ class ReservaController extends BaseController
      * ---o el superadmin pueda acceder a el, y al usuario solo se le permitira 
      * ---cancelar sus reservas dentro de un plazo de tiempo
      */
-  public function cancelarReserva()
-{
-    // Verificar si se recibió por POST y si hay una sesión activa
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_reserva'])) {
-
-        $id_reserva = $_POST['id_reserva'];
-
-        echo "<script>console.log('".addslashes("id reserva-> ".$id_reserva)."');</script>";
-
-        // Primero eliminar la relación reserva-parcela
-        $elimino_relacion = $this->model->eliminarRelacionParcelaReserva($id_reserva);
-
-        if ($elimino_relacion) {
-            // Luego eliminar la reserva
-            $elimino_reserva = $this->model->eliminarReserva($id_reserva);
-
-            if ($elimino_reserva) {
-                $_SESSION['mensaje_reserva'] = ['tipo' => 'success', 'texto' => 'La reservación fue eliminada con éxito.'];
-            } else {
-                $_SESSION['mensaje_reserva'] = ['tipo' => 'danger', 'texto' => 'Error al eliminar la reservación.'];
-            }
-
-        } else {
-            $_SESSION['mensaje_reserva'] = ['tipo' => 'warning', 'texto' => 'No se pudo eliminar la relación con la parcela. Intente más tarde.'];
-        }
-    } else {
-        $_SESSION['mensaje_reserva'] = ['tipo' => 'danger', 'texto' => 'No se recibió una solicitud válida para cancelar la reserva.'];
-    }
-
-    // Redirigir a la página de reservas después de realizar la acción
-    header("Location: " . BASE_URL . "seccion_reservacion");
-    exit;
-}
-
-
     public function cancelarReserva()
     {
-        //falta comprobar que estes logueado
-        $id_reserva = $_GET['id'];
-        // echo "<script>console.log('".addslashes("id reserva-> ".$id_reserva)."');</script>";
-        //primero se debe eliminar la relacion reserva parcela
-        $elimino_relacion = $this->model->eliminarRelacionParcelaReserva($id_reserva);
-        //luego eliminar la reservacion
-        if ($elimino_relacion) {
-            //se procede a eliminar la reserva
-            $elimino_reserva = $this->model->eliminarReserva($id_reserva);
-            if ($elimino_reserva) {
-                echo "mostrar en la vista que se elimino la reservacion con exito";
+        // Verificar si se recibió por POST y si hay una sesión activa
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_reserva'])) {
+
+            $id_reserva = $_POST['id_reserva'];
+
+            echo "<script>console.log('" . addslashes("id reserva-> " . $id_reserva) . "');</script>";
+
+            // Primero eliminar la relación reserva-parcela
+            $elimino_relacion = $this->model->eliminarRelacionParcelaReserva($id_reserva);
+
+            if ($elimino_relacion) {
+                // Luego eliminar la reserva
+                $elimino_reserva = $this->model->eliminarReserva($id_reserva);
+
+                if ($elimino_reserva) {
+                    $_SESSION['mensaje_reserva'] = ['tipo' => 'success', 'texto' => 'La reservación fue eliminada con éxito.'];
+                } else {
+                    $_SESSION['mensaje_reserva'] = ['tipo' => 'danger', 'texto' => 'Error al eliminar la reservación.'];
+                }
+            } else {
+                $_SESSION['mensaje_reserva'] = ['tipo' => 'warning', 'texto' => 'No se pudo eliminar la relación con la parcela. Intente más tarde.'];
             }
         } else {
-            echo 'mostrar que debido a un error de conexion no se pudo eliminar la reservacion';
+            $_SESSION['mensaje_reserva'] = ['tipo' => 'danger', 'texto' => 'No se recibió una solicitud válida para cancelar la reserva.'];
         }
+
+        // Redirigir a la página de reservas después de realizar la acción
+        header("Location: " . BASE_URL . "seccion_reservacion");
+        exit;
     }
+
     /**
      * Funcion encargada de buscar aquellos servicios que proveen ciertas parcelas
      * @param int $fogon (0 o 1 false o true) 

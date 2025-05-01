@@ -157,61 +157,69 @@ class ReservaModel extends ConectionModel
         $stmt = $this->conexion->prepare($sqlFechas);
         $stmt->execute([$fecha_inicio, $fecha_fin]);
         $idsFechas = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        var_dump("Fechas encontradas:::",$idsFechas);
-
+       // var_dump("Fechas encontradas:::",$idsFechas);
+        //en caso de que no encontro parcelas en ese rango de fechas que no este reservada
         if (empty($idsFechas)) {
             $problemas[] = "No hay parcelas disponibles en ese rango de fechas.";
+          //  echo "<script>console.log('".addslashes("| ...No hay parcelas disponibles en ese rango de fechas.")."');</script>";
+
             return $problemas;
         }
-        echo  "| Hay parcelas disponibles en ese rango de fechas.";
+       // echo "<script>console.log('".addslashes("| Hay parcelas disponibles en ese rango de fechas.")."');</script>";
 
         // 2. Filtrar por capacidad
         $idsFiltradas = $this->filtrarIds($idsFechas, "cant_personas >= ?", [$cantPersonas]);
 
         if (empty($idsFiltradas)){
             $problemas[] = "No hay parcelas con capacidad para $cantPersonas personas.";
+           // echo "<script>console.log('".addslashes(" | ...No hay parcelas con capacidad para $cantPersonas personas.")."');</script>";
+
         } 
-        echo " | Hay parcelas con capacidad para $cantPersonas personas.";
+        //echo "<script>console.log('".addslashes(" | Hay parcelas con capacidad para $cantPersonas personas.")."');</script>";
 
         // 3. Filtrar por fogón
         if ($fogon) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_fogon = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con fogón.";
-            }
-            echo " | Hay parcelas con fogón.";
+             //   echo "<script>console.log('".addslashes(" | ...No hay parcelas con fogón.")."');</script>";
 
+            }
+         //   echo "<script>console.log('".addslashes(" | Hay parcelas con fogón.")."');</script>";
         }
         // 4. Filtrar por toma eléctrica
         if ($tomaElectrica) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_toma_electrica = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con toma eléctrica.";
+               // echo "<script>console.log('".addslashes(" | ...No hay parcelas con toma eléctrica.")."');</script>";
+
             }
-            echo " | Hay parcelas con toma eléctrica.";
+          //  echo "<script>console.log('".addslashes(" | Hay parcelas con toma eléctrica.")."');</script>";
         }
     
         // 5. Sombra
         if ($sombra) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "sombra = 1");
             if (empty($idsFiltradas)){
+              //  echo "<script>console.log('".addslashes(" | ...No hay parcelas con sombra. | ")."');</script>";
+
                 $problemas[] = "No hay parcelas con sombra.";
             } 
-            echo " | Hay parcelas con sombra. | ";
+         //   echo "<script>console.log('".addslashes(" | Hay parcelas con sombra. | ")."');</script>";
+
         }
     
         // 6. Agua
         if ($agua) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "agua = 1");
             if (empty($idsFiltradas)){
+               // echo "<script>console.log('".addslashes(" | ...No hay parcelas con conexión de agua.")."');</script>";
                 $problemas[] = "No hay parcelas con conexión de agua.";
             } 
-            echo " | Hay parcelas con conexión de agua.";
+         //   echo "<script>console.log('".addslashes(" | Hay parcelas con conexión de agua.")."');</script>";
         }
-        echo "..................................";
-        echo "resumen de todo lo que encontro: ";
-        var_dump($problemas);
-        echo "----------------------------------";
+
         return $problemas;
     }
     /**
