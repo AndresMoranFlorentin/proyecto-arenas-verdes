@@ -22,24 +22,26 @@ class ReservaView
         $this->rol = $rol;
         $this->precios = $precios;
         require './templates/precios.phtml';
-    }
-     
+    }  
     
     public function pregFrec($rol, $logueado, $dispo) {
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/preguntas.phtml';
      }
+
      public function mostrarParcela($rol, $logueado, $dispo) {
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/parcelas.phtml';
      }
+
      public function mostrarParcelasDisponibles($rol, $logueado,$reservaciones,$parcelas_por_sector,$fechaInicio,$fechaFin,$dispo){
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/parcelas.phtml';
     }
+
     public function mostrarPrecioParcela($rol, $logueado,$precio_final=null,$precios,$dispo){
         $this->logueado = $logueado;
         $this->rol = $rol;
@@ -54,10 +56,5 @@ class ReservaView
         $this->logueado = $logueado;
         $this->rol = $rol;
         require './templates/reservacion.phtml';
-    }
-    public function irSeccionAMisReservas($rol, $logueado,$dispo) {
-        $this->logueado = $logueado;
-        $this->rol = $rol;
-        require './templates/mis_reservas.phtml';
     }
 }

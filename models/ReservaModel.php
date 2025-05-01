@@ -279,6 +279,16 @@ class ReservaModel extends ConectionModel
 
         return $precios;
     }
+        /**
+     * Actualizar el precio de una parcela
+     */
+    public function editarPrecio($columna, $valor, $residente) {
+        $sql = "UPDATE precios SET $columna = :valor WHERE residente_local = :residente";
+        $stmt = $this->conexion->prepare($sql);
+        return $stmt->execute([':valor' => $valor, ':residente' => $residente]);
+    }
+    
+    
     /**
      * Busca el ID de un servicio de reserva que cumpla con las características especificadas.
      *
@@ -465,8 +475,15 @@ class ReservaModel extends ConectionModel
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([$id_p]);
     }
-
-    /**
+ /*Se encarga de buscar las reservas del usuario filtrando por idUsuario*/
+public function obtenerReservasDelUsuario($id_usuario)
+{
+    $sql = "SELECT * FROM reserva WHERE id_usuario = ?";
+    $consulta = $this->conexion->prepare($sql);
+    $consulta->execute([$id_usuario]);
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+ /**
      * Obtener la lista de precios
      */
     public function getPrecioSLista() {
@@ -486,14 +503,5 @@ class ReservaModel extends ConectionModel
         ];
     }
 
-    /**
-     * Actualizar el precio de una parcela
-     */
-    public function editarPrecio($columna, $valor, $residente) {
-        $sql = "UPDATE precios SET $columna = :valor WHERE residente_local = :residente";
-        $stmt = $this->conexion->prepare($sql);
-        return $stmt->execute([':valor' => $valor, ':residente' => $residente]);
-    }
-    
-    
+
 }
