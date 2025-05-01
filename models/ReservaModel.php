@@ -128,6 +128,121 @@ class ReservaModel extends ConectionModel
         return $parcela;
     }
     /**
+     * Buscara segun las condiciones dadas, porque no se ha encontrado ninguna parcela que cumpla con las condiciones pasadas por parametro
+     * *
+     * @param string $fecha_inicio La fecha de inicio de la reserva en formato 'YYYY-MM-DD'.
+     * @param string $fecha_fin La fecha de fin de la reserva en formato 'YYYY-MM-DD'.
+     * @param int $cantPersonas El número de personas que ocuparán la parcela.
+     * @param string $tipo_de_vehiculo El tipo de vehículo para la parcela (actualmente no se usa en la consulta SQL).
+     * @param bool $fogon Indica si la parcela debe tener fogón.
+     * @param bool $tomaElectrica Indica si la parcela debe tener toma eléctrica.
+     * @param bool $sombra Indica si la parcela debe tener sombra.
+     * @param bool $agua Indica si la parcela debe tener suministro de agua.
+     * @return array Retorna un listado de todas aquellas condiciones que no cumplio
+     *   */
+    public function analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua) {
+        $problemas = [];
+    
+        // 1. ¿Hay alguna parcela disponible en ese rango de fechas?
+        $sqlFechas = "
+            SELECT p.id 
+            FROM parcela AS p
+            WHERE p.id NOT IN (
+                SELECT DISTINCT reserpar.id_parcela
+                FROM reserva_parcela AS reserpar
+                INNER JOIN reserva AS r ON reserpar.id_reserva = r.id
+                WHERE NOT (r.fecha_fin < ? OR r.fecha_inicio > ?)
+            ) AND p.disponible = 'disponible'
+        ";
+        $stmt = $this->conexion->prepare($sqlFechas);
+        $stmt->execute([$fecha_inicio, $fecha_fin]);
+        $idsFechas = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        var_dump("Fechas encontradas:::",$idsFechas);
+
+        if (empty($idsFechas)) {
+            $problemas[] = "No hay parcelas disponibles en ese rango de fechas.";
+            return $problemas;
+        }
+        echo  "| Hay parcelas disponibles en ese rango de fechas.";
+
+        // 2. Filtrar por capacidad
+        $idsFiltradas = $this->filtrarIds($idsFechas, "cant_personas >= ?", [$cantPersonas]);
+
+        if (empty($idsFiltradas)){
+            $problemas[] = "No hay parcelas con capacidad para $cantPersonas personas.";
+        } 
+        echo " | Hay parcelas con capacidad para $cantPersonas personas.";
+
+        // 3. Filtrar por fogón
+        if ($fogon) {
+            $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_fogon = 1");
+            if (empty($idsFiltradas)) {
+                $problemas[] = "No hay parcelas con fogón.";
+            }
+            echo " | Hay parcelas con fogón.";
+
+        }
+        // 4. Filtrar por toma eléctrica
+        if ($tomaElectrica) {
+            $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_toma_electrica = 1");
+            if (empty($idsFiltradas)) {
+                $problemas[] = "No hay parcelas con toma eléctrica.";
+            }
+            echo " | Hay parcelas con toma eléctrica.";
+        }
+    
+        // 5. Sombra
+        if ($sombra) {
+            $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "sombra = 1");
+            if (empty($idsFiltradas)){
+                $problemas[] = "No hay parcelas con sombra.";
+            } 
+            echo " | Hay parcelas con sombra. | ";
+        }
+    
+        // 6. Agua
+        if ($agua) {
+            $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "agua = 1");
+            if (empty($idsFiltradas)){
+                $problemas[] = "No hay parcelas con conexión de agua.";
+            } 
+            echo " | Hay parcelas con conexión de agua.";
+        }
+        echo "..................................";
+        echo "resumen de todo lo que encontro: ";
+        var_dump($problemas);
+        echo "----------------------------------";
+        return $problemas;
+    }
+    /**
+     * Funcion encargada de devolver array que dadas la condicion y el parametro pasado
+     * devuelva un null o un valor que signifique que si encontro aquella parcela que se 
+     * le dio por parametro
+     */
+    private function filtrarIds($ids, $condicion, $params) {
+        if (empty($ids)) return [];
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "SELECT id FROM parcela WHERE id IN ($placeholders) AND $condicion";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute(array_merge($ids, $params));
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+    
+    private function filtrarIdsConServicio($ids, $condicion) {
+        if (empty($ids)) return [];
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "
+            SELECT p.id
+            FROM parcela AS p
+            INNER JOIN servicioreserva AS sr ON p.id_servicio = sr.id_servicio
+            WHERE p.id IN ($placeholders) AND $condicion
+        ";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute($ids);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+    
+    /**
      * Crea una nueva reserva en la base de datos.
      *
      * @param int $id_usuario El ID del usuario que realiza la reserva.
