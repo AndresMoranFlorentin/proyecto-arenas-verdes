@@ -173,16 +173,8 @@ class ReservaController extends BaseController
     {
         // Validar si el usuario está logueado y tiene un rol permitido
         $logueado = $this->helper->checkUser();
-        $rol = $this->helper->getRol();
         //se verifica que el usuario esta al menos logueado
         if ($logueado) {
-            // Verificar que llegaron todos los datos necesarios
-            if (!$this->servicioR->validacionDatosReservacion($_POST)) {
-                $mensaje = "Por favor, completa todos los campos obligatorios.";
-                $tipo_mensaje = "error";
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
-                return;
-            }      
             // Recopilar y procesar datos
             $nombre = $_POST['nombre']; //nombre de quien hace la reserva
             $apellido = $_POST['apellido']; //apellido de quien hace la reserva
@@ -193,8 +185,10 @@ class ReservaController extends BaseController
             $cuatroDoce = $_POST['cuatroDoce']; //numero de mayores a 4 hasta 12 años que iran
             $doceMas = $_POST['doceMas']; //numero de mayores a 12 años que iran
             $tipo_de_vehiculo = $_POST['tipo_de_vehiculo']; //el tipo de vehiculo que usara(aunque esta la opcion de no elegir ninguno)
-
-            $caracteristicas = $_POST['caracteristicas'];
+           
+            //en caso de que no haya seleccionado ninguna caracteristica
+            //queda el array de caracteristicas vacio, pero no null
+            $caracteristicas = isset($_POST['caracteristicas']) ? $_POST['caracteristicas'] : [];
 
             // Convertir características a valores binarios
             $fogon = in_array('fogon', $caracteristicas) ? 1 : 0;
@@ -215,22 +209,20 @@ class ReservaController extends BaseController
             // echo "<script>console.log('".addslashes("llego bien-> ".$cantPersonas."|".$dni."|es residente: ".$residente.",user: ".$id_user)."');</script>";
 
             $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha, $con_sanitario, $tipo_de_vehiculo, $residente);
-
-            // Validar si el usuario existe mediante su dni
-
-            if (empty($id_user)) {
-                $mensaje = "Debe registrarse primero para poder hacer una reservación.";
-                $tipo_mensaje = "error";
-                $this->irAReservacion();
-                return;
-            }
             //se obtiene el email del usuario
             $email_user = $datos_user->email;
-            // Buscar la parcela disponible
+            // Buscar la parcela disponible         
+            // Verificar que llegaron todos los datos necesarios
+            if (!$this->servicioR->validacionDatosReservacion($_POST)) {
+                $mensaje = "Por favor, completa todos los campos obligatorios.";
+                $tipo_mensaje = "error";
+                $this->irAReservacion($mensaje,$tipo_mensaje);
+                return;
+            }
+
             $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
             // busca si el servicio es encontrado en la bbdd
             $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
-            //echo "<script>console.log('".addslashes("id parcela-> ".$id_parcela)."');</script>";
             //echo "<script>console.log('".addslashes("id servicio-> ".$id_servicio)."');</script>";
             //controla si se encontro una parcela indicada
             if (!empty($id_parcela) && !empty($id_servicio)) {
@@ -248,7 +240,8 @@ class ReservaController extends BaseController
                 if (empty($nombre) || empty($apellido) || empty($identificador) || empty($precio_reserva) || empty($this->cel_washapp)) {
                     $mensaje = "Reservación creada exitosamente. Datos incompletos para generar el comprobante y enviarlo a su email";
                     $tipo_mensaje = "cuidado";
-                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                    $this->irAReservacion($mensaje,$tipo_mensaje);
+                    return;
                 } else {
                     try {
                         //se genera el archivo pdf con los datos pasados
@@ -267,42 +260,77 @@ class ReservaController extends BaseController
                             } else {
                                 $mensaje = "Reservacion Exitosa. Error al enviar el correo.";
                                 $tipo_mensaje = "cuidado";
-                                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                                $this->irAReservacion($mensaje,$tipo_mensaje);
+                                return;
                             }
                         }
 
                         // Mostrar mensaje de éxito y redirigir
                         $mensaje = "Reservación creada exitosamente. El comprobante fue enviado a su correo electronico";
                         $tipo_mensaje = "exito";
-                        $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                        $this->irAReservacion($mensaje,$tipo_mensaje);
+                        return;
                     } catch (Exception $e) {
                         //echo "Error al generar el PDF: " . $e->getMessage();
                         $mensaje = "Reservación creada exitosamente. Error al generar el PDF";
                         $tipo_mensaje = "cuidado";
-                        $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                        $this->irAReservacion($mensaje,$tipo_mensaje);
+                        return;
                     }
                 }
             } else {
                 //si no se encontro la parcela, entonces se buscara aquellas condiciones que no se pudieron cumplir
                 //para que asi el usuario sepa porque razones no ha sido encontrada la parcela
-                $fallas = $this->model->analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
+               // echo "<script>console.log('" . addslashes("Llego a la parte de que fracaso la reservacion") . "');</script>";
+
+                $fallas = $this->model->analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $fogon, $tomaElectrica, $sombra, $agua);
+                // var_dump($fallas);
+                // die();
+                //echo "<script>console.log('".addslashes("id servicio-> ".$fallas[0])."');</script>";
+
                 if (!empty($fallas)) {
                     $mensaje = "<strong>No se pudo encontrar una parcela disponible, debido a: </strong><ul>";
                     foreach ($fallas as $falla) {
-                        $mensaje .= "<h4>$falla</h4>";
+                        $mensaje .= "<h5>$falla</h5>";
                     }
                     $mensaje .= "</ul>";
                     $tipo_mensaje = "error";
-                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                    $this->irAReservacion($mensaje,$tipo_mensaje);
+                    return;
                 }
 
                 //en caso de que la funcion no encontro las fallas,pero no se pudo encontrar alguna para reservar
                 //entonces por defecto se envia el siguiente mensaje
                 $mensaje = "No se ha encontrado una parcela con las características indicadas.";
                 $tipo_mensaje = "error";
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                $this->irAReservacion($mensaje,$tipo_mensaje);
+                return;
             }
         }
+        //en caso de que no este logueado
+        $this->irAReservacion();
+
+    }
+    public function confirmarReserva()
+    {
+        $logueado = $this->helper->checkUser();
+        $rol = $this->helper->getRol();
+
+        if ($logueado && ($rol == 'admin' || 'Admin')) {
+            $id_reserva = $_POST['id_reserva'];
+            $id_del_usuario = $this->helper->getId();
+
+            $usuario_login = $this->modelUser->findUserById($id_del_usuario);
+            $nombre = $usuario_login['nombre'];
+            $apellido = $usuario_login['apellido'];
+            $dni = $usuario_login['dni'];
+
+            $this->model->confirmarReservacion($id_reserva);
+            $reservaciones = $this->model->getReservacionesMasUsuario();
+            $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni, $reservaciones);
+            return;
+        }
+        $this->irAReservacion();
     }
     /**
      * Funcion que permite al usuario cancelar aquella reservacion que le 
@@ -355,17 +383,24 @@ class ReservaController extends BaseController
      */
     private function getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
     {
+        //en caso de que no eligio ninguna caracteristica entonces 
+        //se buscara la parcela con menos servicios de la base
+        if(($fogon & $tomaElectrica & $sombra & $agua)==0){
+            $idServicio= $this->model->getParcelaBasica();
+        }
+        else{
         $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
-        //si no encuentra el servicio retornar null
-        if (empty($idServicio)) { //no existe un servicio de esas caracteristicas
-            return null;
+        //si no encuentra el servicio retornar null 
+            if (empty($idServicio)) { //no existe un servicio de esas caracteristicas
+                return null;
+            }
         }
         return $idServicio;
     }
     /**
      * Funcion que lleva a la pagina de reservacion que muestra el formulario de la reservacion
      */
-    public function irAReservacion()
+    public function irAReservacion($mensaje=null,$tipo_mensaje=null)
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
@@ -380,10 +415,16 @@ class ReservaController extends BaseController
                 $nombre = $usuario_login['nombre'];
                 $apellido = $usuario_login['apellido'];
                 $dni = $usuario_login['dni'];
-
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                if ($rol == 'admin' || 'Admin') {
+                    //en este caso se buscara todas las reservaciones mas los datos del usuario relevantes que 
+                    //hizo la reservacion para que asi el admin pueda con esos datos confirmar o cancelar la reservacion
+                    $reservaciones = $this->model->getReservacionesMasUsuario();
+                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad(), $nombre, $apellido, $dni, $reservaciones);
+                    return;
+                }
+                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
             } else {
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad());
+                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
             }
             //die();
         } else {

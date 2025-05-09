@@ -1,0 +1,98 @@
+<?php if (!empty($reservaciones)): ?>
+  <!-- Modal de Confirmación -->
+  <div id="modalConfirmacion" class="modal">
+    <div class="modal-contenido">
+      <p id="modalMensaje">¿Estás seguro?</p>
+      <div class="modal-botones">
+        <button id="btnAceptar">Sí</button>
+        <button id="btnCancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  <?php foreach ($reservaciones as $reserva): ?>
+    <div class="reserva-card">
+      <!-- Columna Izquierda -->
+      <div>
+        <i class="bi bi-person-circle usuario-logo" onclick="mostrarUsuario(this)"></i>
+        <div class="info-usuario">
+          <strong>Nombre:</strong> <?php echo $reserva['nombre_completo']; ?> <br>
+          <strong>Email:</strong> <?php echo $reserva['email']; ?><br>
+          <strong>Celular:</strong> <?php echo $reserva['celular']; ?>
+        </div>
+      </div>
+
+      <!-- Columna Central -->
+      <div>
+        <span class="identificador"><?php echo $reserva['identificador']; ?></span>
+        <button class="btn-mas" onclick="mostrarInfoExtra(this)">+</button>
+        <div class="info-extra">
+          Parcelas: <?php echo $reserva['cantidad_personas']; ?>,
+          Fecha Inicio: <?php echo $reserva['fecha_inicio'] ?> |
+          Fecha Fin: <?php echo $reserva['fecha_fin']; ?> <br>
+          Estado: <?php echo $reserva['estado']; ?>
+        </div>
+      </div>
+
+      <!-- Columna Derecha (botones) -->
+      <div class="acciones">
+        <?php if($reserva['estado']=='pendiente'):?>
+          <!-- Redirección al controlador con ID -->
+          <form method="post" action="confirmar_reserva" onsubmit="return confirmarAccion(this);">
+            <input type="hidden" name="id_reserva" value="<?php echo $reserva['id']; ?>">
+            <button type="submit" class="btn-confirmar">✔ Confirmar</button>
+          </form>
+
+          <form method="post" action="cancelar_reserva" onsubmit="return eliminarAccion(this);">
+            <input type="hidden" name="id_reserva" value="<?php echo $reserva['id']; ?>">
+            <button type="submit" class="btn-eliminar">✖ Eliminar </button>
+          </form>
+         <?php else: ?>
+            <h5 class="aviso_confirmada">Ya esta confirmada</h5>
+         <?php endif; ?>
+      </div>
+    </div>
+  <?php endforeach; ?>
+<?php else: ?>
+  <p>No hay reservaciones actualmente</p>
+<?php endif; ?>
+
+<script>
+  let formularioPendiente = null;
+
+  function mostrarUsuario(icono) {
+    const info = icono.nextElementSibling;
+    info.style.display = info.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function mostrarInfoExtra(btn) {
+    const info = btn.nextElementSibling;
+    info.style.display = (info.style.display === 'block') ? 'none' : 'block';
+  }
+
+
+  function confirmarAccion(form) {
+    mostrarModal("¿Deseas confirmar esta reserva?", form);
+    return false;
+  }
+
+  function eliminarAccion(form) {
+    mostrarModal("¿Estás seguro de eliminar esta reserva?", form);
+    return false;
+  }
+
+  function mostrarModal(mensaje, form) {
+    formularioPendiente = form;
+    document.getElementById("modalMensaje").innerText = mensaje;
+    document.getElementById("modalConfirmacion").style.display = "flex";
+  }
+
+  document.getElementById("btnAceptar").onclick = function() {
+    document.getElementById("modalConfirmacion").style.display = "none";
+    if (formularioPendiente) formularioPendiente.submit();
+  };
+
+  document.getElementById("btnCancelar").onclick = function() {
+    document.getElementById("modalConfirmacion").style.display = "none";
+    formularioPendiente = null;
+  };
+</script>

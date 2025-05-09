@@ -79,6 +79,9 @@ switch ($params[0]) {
     case 'cancelar_reserva' :
             $reservaController->cancelarReserva();
         break;
+    case 'confirmar_reserva' :
+            $reservaController->confirmarReserva();
+        break;
     case 'parcelas' :
         // Muestra las parcelas disponibles       
         $parcelaController->sectoresParcelas();

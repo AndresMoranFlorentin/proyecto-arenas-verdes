@@ -50,7 +50,7 @@ class ReservaView
     public function seccionReservacionPublica($mensaje,$dispo){
         require './templates/reservacion_publica.phtml';
     }
-    public function ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje=null,$tipo_mensaje=null,$dispo,$nombre=null,$apellido=null,$dni=null){
+    public function ir_seccion_Reservacion($rol,$logueado,$id_parcela=null,$mensaje=null,$tipo_mensaje=null,$dispo,$nombre=null,$apellido=null,$dni=null,$reservaciones=null){
         $this->mensaje="";
         $this->tipo_mensaje="";
         $this->logueado = $logueado;

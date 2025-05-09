@@ -7,10 +7,16 @@
 <?php endif; ?>
 <main>
   <section class="introduccion" id="content">
+  <?php if ($this->rol=='admin'): ?>
+   <h2>Control de Reservaciones sin confirmar:</h2>  
+   <br>
+   <?php include 'controlReservas.phtml'; ?>   
+   <br>
+  <?php endif; ?>
   <?php if ($this->logueado): ?>
    <?php include 'misReservas.phtml'; ?>   
   <?php endif; ?>
-    <h1 style="text-align: center;">Haz tu Reserva Hoy Mismo </h1>
+    <h2 style="text-align: center;">Haz tu Reserva Hoy Mismo </h2>
     <br>
     <?php
     include 'formParaReservacion.phtml';

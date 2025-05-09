@@ -4,7 +4,10 @@
     <div class="mensaje <?= $tipo_mensaje; ?>">
         <p><?= $mensaje; ?></p>
         <?php if ($tipo_mensaje == 'exito') : ?>
-            <a href="https://wa.me/+5492262301388" target="_blank" class="btn btn-success" onclick="cerrarMensajeYResetear()">Confirmar vía WhatsApp</a>
+            <a href="https://wa.me/+5492262301388" target="_blank" class="btn btn-success" onclick="cerrarMensajeYResetear()"> 
+            <i class="fab fa-whatsapp"></i> Confirmar
+            </a>
+            <button onclick="cerrarMensajeYResetear()" class="btn btn-danger">Salir</button>
         <?php else : ?>
             <button onclick="cerrarMensajeYResetear()" class="btn btn-danger">Aceptar</button>
         <?php endif; ?>
@@ -123,26 +126,3 @@
                 </div>
         </form>
         <br>
-
-<script>
-    function resetForm() {
-        document.getElementById('buscadorForm').reset();
-    }
-
-    function cerrarMensajeYResetear() {
-        resetForm();
-        cerrarMensaje();
-    }
-
-    function cerrarMensaje() {
-        var mensaje = document.querySelector('.mensaje');
-        if (mensaje) {
-            mensaje.style.display = 'none';
-        }
-
-        var formulario = document.querySelector('.formulario');
-        if (formulario) {
-            formulario.style.display = 'block';
-        }
-    }
-</script>
