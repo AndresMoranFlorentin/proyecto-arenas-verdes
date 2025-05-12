@@ -381,22 +381,20 @@ class ReservaController extends BaseController
      * 
      * @return string $idServicio el id del servicio encontrado
      */
-    private function getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
-    {
-        //en caso de que no eligio ninguna caracteristica entonces 
-        //se buscara la parcela con menos servicios de la base
-        if(($fogon & $tomaElectrica & $sombra & $agua)==0){
-            $idServicio= $this->model->getParcelaBasica();
-        }
-        else{
-        $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
-        //si no encuentra el servicio retornar null 
-            if (empty($idServicio)) { //no existe un servicio de esas caracteristicas
-                return null;
-            }
-        }
-        return $idServicio;
+   private function getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
+{
+    // Si todas las características son 0, buscar la parcela más básica
+    if ($fogon == 0 && $tomaElectrica == 0 && $sombra == 0 && $agua == 0) {
+        return $this->model->getParcelaBasica();
     }
+
+    // Buscar el servicio con las características dadas
+    $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
+
+    // Si no se encuentra el servicio, retornar `null`
+    return !empty($idServicio) ? $idServicio : null;
+}
+
     /**
      * Funcion que lleva a la pagina de reservacion que muestra el formulario de la reservacion
      */

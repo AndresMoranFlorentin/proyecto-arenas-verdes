@@ -353,10 +353,11 @@ class ReservaModel extends ConectionModel
                 FROM servicioreserva 
                 ORDER BY (con_fogon + sombra + con_toma_electrica + agua + poder_estacionar + con_ducha) ASC
                 LIMIT 1";
-        $conexion_bbdd = $this->conexion->prepare($sql);
-        $conexion_bbdd->execute();
-        $servicio = $conexion_bbdd->fetchAll(PDO::FETCH_ASSOC);
-        return $servicio;
+        $servicio = $this->conexion->prepare($sql);
+        $servicio->execute();
+        $id_servicio = $servicio->fetchColumn();
+
+        return $id_servicio;
     }
     /**
      * Funcion que agrega un nuevo servicio adicional
