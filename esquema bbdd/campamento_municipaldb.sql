@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-03-2025 a las 20:33:08
+-- Tiempo de generación: 16-05-2025 a las 00:03:38
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -74,9 +74,87 @@ CREATE TABLE `parcela` (
 --
 
 INSERT INTO `parcela` (`id`, `descripcion`, `imagen`, `id_servicio`, `sector`, `sanitarios_distancia`, `uso_espacio`, `cant_personas`, `disponible`) VALUES
-(1, 'parcela 1', 'https//imagencampamento1', 1, 'Joven', 'cerca', 'casilla', 6, 'disponible'),
-(2, 'parcela 2', 'https//:url.com.servercampverdes', 6, 'Motorhome', 'lejos', 'camping', 8, 'disponible'),
-(3, 'parcela 3', 'https://img.com/campamento_verde45.png', 5, 'Familiar', 'lejos', 'casilla', 10, 'disponible');
+(1, 'Casilla, Auto/Camioneta', NULL, 1, 'Familiar', 'Al lado', 'Casilla', 6, 'disponible'),
+(2, 'Casilla, Auto/Camioneta', NULL, 2, 'Familiar', 'Al lado', 'Casilla', 6, 'disponible'),
+(3, 'Casilla, Auto/Camioneta', NULL, 3, 'Familiar', 'Al lado', 'Casilla', 6, 'disponible'),
+(4, 'Carpa, Auto/Camioneta', NULL, 4, 'Carpa Fam', 'Si', 'Carpa', 4, 'disponible'),
+(5, 'Carpa, Auto/Camioneta', NULL, 5, 'Carpa Fam', 'Cerca', 'Carpa', 6, 'disponible'),
+(6, 'Carpa, Auto/Camioneta', NULL, 6, 'Carpa Fam', 'Cerca', 'Carpa', 6, 'disponible'),
+(7, 'Carpa/Casilla, Auto/Camioneta', NULL, 7, 'Carpa Fam', 'Cerca', 'Carpa/Casilla', 6, 'disponible'),
+(8, 'Carpa, Auto/Camioneta', NULL, 8, 'Carpa Fam', 'Cerca', 'Carpa', 6, 'disponible'),
+(9, 'Carpa, Auto/Camioneta', NULL, 9, 'Carpa Fam', 'Cerca', 'Carpa', 6, 'disponible'),
+(10, 'Carpa, Auto/Camioneta', NULL, 10, 'Carpa Fam', 'Cerca', 'Carpa', 6, 'disponible'),
+(11, 'Carpa/Casilla, Auto/Camioneta', NULL, 11, 'Carpa Fam', 'Cerca', 'Carpa/Casilla', 6, 'disponible'),
+(12, 'Carpa, Auto/Camioneta', NULL, 12, 'Carpa Fam', 'Cerca', 'Carpa', 6, 'disponible'),
+(13, 'Carpa, Camioneta', NULL, 13, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
+(14, 'Carpa, Camioneta', NULL, 14, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
+(15, 'Carpa, Camioneta', NULL, 15, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
+(16, 'Carpa, Moto/Camioneta', NULL, 16, 'Carpa Fam', 'Cerca', 'Carpa', 4, 'disponible'),
+(17, 'Carpa, Moto/Camioneta', NULL, 17, 'Carpa Fam', 'Cerca', 'Carpa', 8, 'disponible'),
+(18, 'Carpa, Moto/Camioneta', NULL, 18, 'Carpa Fam', 'Cerca', 'Carpa', 8, 'disponible'),
+(19, 'Carpa, Auto/Camioneta', NULL, 19, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
+(20, 'Carpa, Auto/Camioneta', NULL, 20, 'Carpa Fam', 'Cerca', 'Carpa', 4, 'disponible'),
+(21, 'Carpa, Auto/Camioneta', NULL, 21, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
+(22, 'Carpa, Auto/Camioneta', NULL, 22, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
+(23, 'Carpa, Auto/Camioneta', NULL, 23, 'Familiar', 'Cerca', 'Carpa', 8, 'disponible'),
+(24, 'Carpa, Auto/Camioneta', NULL, 24, 'Familiar', 'Cerca', 'Carpa', 4, 'disponible'),
+(25, 'Casilla, Auto/Camioneta', NULL, 25, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
+(26, 'Casilla, Auto', NULL, 26, 'Familiar', 'Cerca', 'Casilla', 4, 'disponible'),
+(27, 'Casilla, Camioneta', NULL, 27, 'Familiar', 'Cerca', 'Casilla', 4, 'disponible'),
+(28, 'Casilla, Camioneta', NULL, 28, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
+(29, 'Casilla, Camioneta', NULL, 29, 'Familiar', 'Cerca', 'Casilla', 8, 'disponible'),
+(30, 'Casilla, Camioneta', NULL, 30, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
+(31, 'Casilla, Camioneta', NULL, 31, 'Familiar', 'Cerca', 'Casilla', 10, 'disponible'),
+(32, 'Casilla, Camioneta', NULL, 32, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
+(33, 'Casilla, Camioneta', NULL, 33, 'Familiar', 'Cerca', 'Casilla', 13, 'disponible'),
+(34, 'Casilla, Auto', NULL, 34, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
+(35, 'Casilla, Camioneta', NULL, 35, 'Familiar', 'Cerca', 'Casilla', 10, 'disponible'),
+(36, 'Casilla, Camioneta', NULL, 36, 'Familiar', 'Cerca', 'Casilla', 4, 'disponible'),
+(37, 'Casilla, Camioneta', NULL, 37, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
+(38, 'Casilla, Camioneta', NULL, 38, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
+(39, 'Casilla, Camioneta', NULL, 39, 'Familiar', 'Cerca', 'Casilla', 2, 'disponible'),
+(40, 'Carpa, Camioneta', NULL, 40, 'Joven', 'Cerca', 'Carpa', 10, 'disponible'),
+(41, 'Carpa, Auto/Camioneta', NULL, 41, 'Joven', 'Cerca', 'Carpa', 10, 'disponible'),
+(42, 'Carpa, Auto', NULL, 42, 'Joven', 'Cerca', 'Carpa', 8, 'disponible'),
+(43, 'Carpa, Auto/Camioneta', NULL, 43, 'Joven', 'Cerca', 'Carpa', 10, 'disponible'),
+(44, 'Carpa, Auto/Camioneta', NULL, 44, 'Joven', 'Cerca', 'Carpa', 6, 'disponible'),
+(45, 'Carpa, Auto', NULL, 45, 'Joven', 'Cerca', 'Carpa', 6, 'disponible'),
+(46, 'Carpa, Auto', NULL, 46, 'Joven', 'Cerca', 'Carpa', 6, 'disponible'),
+(47, 'Carpa, Auto/Camioneta', NULL, 47, 'Joven', 'Cerca', 'Carpa', 15, 'disponible'),
+(48, 'Carpa, Auto', NULL, 48, 'Joven', 'Cerca', 'Carpa', 2, 'disponible'),
+(49, 'Carpa, Auto', NULL, 49, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(50, 'Carpa, Auto', NULL, 50, 'Joven', 'Cerca', 'Carpa', 2, 'disponible'),
+(51, 'Carpa, Auto', NULL, 51, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(52, 'Carpa, Auto/Camioneta', NULL, 52, 'Joven', 'Cerca', 'Carpa', 6, 'disponible'),
+(53, 'Carpa, Auto/Camioneta', NULL, 53, 'Joven', 'Cerca', 'Carpa', 10, 'disponible'),
+(54, 'Carpa/Casilla, Auto/Camioneta', NULL, 54, 'Joven', 'Cerca', 'Carpa/Casilla', 10, 'disponible'),
+(55, 'Carpa/Casilla, Auto/Camioneta', NULL, 55, 'Joven', 'Cerca', 'Carpa/Casilla', 10, 'disponible'),
+(56, 'Carpa, Auto', NULL, 56, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(57, 'Carpa, Auto', NULL, 57, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(58, 'Carpa, Auto', NULL, 58, 'Joven', 'Cerca', 'Carpa', 6, 'disponible'),
+(59, 'Carpa, Auto', NULL, 59, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(60, 'Carpa, Auto', NULL, 60, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(61, 'Carpa, Auto/Camioneta', NULL, 61, 'Joven', 'Cerca', 'Carpa', 12, 'disponible'),
+(62, 'Carpa, Auto', NULL, 62, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(63, 'Carpa, Auto', NULL, 63, 'Joven', 'Cerca', 'Carpa', 4, 'disponible'),
+(64, 'Carpa, Auto/Camioneta', NULL, 64, 'Joven', 'Cerca', 'Carpa', 8, 'disponible'),
+(65, 'Carpa, Auto/Camioneta', NULL, 65, 'Joven', 'Cerca', 'Carpa', 6, 'disponible'),
+(66, 'Carpa, Auto/Camioneta', NULL, 66, 'Joven', 'Cerca', 'Carpa', 8, 'disponible'),
+(67, 'Casilla, Colectivo', NULL, 67, 'Joven', 'Cerca', 'Casilla', 8, 'disponible'),
+(68, 'Casilla, Colectivo/Motorhome', NULL, 68, 'Joven', 'Cerca', 'Casilla', 8, 'disponible'),
+(69, 'Casilla, Colectivo/Motorhome', NULL, 69, 'Joven', 'Cerca', 'Casilla', 8, 'disponible'),
+(70, 'Casilla rural, Colectivo/Motorhome', NULL, 70, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(71, 'Casilla rural, Colectivo/Motorhome', NULL, 71, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(72, 'Casilla rural, Colectivo/Motorhome', NULL, 72, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(73, 'Casilla rural, Colectivo/Motorhome', NULL, 73, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(74, 'Casilla rural, Colectivo/Motorhome', NULL, 74, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(75, 'Casilla rural, Colectivo/Motorhome', NULL, 75, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(76, 'Casilla rural, Colectivo/Motorhome', NULL, 76, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(77, 'Casilla rural, Colectivo/Motorhome', NULL, 77, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(78, 'Casilla rural, Colectivo/Motorhome', NULL, 78, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(79, 'Casilla rural, Colectivo/Motorhome', NULL, 79, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(80, 'Casilla rural, Colectivo/Motorhome', NULL, 80, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible'),
+(81, 'Casilla rural, Colectivo/Motorhome', NULL, 81, 'Motorhome', 'Cerca', 'Casilla', 10, 'disponible');
 
 -- --------------------------------------------------------
 
@@ -116,8 +194,8 @@ CREATE TABLE `precios` (
 --
 
 INSERT INTO `precios` (`id`, `edad_ninos4`, `edad_ninos12`, `edad_ninos20`, `costo_estancia_xdia`, `costo_ducha`, `costo_sanitario`, `costoxvehiculoxdia`, `costoxcasillaxdia`, `costoxmescasilla`, `residente_local`) VALUES
-(1, 0, 1000, 1400, 700, 500, 100, 500, 1600, 32000, 0),
-(2, 0, 300, 500, 250, 150, 50, 200, 700, 12000, 1);
+(1, 700, 1000, 1200, 700, 500, 200, 600, 1800, 32000, 0),
+(2, 500, 800, 1000, 500, 250, 100, 400, 1500, 25000, 1);
 
 -- --------------------------------------------------------
 
@@ -194,13 +272,6 @@ CREATE TABLE `reserva_parcela` (
   `id_parcela` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `reserva_parcela`
---
-
-INSERT INTO `reserva_parcela` (`id_reserva`, `id_parcela`) VALUES
-(199, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -216,17 +287,6 @@ CREATE TABLE `servicioreserva` (
   `poder_estacionar` tinyint(1) NOT NULL,
   `con_ducha` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `servicioreserva`
---
-
-INSERT INTO `servicioreserva` (`id_servicio`, `con_fogon`, `con_toma_electrica`, `sombra`, `agua`, `poder_estacionar`, `con_ducha`) VALUES
-(1, 1, 1, 1, 0, 0, 1),
-(2, 1, 0, 0, 1, 1, 0),
-(3, 1, 1, 1, 1, 0, 0),
-(5, 1, 0, 1, 0, 0, 0),
-(6, 1, 1, 1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -263,10 +323,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `rol`, `nombre`, `apellido`, `dni`, `phone`, `email`, `localidad`, `password`) VALUES
-(1, 'Admin', 'Administrador', 'BaseCamp', 0, 0, 'base@gmail.com', 'Loberia', '$2a$12$sQbpXaU3IruUNF.BU7iKj.YeXS.DEJuUB1Jqx3VzaHQglC4i6L/Ee'),
+(1, 'admin', 'Administrador', 'BaseCamp', 0, 0, 'base@gmail.com', 'Loberia', '$2a$12$sQbpXaU3IruUNF.BU7iKj.YeXS.DEJuUB1Jqx3VzaHQglC4i6L/Ee'),
 (4, 'user', 'Andres', 'Moran', 44830876, 2147483647, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
 (5, 'user', 'Mateo', 'Foglionni', 44888777, 2147483647, 'mateofoglionni@gmail.com', 'Necochea', 'Maqueta'),
-(6, 'user', 'Laula', 'sofirio', 22333444, 2147483647, 'sofini56j@gmail.com', 'Balcarce', 'Nona');
+(6, 'user', 'Laula', 'sofirio', 22333444, 2147483647, 'sofini56j@gmail.com', 'Balcarce', 'Nona'),
+(7, 'admin', 'lautaro', 'Lamenza', 2132312321, 34779043, 'flakolobizon@gmail.com', 'Loberia', '$2y$10$srQTkYfI4BLfXAN0uwTHIOuD5OXl4MyKqWUwr5zuGRPfqi/jGhHoC');
 
 --
 -- Índices para tablas volcadas
@@ -348,7 +409,7 @@ ALTER TABLE `notificaciones_pendientes`
 -- AUTO_INCREMENT de la tabla `parcela`
 --
 ALTER TABLE `parcela`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT de la tabla `password_resets`
@@ -384,7 +445,7 @@ ALTER TABLE `tarifa`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
