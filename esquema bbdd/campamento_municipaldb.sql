@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `campamento_municipaldb`
 --
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- --------------------------------------------------------
 
@@ -50,6 +51,96 @@ INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fech
 (54, 'Andres Moran', 'moranandres729@gmail.com', '2025-04-04 00:00:00', 0),
 (56, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-27 00:00:00', 0),
 (57, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-28 00:00:00', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `servicioreserva`
+--
+
+CREATE TABLE `servicioreserva` (
+  `id_servicio` bigint(20) NOT NULL,
+  `con_fogon` tinyint(1) DEFAULT 0,
+  `con_toma_electrica` tinyint(1) DEFAULT 0,
+  `sombra` tinyint(1) DEFAULT 0,
+  `agua` tinyint(1) DEFAULT NULL,
+  `poder_estacionar` tinyint(1) NOT NULL,
+  `con_ducha` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+--
+-- Volcado de datos para la tabla `servicioreserva`
+--
+
+INSERT INTO `servicioreserva` (`id_servicio`, `con_fogon`, `con_toma_electrica`, `sombra`, `agua`, `poder_estacionar`, `con_ducha`) VALUES
+(1, 1, 1, 1, 0, 0, 1),
+(2, 1, 0, 0, 1, 1, 0),
+(3, 1, 1, 1, 1, 0, 0),
+(5, 1, 0, 1, 0, 0, 0),
+(6, 1, 1, 1, 1, 1, 0),
+(7, 0, 0, 0, 0, 0, 0),
+(8, 1, 0, 0, 0, 0, 0),
+(9, 0, 1, 0, 0, 0, 0),
+(10, 1, 1, 0, 0, 0, 0),
+(11, 0, 0, 1, 0, 0, 0),
+(12, 1, 0, 1, 0, 0, 0),
+(13, 0, 1, 1, 0, 0, 0),
+(14, 1, 1, 1, 0, 0, 0),
+(15, 0, 0, 0, 1, 0, 0),
+(16, 1, 0, 0, 1, 0, 0),
+(17, 0, 1, 0, 1, 0, 0),
+(18, 1, 1, 0, 1, 0, 0),
+(19, 0, 0, 1, 1, 0, 0),
+(20, 1, 0, 1, 1, 0, 0),
+(21, 0, 1, 1, 1, 0, 0),
+(22, 1, 1, 1, 1, 0, 0),
+(23, 0, 0, 0, 0, 1, 0),
+(24, 1, 0, 0, 0, 1, 0),
+(25, 0, 1, 0, 0, 1, 0),
+(26, 1, 1, 0, 0, 1, 0),
+(27, 0, 0, 1, 0, 1, 0),
+(28, 1, 0, 1, 0, 1, 0),
+(29, 0, 1, 1, 0, 1, 0),
+(30, 1, 1, 1, 0, 1, 0),
+(31, 0, 0, 0, 1, 1, 0),
+(32, 1, 0, 0, 1, 1, 0),
+(33, 0, 1, 0, 1, 1, 0),
+(34, 1, 1, 0, 1, 1, 0),
+(35, 0, 0, 1, 1, 1, 0),
+(36, 1, 0, 1, 1, 1, 0),
+(37, 0, 1, 1, 1, 1, 0),
+(38, 1, 1, 1, 1, 1, 0),
+(39, 0, 0, 0, 0, 0, 1),
+(40, 1, 0, 0, 0, 0, 1),
+(41, 0, 1, 0, 0, 0, 1),
+(42, 1, 1, 0, 0, 0, 1),
+(43, 0, 0, 1, 0, 0, 1),
+(44, 1, 0, 1, 0, 0, 1),
+(45, 0, 1, 1, 0, 0, 1),
+(46, 1, 1, 1, 0, 0, 1),
+(47, 0, 0, 0, 1, 0, 1),
+(48, 1, 0, 0, 1, 0, 1),
+(49, 0, 1, 0, 1, 0, 1),
+(50, 1, 1, 0, 1, 0, 1),
+(51, 0, 0, 1, 1, 0, 1),
+(52, 1, 0, 1, 1, 0, 1),
+(53, 0, 1, 1, 1, 0, 1),
+(54, 1, 1, 1, 1, 0, 1),
+(55, 0, 0, 0, 0, 1, 1),
+(56, 1, 0, 0, 0, 1, 1),
+(57, 0, 1, 0, 0, 1, 1),
+(58, 1, 1, 0, 0, 1, 1),
+(59, 0, 0, 1, 0, 1, 1),
+(60, 1, 0, 1, 0, 1, 1),
+(61, 0, 1, 1, 0, 1, 1),
+(62, 1, 1, 1, 0, 1, 1),
+(63, 0, 0, 0, 1, 1, 1),
+(64, 1, 0, 0, 1, 1, 1),
+(65, 0, 1, 0, 1, 1, 1),
+(66, 1, 1, 0, 1, 1, 1),
+(67, 0, 0, 1, 1, 1, 1),
+(68, 1, 0, 1, 1, 1, 1),
+(69, 0, 1, 1, 1, 1, 1),
+(70, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -272,21 +363,6 @@ CREATE TABLE `reserva_parcela` (
   `id_parcela` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `servicioreserva`
---
-
-CREATE TABLE `servicioreserva` (
-  `id_servicio` bigint(20) NOT NULL,
-  `con_fogon` tinyint(1) DEFAULT 0,
-  `con_toma_electrica` tinyint(1) DEFAULT 0,
-  `sombra` tinyint(1) DEFAULT 0,
-  `agua` tinyint(1) DEFAULT NULL,
-  `poder_estacionar` tinyint(1) NOT NULL,
-  `con_ducha` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -476,6 +552,8 @@ ALTER TABLE `reserva`
 ALTER TABLE `reserva_parcela`
   ADD CONSTRAINT `reserva_parcela_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id`),
   ADD CONSTRAINT `reserva_parcela_ibfk_2` FOREIGN KEY (`id_parcela`) REFERENCES `parcela` (`id`);
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 DELIMITER $$
 --
