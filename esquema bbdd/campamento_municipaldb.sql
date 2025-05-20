@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-05-2025 a las 19:25:03
+-- Tiempo de generación: 20-05-2025 a las 04:58:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -49,7 +49,16 @@ INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fech
 (53, 'Laula sofirio', 'sofini56j@gmail.com', '2025-04-04 00:00:00', 0),
 (54, 'Andres Moran', 'moranandres729@gmail.com', '2025-04-04 00:00:00', 0),
 (56, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-27 00:00:00', 0),
-(57, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-28 00:00:00', 0);
+(57, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-28 00:00:00', 0),
+(58, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
+(59, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
+(60, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
+(61, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
+(62, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
+(63, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
+(64, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
+(65, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-30 00:00:00', 0),
+(66, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-30 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -59,7 +68,7 @@ INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fech
 
 CREATE TABLE `parcela` (
   `id` bigint(20) NOT NULL,
-  `descripcion` varchar(255) DEFAULT NULL,
+  `tipo_de_vehiculo` varchar(255) DEFAULT NULL,
   `imagen` text DEFAULT NULL,
   `id_servicio` bigint(20) NOT NULL,
   `sector` enum('Familiar','Carpa Fam','Joven','Motorhome') NOT NULL,
@@ -73,7 +82,7 @@ CREATE TABLE `parcela` (
 -- Volcado de datos para la tabla `parcela`
 --
 
-INSERT INTO `parcela` (`id`, `descripcion`, `imagen`, `id_servicio`, `sector`, `sanitarios_distancia`, `uso_espacio`, `cant_personas`, `disponible`) VALUES
+INSERT INTO `parcela` (`id`, `tipo_de_vehiculo`, `imagen`, `id_servicio`, `sector`, `sanitarios_distancia`, `uso_espacio`, `cant_personas`, `disponible`) VALUES
 (1, 'Casilla, Auto/Camioneta', NULL, 62, 'Familiar', 'Al lado', 'Casilla', 6, 'disponible'),
 (2, 'Casilla, Auto/Camioneta', NULL, 62, 'Familiar', 'Al lado', 'Casilla', 6, 'disponible'),
 (3, 'Casilla, Auto/Camioneta', NULL, 70, 'Familiar', 'Al lado', 'Casilla', 6, 'disponible'),
@@ -222,7 +231,11 @@ CREATE TABLE `reserva` (
 --
 
 INSERT INTO `reserva` (`id`, `id_usuario`, `menores_de_4`, `menores_de_12`, `mayores_de_12`, `fecha_inicio`, `fecha_fin`, `tipo_vehiculo`, `id_servicio`, `estado`, `identificador`) VALUES
-(199, 4, 1, 2, 3, '2025-03-21', '2025-03-29', 'auto', 1, 'pendiente', '63F8DF93A1B498E12107');
+(199, 4, 1, 2, 3, '2025-03-21', '2025-03-29', 'auto', 1, 'confirmada', '63F8DF93A1B498E12107'),
+(200, 4, 1, 3, 1, '2025-05-17', '2025-05-24', 'Auto', 14, 'confirmada', '13FFEDD52A18BF725CBA'),
+(201, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 10, 'pendiente', '2142FC1A215692071937'),
+(202, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 14, 'pendiente', 'EBA5F434F6E34BCEED9A'),
+(203, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 14, 'pendiente', '24E9EFF6DB2500FF4B24');
 
 --
 -- Disparadores `reserva`
@@ -271,6 +284,16 @@ CREATE TABLE `reserva_parcela` (
   `id_reserva` bigint(20) NOT NULL,
   `id_parcela` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `reserva_parcela`
+--
+
+INSERT INTO `reserva_parcela` (`id_reserva`, `id_parcela`) VALUES
+(200, 1),
+(201, 58),
+(202, 2),
+(203, 5);
 
 -- --------------------------------------------------------
 
@@ -399,7 +422,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `rol`, `nombre`, `apellido`, `dni`, `phone`, `email`, `localidad`, `password`) VALUES
 (1, 'admin', 'Administrador', 'BaseCamp', 0, 0, 'base@gmail.com', 'Loberia', '$2a$12$sQbpXaU3IruUNF.BU7iKj.YeXS.DEJuUB1Jqx3VzaHQglC4i6L/Ee'),
-(4, 'user', 'Andres', 'Moran', 44830876, 2147483647, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
+(4, 'admin', 'Andres', 'Moran', 44830876, 2147483647, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
 (5, 'user', 'Mateo', 'Foglionni', 44888777, 2147483647, 'mateofoglionni@gmail.com', 'Necochea', 'Maqueta'),
 (6, 'user', 'Laula', 'sofirio', 22333444, 2147483647, 'sofini56j@gmail.com', 'Balcarce', 'Nona'),
 (7, 'admin', 'lautaro', 'Lamenza', 2132312321, 34779043, 'flakolobizon@gmail.com', 'Loberia', '$2y$10$srQTkYfI4BLfXAN0uwTHIOuD5OXl4MyKqWUwr5zuGRPfqi/jGhHoC');
@@ -478,7 +501,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `notificaciones_pendientes`
 --
 ALTER TABLE `notificaciones_pendientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT de la tabla `parcela`
@@ -502,7 +525,7 @@ ALTER TABLE `precios`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
 
 --
 -- AUTO_INCREMENT de la tabla `servicioreserva`
