@@ -7,52 +7,79 @@
     <br>
 <?php endif; ?>
 <main>
-    <section class="introduccion" id="content">
-        <br>
-        <br>
-        <h2>En esta seccion podra habilitar o desahabilitar las parcelas que desee:</h2>
-        <?php if (!empty($aviso_mensaje)): ?>
-            <?php if ($estado == 'exito'): ?>
-                <div class="alert alert-success">
-                    <p><?php echo $aviso_mensaje; ?></p>
-                </div>
-            <?php else: ?>
-                <div class="damager alert-success">
-                    <p><?php echo $aviso_mensaje; ?></p>
+  <section class="container mt-5" id="content">
+    <h2 class="mb-4">En esta sección podrá habilitar o deshabilitar las parcelas que desee:</h2>
+
+    <!-- Mensaje de aviso -->
+    <?php if (!empty($aviso_mensaje)): ?>
+      <div class="alert alert-<?= $estado === 'exito' ? 'success' : 'danger' ?>">
+        <?= htmlspecialchars($aviso_mensaje) ?>
+      </div>
+    <?php endif; ?>
+
+    <!-- Contenedor de grupos de parcelas -->
+    <div id="parcelasContainer">
+      <?php
+      $contador = 1;
+      foreach ($parcelas as $index => $parcela):
+        // Abrir un nuevo bloque cada 8 parcelas
+        if ($index % 8 === 0): ?>
+          <div class="grupo-parcelas row gx-3 gy-4 <?= $index === 0 ? 'd-flex' : 'd-none' ?>">
+        <?php endif; ?>
+
+        <!-- Cada parcela ocupa 4 columnas en md (4 en una fila de 12 → 3 por fila) -->
+        <div class="col-8 col-sm-4 col-md-3">
+          <div class="card h-100">
+            <img src="img/arenas verdes/arenas-verdes.jpg"
+                 class="card-img-top"
+                 alt="<?= htmlspecialchars($parcela['imagen']) ?>">
+            <div class="card-body text-center">
+              <h5 class="card-title">Parcela <?= $contador++ ?></h5>
+              <p class="card-text">
+                Estado: <strong><?= htmlspecialchars($parcela['disponible']) ?></strong>
+              </p>
+               <p class="card-text">
+                Cantidad de Personas: <strong><?= htmlspecialchars($parcela['cant_personas']) ?></strong>
+              </p>
+               <p class="card-text">
+                Sector: <strong><?= htmlspecialchars($parcela['sector']) ?></strong>
+              </p>
+              <?php if ($this->logueado && $this->rol === 'admin'): ?>
+                <?php if ($parcela['disponible'] === 'disponible'): ?>
+                  <button class="btn btn-danger btn-sm inhabilitar"
+                          data-id="<?= $parcela['id'] ?>"
+                          data-reservada="<?= $parcela['reservada'] ?>">
+                    Inhabilitar
+                  </button>
+                <?php else: ?>
+                  <a href="habilitar?id=<?= $parcela['id'] ?>"
+                     class="btn btn-success btn-sm">
+                    Habilitar
+                  </a>
                 <?php endif; ?>
-            <?php endif; ?>
+              <?php endif; ?>
+            </div>
+          </div>
+        </div>
 
-            <?php foreach ($parcelas as $parcela): ?>
-                <div class="parcelas">
-                    <div class="parcela">
-                        <img src="<?php echo $parcela['imagen']; ?>" alt="<?php echo $parcela['imagen']; ?>">
-                        <span>Parcela <?php echo $parcela['id']; ?></span>
-                        <span style="border-left:solid 1px black; margin:10px;"> <?php echo $parcela['disponible']; ?></span>
+      <?php
+        // Cerrar bloque al completar 8 o al final
+        if (($index + 1) % 8 === 0 || $index + 1 === count($parcelas)): ?>
+          </div>
+      <?php endif;
+      endforeach; ?>
+    </div>
 
-                        <?php if (($this->logueado) && ($this->rol == "admin")): ?>
-                            <div class="botones">
-                                <?php if ($parcela['disponible'] == 'disponible'): ?>
-                                    <button class="boton inhabilitar"
-                                        data-bs-toggle="modal"
-                                        data-bs-target=""
-                                        data-id="<?php echo $parcela['id']; ?>"
-                                        data-reservada="<?php echo $parcela['reservada']; ?>">
-                                        Inhabilitar
-                                    </button>
-
-                                <?php else: ?>
-                                    <button class="boton habilitar">
-                                        <a style="text-decoration: none; color: inherit;" href="habilitar?id=<?php echo $parcela['id']; ?>">Habilitar</a>
-                                    </button>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-    </section>
-    <br>
+    <!-- Botones de control de visibilidad -->
+    <?php if (count($parcelas) > 8): ?>
+      <div class="text-center mt-4">
+        <button id="verMasBtn" class="btn btn-secondary me-2">Ver más</button>
+        <button id="verTodoBtn" class="btn btn-outline-primary">Ver todo</button>
+      </div>
+    <?php endif; ?>
+  </section>
 </main>
+
 <?php
 include 'generar_informes.phtml';
 include 'whatsapp.phtml';
@@ -89,7 +116,8 @@ include 'footer.phtml';
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmReservadaAction">Confirmar</button>            </div>
+                <button type="button" class="btn btn-danger" id="confirmReservadaAction">Confirmar</button>
+            </div>
         </div>
     </div>
 </div>
@@ -115,10 +143,10 @@ include 'footer.phtml';
         });
 
         document.getElementById('confirmNormalAction').addEventListener('click', function() {
-        if (currentParcelaId) {
-            // Redirige a inhabilitar?id=<ID> sin 'force'
-            window.location.href = `inhabilitar?id=${currentParcelaId}`;
-        }
+            if (currentParcelaId) {
+                // Redirige a inhabilitar?id=<ID> sin 'force'
+                window.location.href = `inhabilitar?id=${currentParcelaId}`;
+            }
         });
         // Confirmar acción reservada y redirigir a PHP con el ID
         document.getElementById('confirmReservadaAction').addEventListener('click', function() {
@@ -127,4 +155,35 @@ include 'footer.phtml';
             }
         });
     });
+     document.addEventListener('DOMContentLoaded', () => {
+    const groups     = document.querySelectorAll('.grupo-parcelas');
+    const btnVerMas  = document.getElementById('verMasBtn');
+    const btnVerTodo = document.getElementById('verTodoBtn');
+    let currentGroup = 1; // Ya mostramos el bloque 0
+
+    // Al hacer clic en "Ver más"
+    btnVerMas?.addEventListener('click', () => {
+      if (currentGroup < groups.length) {
+        groups[currentGroup].classList.remove('d-none');
+        groups[currentGroup].classList.add('d-flex');
+        currentGroup++;
+        // Si mostramos el último bloque, ocultamos el botón
+        if (currentGroup === groups.length) {
+          btnVerMas.style.display = 'none';
+        }
+      }
+    });
+
+    // Al hacer clic en "Ver todo"
+    btnVerTodo?.addEventListener('click', () => {
+      // Mostrar todos los bloques
+      groups.forEach((g) => {
+        g.classList.remove('d-none');
+        g.classList.add('d-flex');
+      });
+      // Ocultar ambos botones
+      btnVerMas.style.display  = 'none';
+      btnVerTodo.style.display = 'none';
+    });
+  });
 </script>

@@ -47,6 +47,12 @@ class ReservaModel extends ConectionModel
                 )";
 
         // Agregar filtros dinámicos para las características
+        if ($personas !== null) {
+            $sql .= " AND p.cant_personas = :personas";
+        }
+        if ($tipo_de_vehiculo !== null) {
+            $sql .= " AND p.tipo_de_vehiculo LIKE :tipo_de_vehiculo";
+        }
         if ($con_fogon !== null) {
             $sql .= " AND s.con_fogon = :con_fogon";
         }
@@ -68,6 +74,12 @@ class ReservaModel extends ConectionModel
             ':inicio' => $inicio,
             ':fecha_fin' => $fecha_fin,
         ];
+        if ($personas !== null) {
+            $params[':personas'] = $personas;
+        }
+        if ($tipo_de_vehiculo !== null) {
+            $params[':tipo_de_vehiculo'] = "%{$tipo_de_vehiculo}%"; // Busca el término en cualquier parte del string
+        }
         if ($con_fogon !== null) {
             $params[':con_fogon'] = $con_fogon;
         }
@@ -140,7 +152,7 @@ class ReservaModel extends ConectionModel
      * @param bool $agua Indica si la parcela debe tener suministro de agua.
      * @return array Retorna un listado de todas aquellas condiciones que no cumplio
      *   */
-    public function analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas,$fogon, $tomaElectrica, $sombra, $agua)
+    public function analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $fogon, $tomaElectrica, $sombra, $agua, $con_ducha, $tipo_de_vehiculo)
     {
         $problemas = [];
 
@@ -176,9 +188,16 @@ class ReservaModel extends ConectionModel
             // echo "<script>console.log('".addslashes(" | ...No hay parcelas con capacidad para $cantPersonas personas.")."');</script>";
 
         }
-        //echo "<script>console.log('".addslashes(" | Hay parcelas con capacidad para $cantPersonas personas.")."');</script>";
-
-        // 3. Filtrar por fogón
+        //3. Si el tipo de vehiculo con el que ira no se encuentra disponible para las parcelas buscadas
+        if ($tipo_de_vehiculo) {
+            $idsFiltradas = $this->filtrarIds($idsFiltradas, "tipo_de_vehiculo LIKE", "%{$tipo_de_vehiculo}%");
+            if (empty($idsFiltradas)) {
+                // echo "<script>console.log('".addslashes(" | ...No hay parcelas con conexión de agua.")."');</script>";
+                $problemas[] = "No se encontro parcelas que acepte ese tipo de vehiculo.";
+            }
+            //   echo "<script>console.log('".addslashes(" | Hay parcelas con conexión de agua.")."');</script>";
+        }
+        // 4. Filtrar por fogón
         if ($fogon) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_fogon = 1");
             if (empty($idsFiltradas)) {
@@ -217,6 +236,15 @@ class ReservaModel extends ConectionModel
             if (empty($idsFiltradas)) {
                 // echo "<script>console.log('".addslashes(" | ...No hay parcelas con conexión de agua.")."');</script>";
                 $problemas[] = "No hay parcelas con conexión de agua.";
+            }
+            //   echo "<script>console.log('".addslashes(" | Hay parcelas con conexión de agua.")."');</script>";
+        }
+        // 6. Si pide Ducha
+        if ($con_ducha == 1) {
+            $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_ducha = 1");
+            if (empty($idsFiltradas)) {
+                // echo "<script>console.log('".addslashes(" | ...No hay parcelas con conexión de agua.")."');</script>";
+                $problemas[] = "No se encontro parcelas con ducha.";
             }
             //   echo "<script>console.log('".addslashes(" | Hay parcelas con conexión de agua.")."');</script>";
         }
@@ -324,7 +352,7 @@ class ReservaModel extends ConectionModel
      * @return int|null Retorna el ID del servicio que cumple con los filtros especificados, o null si no se encuentra ningún servicio.
      * @throws PDOException Si ocurre un error durante la consulta a la base de datos.
      */
-    public function findServicio($fogon, $tomaElectrica, $sombra, $agua)
+    public function findServicio($fogon, $tomaElectrica, $sombra, $con_ducha, $agua)
     {
 
         $sql = "SELECT id_servicio 
@@ -332,12 +360,13 @@ class ReservaModel extends ConectionModel
                 WHERE con_fogon = ? 
                 AND sombra = ? 
                 AND con_toma_electrica = ? 
-                AND agua = ? 
+                AND agua = ?
+                AND con_ducha = ? 
                 LIMIT 1";
 
         try {
             $servicio = $this->conexion->prepare($sql);
-            $servicio->execute([$fogon, $sombra, $tomaElectrica, $agua]); // Convertimos a enteros
+            $servicio->execute([$fogon, $sombra, $tomaElectrica, $agua, $con_ducha]); // Convertimos a enteros
             $id_servicio = $servicio->fetchColumn();
 
             return $id_servicio;
@@ -348,7 +377,8 @@ class ReservaModel extends ConectionModel
     /**
      * Funcion que sirve para traer aquel servicio con menos caracteristicas
      */
-    public function getParcelaBasica(){
+    public function getParcelaBasica()
+    {
         $sql = "SELECT id_servicio 
                 FROM servicioreserva 
                 ORDER BY (con_fogon + sombra + con_toma_electrica + agua + poder_estacionar + con_ducha) ASC
@@ -420,7 +450,8 @@ class ReservaModel extends ConectionModel
      * Funcion encargada de setear el estado de la reserva a confirmada
      * @ $id_reserva el id de la reservacion para confirmar
      */
-    public function confirmarReservacion($id_reserva){
+    public function confirmarReservacion($id_reserva)
+    {
         $sql = "UPDATE reserva SET estado='confirmada' WHERE id = ?";
         $conexion_bbdd = $this->conexion->prepare($sql);
         $resultado = $conexion_bbdd->execute([$id_reserva]);

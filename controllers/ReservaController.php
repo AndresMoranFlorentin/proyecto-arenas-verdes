@@ -196,7 +196,6 @@ class ReservaController extends BaseController
             $sombra = in_array('sombra', $caracteristicas) ? 1 : 0;
             $agua = in_array('agua', $caracteristicas) ? 1 : 0;
             $con_ducha = in_array('con_ducha', $caracteristicas) ? 1 : 0;
-            $con_sanitario = in_array('con_sanitario', $caracteristicas) ? 1 : 0;
             //suma de la cantidad de personas en total
             $cantPersonas = $menores + $cuatroDoce + $doceMas;
 
@@ -206,9 +205,8 @@ class ReservaController extends BaseController
             $datos_user = $this->modelUser->findUserByDni($dni);
             $id_user = $datos_user->id;
             $residente = $this->modelUser->userIsResident($id_user) ? 1 : 0;
-            // echo "<script>console.log('".addslashes("llego bien-> ".$cantPersonas."|".$dni."|es residente: ".$residente.",user: ".$id_user)."');</script>";
 
-            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha, $con_sanitario, $tipo_de_vehiculo, $residente);
+            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha,$tipo_de_vehiculo, $residente);
             //se obtiene el email del usuario
             $email_user = $datos_user->email;
             // Buscar la parcela disponible         
@@ -221,9 +219,9 @@ class ReservaController extends BaseController
             }
 
             $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
+            
             // busca si el servicio es encontrado en la bbdd
-            $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua);
-            //echo "<script>console.log('".addslashes("id servicio-> ".$id_servicio)."');</script>";
+            $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra,$con_ducha, $agua);
             //controla si se encontro una parcela indicada
             if (!empty($id_parcela) && !empty($id_servicio)) {
                 // Si llega aquí, se encontro una parcela al menos que coincide con lo que buscaba el usuario
@@ -283,9 +281,7 @@ class ReservaController extends BaseController
                 //para que asi el usuario sepa porque razones no ha sido encontrada la parcela
                // echo "<script>console.log('" . addslashes("Llego a la parte de que fracaso la reservacion") . "');</script>";
 
-                $fallas = $this->model->analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $fogon, $tomaElectrica, $sombra, $agua);
-                // var_dump($fallas);
-                // die();
+                $fallas = $this->model->analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $fogon, $tomaElectrica, $sombra, $agua,$con_ducha,$tipo_de_vehiculo);
                 //echo "<script>console.log('".addslashes("id servicio-> ".$fallas[0])."');</script>";
 
                 if (!empty($fallas)) {
@@ -381,15 +377,15 @@ class ReservaController extends BaseController
      * 
      * @return string $idServicio el id del servicio encontrado
      */
-   private function getServicioAdicional($fogon, $tomaElectrica, $sombra, $agua)
+   private function getServicioAdicional($fogon, $tomaElectrica, $sombra,$con_ducha, $agua)
 {
     // Si todas las características son 0, buscar la parcela más básica
-    if ($fogon == 0 && $tomaElectrica == 0 && $sombra == 0 && $agua == 0) {
+    if ($fogon == 0 && $tomaElectrica == 0 && $sombra == 0 && $agua == 0 && $con_ducha == 0) {
         return $this->model->getParcelaBasica();
     }
 
     // Buscar el servicio con las características dadas
-    $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra, $agua);
+    $idServicio = $this->model->findServicio($fogon, $tomaElectrica, $sombra,$con_ducha, $agua);
 
     // Si no se encuentra el servicio, retornar `null`
     return !empty($idServicio) ? $idServicio : null;

@@ -154,7 +154,6 @@
       <div class="form-group">
         <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
         <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
-          <option value="sin_vehiculo">Sin vehiculo</option>
           <option value="auto">Auto</option>
           <option value="camioneta">Camioneta</option>
           <option value="motorhome">Motorhome</option>
@@ -165,11 +164,12 @@
       </div>
       <button type="submit" class="btn btn-primary">Calcular</button>
     </form>
+    <br>
       <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
   <div class="container">
     <?php if (!empty($precio_final)): ?>
       <div class="alert alert-success">
-        <p>El precio de la reserva segun sus preferencias es de: <?= htmlspecialchars($precio_final) ?>
+        <h5>El precio de la reserva segun sus preferencias es de:<strong>  $$  <?= htmlspecialchars($precio_final) ?></strong></h5>
       </div>
     <?php else: ?>
       <br>
