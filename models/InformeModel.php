@@ -41,11 +41,21 @@ class InformeModel extends ConectionModel {
         
         return "Nivel de ocupación: " . round(($ocupadas / $total) * 100, 2) . "%";
     }
-
     public function obtenerIngresosSemanales($fecha) {
+        $query="SELECT SUM(r.precio_total) AS ganancia_semana
+                FROM reserva AS r
+                WHERE  r.fecha_inicio <= DATE_ADD(?, INTERVAL (6 - WEEKDAY(?)) DAY)
+                AND r.fecha_fin >= DATE_SUB(?, INTERVAL WEEKDAY(?) DAY);
+                ";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->execute([$fecha, $fecha,$fecha, $fecha]);
+        return "$" . number_format($stmt->fetch(PDO::FETCH_ASSOC)['ganancia_semana'], 2) . " en ingresos generados.";
+   
+    }
+   /* public function obtenerIngresosSemanales($fecha) {
         $query = "SELECT SUM(precios.costo_estancia_xdia * DATEDIFF(fecha_fn, fecha_inicio)) as total FROM reserva JOIN precios ON reserva.id_usuario = precios.residente_local WHERE fecha_inicio >= DATE_SUB(?, INTERVAL 7 DAY) AND fecha_fn <= ?";
         $stmt = $this->conexion->prepare($query);
         $stmt->execute([$fecha, $fecha]);
         return "$" . number_format($stmt->fetch(PDO::FETCH_ASSOC)['total'], 2) . " en ingresos generados.";
-    }
+    }*/
 }

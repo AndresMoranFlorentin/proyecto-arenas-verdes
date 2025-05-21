@@ -293,12 +293,12 @@ class ReservaModel extends ConectionModel
      * @param string $identificador Un identificador único para la reserva.
      *return El ID de la nueva reserva creada en la base de datos.
      */
-    public function nuevaReserva($id_usuario, $menores_de_4, $menores_de_12, $mayores_de_12, $fecha_inicio, $fecha_fin, $tipo_vehiculo, $id_servicio, $estado, $identificador)
+    public function nuevaReserva($id_usuario, $menores_de_4, $menores_de_12, $mayores_de_12, $fecha_inicio, $fecha_fin, $tipo_vehiculo, $id_servicio, $estado, $identificador,$precio_estimado)
     {
-        $sql = 'INSERT INTO reserva (id_usuario,menores_de_4,menores_de_12,mayores_de_12, fecha_inicio, fecha_fin,tipo_vehiculo, id_servicio, estado, identificador) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO reserva (id_usuario,menores_de_4,menores_de_12,mayores_de_12, fecha_inicio, fecha_fin,tipo_vehiculo, id_servicio, estado, identificador,precio_total) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $sentencia = $this->conexion->prepare($sql);
-        $sentencia->execute([$id_usuario, $menores_de_4, $menores_de_12, $mayores_de_12, $fecha_inicio, $fecha_fin, $tipo_vehiculo, $id_servicio, $estado, $identificador]);
+        $sentencia->execute([$id_usuario, $menores_de_4, $menores_de_12, $mayores_de_12, $fecha_inicio, $fecha_fin, $tipo_vehiculo, $id_servicio, $estado, $identificador,$precio_estimado]);
         // Obtener el ID de la nueva reserva
         $nuevo_id = $this->conexion->lastInsertId();
         return $nuevo_id;
