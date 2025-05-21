@@ -1,47 +1,51 @@
 <?php
 require_once './models/InformeModel.php';
 require_once './helpers/sessionHelper.php';
-class InformeController {
+
+class InformeController
+{
     private $model;
     private $helper;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new InformeModel();
         $this->helper = new SessionHelper();
     }
 
-    public function mostrarVistaInformes() {
-        // Obtener datos si es necesario
+    public function mostrarVistaInformes()
+    {
         $informes = $this->model->obtenerInformes();
-        
-        // Incluir la vista
-        include './views/generar_informes.phtml';
+        include __DIR__ . '/../templates/generar_informes.phtml';
     }
 
-    public function generarInforme() {
+    public function generarInforme()
+    {
         if (!isset($_GET['fecha']) || !isset($_GET['tipo_informe'])) {
+            echo "Faltan parámetros.";
             return;
         }
 
         $fecha = $_GET['fecha'];
         $tipo = $_GET['tipo_informe'];
-        $informe = "";
+        $informe = $this->obtenerResultado($tipo, $fecha);
 
+        echo $informe;
+    }
+
+    public function obtenerResultado($tipo, $fecha)
+    {
         switch ($tipo) {
             case 'reservas':
-                $informe = $this->model->obtenerReservasPorFecha($fecha);
-                break;
+                return $this->model->obtenerReservasPorFecha($fecha);
             case 'acampantes':
-                $informe = $this->model->obtenerCantidadAcampantes($fecha);
-                break;
+                return $this->model->obtenerCantidadAcampantes($fecha);
             case 'ocupacion':
-                $informe = $this->model->obtenerNivelOcupacion($fecha);
-                break;
+                return $this->model->obtenerNivelOcupacion($fecha);
             case 'ingresos':
-                $informe = $this->model->obtenerIngresosSemanales($fecha);
-                break;
+                return $this->model->obtenerIngresosSemanales($fecha);
+            default:
+                return "Tipo de informe inválido.";
         }
-        
-        include 'views/generar_informes.phtml';
     }
 }
