@@ -10,20 +10,13 @@
                 <option value="reservas">Cantidad de reservas</option>
                 <option value="acampantes">Cantidad de personas acampando</option>
                 <option value="ocupacion">Nivel de ocupación</option>
-                <option value="ingresos">Ingresos generados</option>
+                <option value="ingresos">Ingresos generados (fin de semana)</option>
             </select>
 
             <button type="submit">Generar Informe</button>
         </form>
 
         <div id="resultado-informe" class="resultado-informe"></div>
-
-        <?php if (isset($informe)): ?>
-            <div class="resultado-informe">
-                <h3>Resultado del Informe</h3>
-                <p><?php echo $informe; ?></p>
-            </div>
-        <?php endif; ?>
     </section>
 </main>
 <script src="js/informes.js"></script>

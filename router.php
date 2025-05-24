@@ -42,66 +42,70 @@ switch ($params[0]) {
     /**
      * --- Funciones del ReservaController ---
      */
-    case 'home' :
+    case 'home':
         // Muestra la página principal
         $reservaController->showHome();
         break;
 
-    case 'precios' :
+    case 'precios':
         // Muestra la página de precios;
         $reservaController->renderPrecios();
         break;
-    case 'editarPrecios' :
+    case 'editarPrecios':
         // Edita el precio de una parcela)
         $reservaController->editarPrecio();
         break;
 
-    case 'simular_precios' :
+    case 'simular_precios':
         // Simula el precio de una reserva
         $reservaController->simularPrecioReserva();
         break;
 
-    case 'buscarParcelasDispo' :
+    case 'buscarParcelasDispo':
         // Busca las parcelas disponibles para reservar
         $reservaController->buscarParcelasDispo();
         break;
     /**********************************
      * * SECCION DE GENERAR RESERVACION
      *********************************/
-    case 'seccion_reservacion' :
+    case 'seccion_reservacion':
         // Solicita una reservación
         $reservaController->irAReservacion();
         break;
-    case 'generar_reservacion' :
+    case 'generar_reservacion':
         // Genera una nueva reservación
         $reservaController->generarReservacion();
         break;
-    case 'cancelar_reserva' :
-            $reservaController->cancelarReserva();
+    case 'cancelar_reserva':
+        $reservaController->cancelarReserva();
         break;
-    case 'confirmar_reserva' :
-            $reservaController->confirmarReserva();
+    case 'confirmar_reserva':
+        $reservaController->confirmarReserva();
         break;
-    case 'parcelas' :
+    case 'parcelas':
         // Muestra las parcelas disponibles       
         $parcelaController->sectoresParcelas();
         break;
-    case 'preguntas' :
+    case 'preguntas':
         // Muestra las preguntas frecuentes
         $reservaController->preguntasFrec();
         break;
-    case 'crt_parcelas' :
+    case 'crt_parcelas':
         // Muestra la sección de parcelas
         $parcelaController->seccionParcelas();
         break;
-    case 'generar_informes' :
+    case 'generar_informes':
         $informeController->mostrarVistaInformes();
         break;
-    case 'habilitar' :
+    // En el switch de router.php, agregá este case:
+    case 'generar_informe_ajax':
+        $informeController->generarInforme();
+        break;
+    case 'habilitar':
         // Habilita una parcela
         $parcelaController->habilitarParcela();
         break;
-    case 'inhabilitar' :
+    case 'inhabilitar':
         // Inhabilita una parcela
         $parcelaController->inhabilitarParcela();
         break;
@@ -111,52 +115,52 @@ switch ($params[0]) {
 
     //*****AUTH CONTROLLER **************  
 
-    case 'auth' :
+    case 'auth':
         // Procesa la autenticación del usuario
         $authController->auth();
         break;
-    case 'register' :
+    case 'register':
         // Registra un nuevo usuario
         $authController->register();
         break;
-    case 'logout' :
+    case 'logout':
         // Cierra la sesión del usuario
         $authController->logout();
         break;
 
-    case 'users' :
+    case 'users':
         // Muestra la lista de usuarios
         $authController->getUsers();
         break;
 
-    case 'editRol' :
+    case 'editRol':
         // Edita el rol de un usuario (requiere un parámetro adicional)
         $authController->editRol($params[1]);
         break;
-    case 'deleteUser' :
+    case 'deleteUser':
         // Elimina un usuario (requiere un parámetro adicional)
         $authController->deleteUser($params[1]);
         break;
-    case 'perfil' :
+    case 'perfil':
         $authController->verPerfil();
         break;
-    case 'editarUser' :
+    case 'editarUser':
         $authController->editarUser();
         break;
-    case 'resetPassword' :
+    case 'resetPassword':
         $passController->resetPassword();
         break;
-    case 'olvideContraseña' :
+    case 'olvideContraseña':
         $passController->sendRecoveryEmail();
         break;
-    case 'newPassword' :
+    case 'newPassword':
         $passController->showResetForm($params[1]);
         break;
 
     /**
      * --- Acción por defecto si no se encuentra la ruta ---
      */
-    default :
+    default:
         // Muestra un mensaje de error 404
         echo "404 Página no encontrada";
         break;

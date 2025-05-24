@@ -155,7 +155,6 @@ class ReservaModel extends ConectionModel
     public function analizarFalloDeReserva($fecha_inicio, $fecha_fin, $cantPersonas, $fogon, $tomaElectrica, $sombra, $agua, $con_ducha, $tipo_de_vehiculo)
     {
         $problemas = [];
-
         // 1. ¿Hay alguna parcela disponible en ese rango de fechas?
         $sqlFechas = "
             SELECT p.id 
@@ -170,7 +169,6 @@ class ReservaModel extends ConectionModel
         $stmt = $this->conexion->prepare($sqlFechas);
         $stmt->execute([$fecha_inicio, $fecha_fin]);
         $idsFechas = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        // var_dump("Fechas encontradas:::",$idsFechas);
         //en caso de que no encontro parcelas en ese rango de fechas que no este reservada
         if (empty($idsFechas)) {
             $problemas[] = "No hay parcelas disponibles en ese rango de fechas.";
@@ -178,83 +176,66 @@ class ReservaModel extends ConectionModel
 
             return $problemas;
         }
-        // echo "<script>console.log('".addslashes("| Hay parcelas disponibles en ese rango de fechas.")."');</script>";
 
         // 2. Filtrar por capacidad
         $idsFiltradas = $this->filtrarIds($idsFechas, "cant_personas >= ?", [$cantPersonas]);
 
         if (empty($idsFiltradas)) {
             $problemas[] = "No hay parcelas con capacidad para $cantPersonas personas.";
-            // echo "<script>console.log('".addslashes(" | ...No hay parcelas con capacidad para $cantPersonas personas.")."');</script>";
 
         }
         //3. Si el tipo de vehiculo con el que ira no se encuentra disponible para las parcelas buscadas
         if ($tipo_de_vehiculo) {
             $idsFiltradas = $this->filtrarIds($idsFiltradas, "tipo_de_vehiculo LIKE", "%{$tipo_de_vehiculo}%");
             if (empty($idsFiltradas)) {
-                // echo "<script>console.log('".addslashes(" | ...No hay parcelas con conexión de agua.")."');</script>";
                 $problemas[] = "No se encontro parcelas que acepte ese tipo de vehiculo.";
             }
-            //   echo "<script>console.log('".addslashes(" | Hay parcelas con conexión de agua.")."');</script>";
         }
         // 4. Filtrar por fogón
         if ($fogon) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_fogon = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con fogón.";
-                //   echo "<script>console.log('".addslashes(" | ...No hay parcelas con fogón.")."');</script>";
-
             }
-            //   echo "<script>console.log('".addslashes(" | Hay parcelas con fogón.")."');</script>";
         }
-        // 4. Filtrar por toma eléctrica
+        // 5. Filtrar por toma eléctrica
         if ($tomaElectrica) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_toma_electrica = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con toma eléctrica.";
-                // echo "<script>console.log('".addslashes(" | ...No hay parcelas con toma eléctrica.")."');</script>";
-
             }
-            //  echo "<script>console.log('".addslashes(" | Hay parcelas con toma eléctrica.")."');</script>";
         }
-
-        // 5. Sombra
+        // 6. Sombra
         if ($sombra) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "sombra = 1");
             if (empty($idsFiltradas)) {
-                //  echo "<script>console.log('".addslashes(" | ...No hay parcelas con sombra. | ")."');</script>";
-
                 $problemas[] = "No hay parcelas con sombra.";
             }
-            //   echo "<script>console.log('".addslashes(" | Hay parcelas con sombra. | ")."');</script>";
-
         }
-
-        // 6. Agua
+        // 7. Agua
         if ($agua) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "agua = 1");
             if (empty($idsFiltradas)) {
-                // echo "<script>console.log('".addslashes(" | ...No hay parcelas con conexión de agua.")."');</script>";
                 $problemas[] = "No hay parcelas con conexión de agua.";
             }
-            //   echo "<script>console.log('".addslashes(" | Hay parcelas con conexión de agua.")."');</script>";
         }
-        // 6. Si pide Ducha
+        // 8. Si pide Ducha
         if ($con_ducha == 1) {
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_ducha = 1");
             if (empty($idsFiltradas)) {
-                // echo "<script>console.log('".addslashes(" | ...No hay parcelas con conexión de agua.")."');</script>";
                 $problemas[] = "No se encontro parcelas con ducha.";
             }
-            //   echo "<script>console.log('".addslashes(" | Hay parcelas con conexión de agua.")."');</script>";
         }
 
         return $problemas;
     }
     /**
      * Funcion encargada de devolver array que dadas la condicion y el parametro pasado
-     * devuelva un null o un valor que signifique que si encontro aquella parcela que se 
-     * le dio por parametro
+     * devuelva un null o una parcela que si cumple con la condicion dada
+     * 
+     * @param array $ids contiene todos los id de las parcelas que seran evaluadas
+     * @param string $condicion es la condicion que se agregara a la consulta sql
+     * @return array devuelve un array o null de todos los id que pasaron por el filtro
      */
     private function filtrarIds($ids, $condicion, $params)
     {
@@ -265,7 +246,14 @@ class ReservaModel extends ConectionModel
         $stmt->execute(array_merge($ids, $params));
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
-
+    /**
+     * Funcion encargada de devolver un array que dadas las condiciones de la tabla servicios
+     * de si cumple o no  las parcelas devuelva un null o los id de aquellas que si cumplieron
+     * 
+     * @param array $ids contiene todos los id de las parcelas que seran evaluadas
+     * @param string $condicion es la condicion que se agregara a la consulta sql
+     * @return array devuelve un array o null de todos los id que pasaron por el filtro
+     */
     private function filtrarIdsConServicio($ids, $condicion)
     {
         if (empty($ids)) return [];
@@ -306,7 +294,11 @@ class ReservaModel extends ConectionModel
 
     /**
      * Funcion donde traera todos los precios guardados en la bbdd
+     * y traera dos resultados diferentes en caso de que sea residente o no de loberia el
+     * usuario(precios mas bajos para el residente de loberia)
+     * 
      * @param boolean (true | false) de si es residente o no de loberia
+     * @return array $precios devuelve un array de todos los precios 
      */
     public function getPrecios($residente)
     {
@@ -319,7 +311,10 @@ class ReservaModel extends ConectionModel
         return $precios;
     }
     /**
-     * Actualizar el precio de una parcela
+     * Actualiza el precio de aquel servicio que tienen las parcelas
+     * @param string $columna es el campo de la tabla precio a modificar
+     * @param $valor es el nuevo valor que reemplazara la antigua tarifa
+     * @param $residente es un valor booleano que permite filtrar si es residente de loberia o no
      */
     public function editarPrecio($columna, $valor, $residente)
     {
@@ -327,6 +322,11 @@ class ReservaModel extends ConectionModel
         $stmt = $this->conexion->prepare($sql);
         return $stmt->execute([':valor' => $valor, ':residente' => $residente]);
     }
+    /**
+     * Funcion encargada de devolver todas las reservaciones mas el usuario que las creo
+     * 
+     * @return array $reservaciones es un array que devuelve las reservaciones junto al usuario que las creo
+     */
     public function getReservacionesMasUsuario()
     {
         $sql = "SELECT CONCAT(u.nombre,' - ',u.apellido) AS nombre_completo,u.email AS email ,
@@ -376,6 +376,8 @@ class ReservaModel extends ConectionModel
     }
     /**
      * Funcion que sirve para traer aquel servicio con menos caracteristicas
+     * 
+     * @return int $id el id del servicio disponible con menos servicios 
      */
     public function getParcelaBasica()
     {
@@ -446,9 +448,11 @@ class ReservaModel extends ConectionModel
             return false; // Hubo un error al ejecutar la consulta
         }
     }
-    /***
+    /**
      * Funcion encargada de setear el estado de la reserva a confirmada
-     * @ $id_reserva el id de la reservacion para confirmar
+     * @param $id_reserva el id de la reservacion para confirmar
+     * 
+     * @return bool devuelve un true o false en caso de que actualizo o no la reserva
      */
     public function confirmarReservacion($id_reserva)
     {
@@ -477,6 +481,13 @@ class ReservaModel extends ConectionModel
             return false; // Hubo un error al ejecutar la consulta
         }
     }
+    /**
+     * Funcion que devuelve el id de la reserva que tenga el mismo id de parcela
+     * y el id del usuario
+     * @param int $id_parcela el id de la parcela
+     * @param int $id_usuario el id del usuario
+     * @return array $id_reserva el id de la reserva encontrada
+     */
     function getParcelaReservada($id_parcela, $id_usuario)
     {
         $sql = "SELECT rp.id_reserva AS id
@@ -492,6 +503,7 @@ class ReservaModel extends ConectionModel
      * Funcion encargada de traer todas aquellas notificaciones
      * de aviso de finalizacion del tiempo de estadia de la 
      * reservacion
+     * @return array $resultado todas las notificaciones encontradas
      *  */
     public function getNotificaciones()
     {

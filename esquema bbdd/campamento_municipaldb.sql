@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-05-2025 a las 04:58:55
+-- Tiempo de generación: 24-05-2025 a las 00:45:26
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,17 +40,6 @@ CREATE TABLE `notificaciones_pendientes` (
 --
 
 INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fecha_notificacion`, `enviado`) VALUES
-(47, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-14 00:00:00', 0),
-(48, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-17 00:00:00', 0),
-(49, 'Andres Moran', 'moranandres729@gmail.com', '2025-04-04 00:00:00', 0),
-(50, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-21 00:00:00', 0),
-(51, 'Mateo Foglionni', 'mateofoglionni@gmail.com', '2025-03-25 00:00:00', 0),
-(52, 'Laula sofirio', 'sofini56j@gmail.com', '2025-04-04 00:00:00', 0),
-(53, 'Laula sofirio', 'sofini56j@gmail.com', '2025-04-04 00:00:00', 0),
-(54, 'Andres Moran', 'moranandres729@gmail.com', '2025-04-04 00:00:00', 0),
-(56, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-27 00:00:00', 0),
-(57, 'Andres Moran', 'moranandres729@gmail.com', '2025-03-28 00:00:00', 0),
-(58, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
 (59, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
 (60, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
 (61, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
@@ -178,6 +167,13 @@ CREATE TABLE `password_resets` (
   `expires` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `password_resets`
+--
+
+INSERT INTO `password_resets` (`id`, `user_id`, `token`, `expires`) VALUES
+(1, 4, '0dd3ded04f112ef72bd91fc9dbdc10733585f228fad35f695b10af84a88dd05b', '2025-05-23 19:44:28');
+
 -- --------------------------------------------------------
 
 --
@@ -222,6 +218,7 @@ CREATE TABLE `reserva` (
   `fecha_fin` date NOT NULL,
   `tipo_vehiculo` varchar(50) DEFAULT NULL,
   `id_servicio` bigint(20) NOT NULL,
+  `precio_total` float NOT NULL DEFAULT 0,
   `estado` enum('pendiente','confirmada','cancelada') DEFAULT 'pendiente',
   `identificador` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -230,12 +227,10 @@ CREATE TABLE `reserva` (
 -- Volcado de datos para la tabla `reserva`
 --
 
-INSERT INTO `reserva` (`id`, `id_usuario`, `menores_de_4`, `menores_de_12`, `mayores_de_12`, `fecha_inicio`, `fecha_fin`, `tipo_vehiculo`, `id_servicio`, `estado`, `identificador`) VALUES
-(199, 4, 1, 2, 3, '2025-03-21', '2025-03-29', 'auto', 1, 'confirmada', '63F8DF93A1B498E12107'),
-(200, 4, 1, 3, 1, '2025-05-17', '2025-05-24', 'Auto', 14, 'confirmada', '13FFEDD52A18BF725CBA'),
-(201, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 10, 'pendiente', '2142FC1A215692071937'),
-(202, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 14, 'pendiente', 'EBA5F434F6E34BCEED9A'),
-(203, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 14, 'pendiente', '24E9EFF6DB2500FF4B24');
+INSERT INTO `reserva` (`id`, `id_usuario`, `menores_de_4`, `menores_de_12`, `mayores_de_12`, `fecha_inicio`, `fecha_fin`, `tipo_vehiculo`, `id_servicio`, `precio_total`, `estado`, `identificador`) VALUES
+(199, 4, 1, 2, 3, '2025-03-21', '2025-03-29', 'auto', 1, 8900, 'confirmada', '63F8DF93A1B498E12107'),
+(200, 4, 1, 3, 1, '2025-04-17', '2025-04-24', 'Auto', 14, 5400, 'confirmada', '13FFEDD52A18BF725CBA'),
+(201, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 10, 9800, 'confirmada', '2142FC1A215692071937');
 
 --
 -- Disparadores `reserva`
@@ -291,9 +286,7 @@ CREATE TABLE `reserva_parcela` (
 
 INSERT INTO `reserva_parcela` (`id_reserva`, `id_parcela`) VALUES
 (200, 1),
-(201, 58),
-(202, 2),
-(203, 5);
+(201, 58);
 
 -- --------------------------------------------------------
 
@@ -389,18 +382,6 @@ INSERT INTO `servicioreserva` (`id_servicio`, `con_fogon`, `con_toma_electrica`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tarifa`
---
-
-CREATE TABLE `tarifa` (
-  `id_tarifa` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `precio` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -480,12 +461,6 @@ ALTER TABLE `servicioreserva`
   ADD PRIMARY KEY (`id_servicio`);
 
 --
--- Indices de la tabla `tarifa`
---
-ALTER TABLE `tarifa`
-  ADD PRIMARY KEY (`id_tarifa`);
-
---
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -513,7 +488,7 @@ ALTER TABLE `parcela`
 -- AUTO_INCREMENT de la tabla `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `precios`
@@ -532,12 +507,6 @@ ALTER TABLE `reserva`
 --
 ALTER TABLE `servicioreserva`
   MODIFY `id_servicio` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
-
---
--- AUTO_INCREMENT de la tabla `tarifa`
---
-ALTER TABLE `tarifa`
-  MODIFY `id_tarifa` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -574,21 +543,6 @@ ALTER TABLE `reserva`
 ALTER TABLE `reserva_parcela`
   ADD CONSTRAINT `reserva_parcela_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id`),
   ADD CONSTRAINT `reserva_parcela_ibfk_2` FOREIGN KEY (`id_parcela`) REFERENCES `parcela` (`id`);
-
-DELIMITER $$
---
--- Eventos
---
-CREATE DEFINER=`root`@`localhost` EVENT `borrar_reservaciones_vencidas` ON SCHEDULE EVERY 1 DAY STARTS '2025-03-10 14:52:46' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
-  -- Eliminar primero las relaciones en reserva_parcela
-  DELETE FROM reserva_parcela
-  WHERE id_reserva IN (SELECT id FROM reserva WHERE fecha_fin < NOW());
-
-  -- Luego eliminar las reservas vencidas
-  DELETE FROM reserva WHERE fecha_fin < NOW();
-END$$
-
-DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

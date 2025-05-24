@@ -144,8 +144,7 @@ class ReservaController extends BaseController
 
         $medio_transporte = $_POST['tipo_de_vehiculo'];
         $residente_loberia = $_POST['localidad'];
-        //echo "<script>console.log('".addslashes("residencia-> ".$residente_loberia)."');</script>";
-
+        
         if ($residente_loberia == 'loberia') {
             $residente_loberia = 1;
         } else {
