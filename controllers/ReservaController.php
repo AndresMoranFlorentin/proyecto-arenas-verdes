@@ -144,8 +144,7 @@ class ReservaController extends BaseController
 
         $medio_transporte = $_POST['tipo_de_vehiculo'];
         $residente_loberia = $_POST['localidad'];
-        //echo "<script>console.log('".addslashes("residencia-> ".$residente_loberia)."');</script>";
-
+        
         if ($residente_loberia == 'loberia') {
             $residente_loberia = 1;
         } else {
@@ -229,8 +228,7 @@ class ReservaController extends BaseController
                 // se genera el identificador de la reservacion
                 $identificador = $this->toolsHelper->generarIdentificador();
                 // en esta funcion se genera la reserva y a su vez se devuelve el id de la reserva que se genero
-                //echo "<script>console.log('".addslashes("identificador-> ".$identificador)."');</script>";
-                $id_nueva_reserva = $this->model->nuevaReserva($id_user, $menores, $cuatroDoce, $doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador);
+                $id_nueva_reserva = $this->model->nuevaReserva($id_user, $menores, $cuatroDoce, $doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador,$precio_reserva);
                 // se realiza la conexion entre la nueva reserva y la parcela que sera ocupada
                 $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
                 // ya la reservacion fue creada, en el siguiente paso se genera un comprobante pdf

@@ -60,15 +60,15 @@ class InformeModel extends ConectionModel {
         return "Ocupadas: $ocupadas<br>Libres: $libres<br>Ocupación: $ocupacion%";
     }
 
-    public function obtenerIngresosSemanales($fecha) {
-        $query = "SELECT SUM(p.costo_estancia_xdia * DATEDIFF(r.fecha_fin, r.fecha_inicio)) as total
-                  FROM reserva r
-                  JOIN precios p ON r.id_usuario = p.residente_local
-                  WHERE r.fecha_inicio >= DATE_SUB(?, INTERVAL 7 DAY) AND r.fecha_fin <= ? AND r.estado = 'confirmada'";
+        public function obtenerIngresosSemanales($fecha) {
+        $query="SELECT SUM(r.precio_total) AS ganancia_semana
+                FROM reserva AS r
+                WHERE  r.fecha_inicio <= DATE_ADD(?, INTERVAL (6 - WEEKDAY(?)) DAY)
+                AND r.fecha_fin >= DATE_SUB(?, INTERVAL WEEKDAY(?) DAY);
+                ";
         $stmt = $this->conexion->prepare($query);
-        $stmt->execute([$fecha, $fecha]);
-        $total = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        return $total ? "$" . number_format($total, 2) . " en ingresos generados." : "No se registraron ingresos en la última semana.";
+        $stmt->execute([$fecha, $fecha,$fecha, $fecha]);
+        return "*aclaracion: el monto considera las reservaciones sin confirmacion* \n $" . number_format($stmt->fetch(PDO::FETCH_ASSOC)['ganancia_semana'], 2) . " en ingresos generados.";   
     }
+ 
 }

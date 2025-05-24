@@ -46,11 +46,12 @@
               </p>
               <?php if ($this->logueado && $this->rol === 'admin'): ?>
                 <?php if ($parcela['disponible'] === 'disponible'): ?>
-                  <button class="btn btn-danger btn-sm inhabilitar"
+                  <a href="inhabilitar?id=<?= $parcela['id'] ?>"
+                          class="btn btn-danger btn-sm inhabilitar"
                           data-id="<?= $parcela['id'] ?>"
                           data-reservada="<?= $parcela['reservada'] ?>">
                     Inhabilitar
-                  </button>
+                  </a>
                 <?php else: ?>
                   <a href="habilitar?id=<?= $parcela['id'] ?>"
                      class="btn btn-success btn-sm">
@@ -126,8 +127,9 @@ include 'footer.phtml';
         let currentParcelaId = null;
 
         // Capturar el ID de la parcela cuando se hace clic en el botón de inhabilitar
-        document.querySelectorAll('.boton.inhabilitar').forEach(button => {
-            button.addEventListener('click', function() {
+        document.querySelectorAll('.inhabilitar').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
                 currentParcelaId = this.getAttribute('data-id');
                 const isReservada = this.getAttribute('data-reservada') === '1';
 

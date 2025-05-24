@@ -72,7 +72,6 @@ class ParcelaController extends BaseController
     
             // Busca si existe un usuario que haya reservado esa parcela en la fecha actual
             $esta_reservada_x = $this->model->estaReservadaParcela($id);
-            //var_dump($esta_reservada_x);
             // Si está reservada y no se fuerza, muestra el mensaje de aviso
             if (!empty($esta_reservada_x) && !$force) {
                 $parcelas = $this->model->getParcelasConEstadoReservada();
