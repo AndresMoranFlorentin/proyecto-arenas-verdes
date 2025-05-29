@@ -66,7 +66,7 @@ class ParcelaController extends BaseController
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
     
-        if ($logueado && $rol == 'admin') {
+        if ($logueado && ($rol == 'admin'|| $rol == 'super')) {
             $id = $_GET['id'];
             $force = isset($_GET['force']) ? $_GET['force'] : false;
     
