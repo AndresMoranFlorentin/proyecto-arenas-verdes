@@ -4,6 +4,8 @@ require __DIR__ . '/../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+// Ruta a FPDF (asegurate de que helpers/fpdf/fpdf.php exista)
+require_once __DIR__ . '/fpdf/fpdf.php'; 
 // Incluir PHPMailer
 /**
  * Este archivo contiene funciones que sus funcionalidades
@@ -38,81 +40,60 @@ class ToolsHelper
      * 
      * @return string
      */
-    function generarPDF($nombre, $apellido, $identificador, $precio, $washapp)
+    public function generarPDF($nombre, $apellido, $identificador, $precio, $washapp)
     {
         try {
-            // Limpiar cualquier salida previa
-            if (ob_get_length()) {
-                ob_clean();
-            }
-            // Crear el objeto TCPDF
-            $pdf = new TCPDF();
+            $pdf = new FPDF();
             $pdf->AddPage();
-            $pdf->SetFont('helvetica', 'B', 16);
-
-            // Título del archivo
+            $pdf->SetFont('Arial', 'B', 16);
             $pdf->Cell(0, 10, 'Comprobante de Reserva', 0, 1, 'C');
             $pdf->Ln(10);
 
-            // Contenido
-            $pdf->SetFont('helvetica', '', 12);
-            $pdf->Cell(0, 10, 'Nombre: ' . $nombre, 0, 1);
-            $pdf->Cell(0, 10, 'Apellido: ' . $apellido, 0, 1);
-            $pdf->Cell(0, 10, 'Precio estimado de dicha reserva: $' . $precio, 0, 1);
-            $pdf->Cell(0, 10, 'Identificador: ' . $identificador, 0, 1);
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->Cell(0, 10, "Nombre: $nombre", 0, 1);
+            $pdf->Cell(0, 10, "Apellido: $apellido", 0, 1);
+            $pdf->Cell(0, 10, "Precio estimado: $$precio", 0, 1);
+            $pdf->Cell(0, 10, "Identificador: $identificador", 0, 1);
             $pdf->Ln(10);
-            $pdf->Cell(0, 10, 'Comuníquese al número: ' . $washapp . ' para confirmar su reserva.', 0, 1);
+            $pdf->MultiCell(0, 10, "Confirme su pago al número: $washapp");
             $pdf->Ln(10);
-            $pdf->MultiCell(0, 10, "Aviso: Si no confirma el medio de pago a través del número de WhatsApp proporcionado, su reservación se eliminará luego de 5 días de haberla pedido.");
-            // Ruta donde se guardará el PDF
+            $pdf->MultiCell(0, 10, "Aviso: Si no confirma el pago en 5 días, la reserva será cancelada.");
+
             $directory = __DIR__ . '/tmp/';
             if (!is_dir($directory)) {
                 mkdir($directory, 0777, true);
             }
+
             $fileName = 'reserva_' . $identificador . '.pdf';
             $filePath = $directory . $fileName;
+            $pdf->Output('F', $filePath);
 
-            // Guardar el PDF en el servidor
-            $pdf->Output($filePath, 'F');
-
-            // Retornar la ruta completa del archivo
             return $filePath;
         } catch (Exception $e) {
-            error_log("Error al generar el PDF: " . $e->getMessage());
+            error_log("Error al generar PDF: " . $e->getMessage());
             return false;
         }
     }
-    /**
-     * Se encarga de enviar el archivo pdf a aquella direccion de email que recibe como parametro
-     * @param string $email direccion email de aquel usuario que recibira el pdf
-     * @param string $nombre nombre del usuario
-     * @param string $rutaPDF direccion de donde se encuentra el archivo pdf para que lo pueda invocar
-     * 
-     * @return bool retorna un booleano que nos devuelve un true si la operacion se ejecuto o un false
-     */
-    function enviarCorreoConPDF($email, $nombre, $rutaPDF)
+
+    public function enviarCorreoConPDF($email, $nombre, $rutaPDF)
     {
         $mail = new PHPMailer(true);
-
         try {
-            // Configuración del servidor SMTP
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // Servidor SMTP de Gmail
+            $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = $this->email_remitente; // Tu dirección de correo
-            $mail->Password = $this->password_remitente; // Contraseña de la aplicación (ver más abajo)
+            $mail->Username = $this->email_remitente;
+            $mail->Password = $this->password_remitente;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            // Configuración del correo
             $mail->setFrom($this->email_remitente, $this->nombre_cuenta);
             $mail->addAddress($email, $nombre);
-            $mail->addAttachment($rutaPDF); // Adjuntar PDF
+            $mail->addAttachment($rutaPDF);
             $mail->isHTML(true);
             $mail->Subject = 'Comprobante de Reserva';
             $mail->Body = "Hola $nombre,<br><br>Gracias por realizar tu reserva. Adjuntamos tu comprobante en formato PDF.<br><br>Saludos,<br>Equipo de Reservas.";
 
-            // Enviar correo
             $mail->send();
             return true;
         } catch (Exception $e) {
