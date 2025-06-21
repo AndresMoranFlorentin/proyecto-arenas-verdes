@@ -205,7 +205,7 @@ class ReservaController extends BaseController
             $id_user = $datos_user->id;
             $residente = $this->modelUser->userIsResident($id_user) ? 1 : 0;
 
-            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha,$tipo_de_vehiculo, $residente);
+            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha,null,$tipo_de_vehiculo, $residente);
             //se obtiene el email del usuario
             $email_user = $datos_user->email;
             // Buscar la parcela disponible         

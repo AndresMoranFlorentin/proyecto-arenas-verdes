@@ -48,7 +48,7 @@ class ReservaModel extends ConectionModel
 
         // Agregar filtros dinámicos para las características
         if ($personas !== null) {
-            $sql .= " AND p.cant_personas = :personas";
+            $sql .= " AND p.cant_personas >= :personas";
         }
         if ($tipo_de_vehiculo !== null) {
             $sql .= " AND p.tipo_de_vehiculo LIKE :tipo_de_vehiculo";

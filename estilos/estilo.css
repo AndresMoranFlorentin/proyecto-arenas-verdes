@@ -132,7 +132,7 @@ nav .btn_login {
 }
 
 /** SECCION CUERPO BODY**/
-body {
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -145,10 +145,17 @@ body {
   font-family: "Gill Sans", sans-serif;
   font-size: 16px;
 }
+.wrapper {
+  min-height: 100vh;        /* Altura mínima del viewport */
+  display: flex;
+  flex-direction: column;
+}
 main {
-  height: 100%;
-  width: 80%;
+  flex: 1; 
   background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
 }
 .introduccion {
   padding-right: 10%;
