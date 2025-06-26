@@ -205,7 +205,7 @@ class ReservaController extends BaseController
             $id_user = $datos_user->id;
             $residente = $this->modelUser->userIsResident($id_user) ? 1 : 0;
 
-            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha,$tipo_de_vehiculo, $residente);
+            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha,null,$tipo_de_vehiculo, $residente);
             //se obtiene el email del usuario
             $email_user = $datos_user->email;
             // Buscar la parcela disponible         
@@ -310,7 +310,7 @@ class ReservaController extends BaseController
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
 
-        if ($logueado && ($rol == 'admin' || 'Admin')) {
+        if ($logueado && ($rol == 'admin' || 'super')) {
             $id_reserva = $_POST['id_reserva'];
             $id_del_usuario = $this->helper->getId();
 
@@ -399,7 +399,7 @@ class ReservaController extends BaseController
         $id_del_usuario = $this->helper->getId();
         //si no esta logueado se mostrara un cartel de que debe 
         //iniciar sesion para poder reservar
-        if ($logueado && ($rol == 'admin' || 'user')) {
+        if ($logueado) {
             $usuario_login = $this->modelUser->findUserById($id_del_usuario);
             //si encontro al usuario entonces se cargan las 3 variables con los
             //datos del usuario, para que el formulario al mostrarse ya tenga datos precargados
@@ -407,7 +407,7 @@ class ReservaController extends BaseController
                 $nombre = $usuario_login['nombre'];
                 $apellido = $usuario_login['apellido'];
                 $dni = $usuario_login['dni'];
-                if ($rol == 'admin' || 'Admin') {
+                if ($rol == 'admin' || 'super') {
                     //en este caso se buscara todas las reservaciones mas los datos del usuario relevantes que 
                     //hizo la reservacion para que asi el admin pueda con esos datos confirmar o cancelar la reservacion
                     $reservaciones = $this->model->getReservacionesMasUsuario();
@@ -441,7 +441,7 @@ class ReservaController extends BaseController
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
 
-        if ($rol === 'admin' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($rol === 'super' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             // Procesar los datos enviados por el formulario
             $data = $_POST;
 

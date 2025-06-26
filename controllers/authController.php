@@ -25,6 +25,10 @@ class AuthController extends BaseController
         $this->passModel = new PassResetModel();
     }
 
+    /**
+     * FUNCION PARA AUTENTICARSE COMO USUARIO
+     * Verifica si el usuario y la contraseña son correctos.
+     */
     public function auth()
     {
         $usuario = $_POST['email'];
@@ -48,6 +52,9 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * FUNCION PARA REGISTRARSE COMO NUEVO USUARIO
+     */
     function register()
     {
         if (empty($_POST['nombre']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['apellido']) || empty($_POST['localidad']) || empty($_POST['phone']) || empty($_POST['dni'])) {
@@ -81,11 +88,15 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * FUNCION PARA MOSTRAR TODOS LOS USUARIOS
+     * Verifica si el usuario está logueado y es administrador o super administrador.
+     */
     public function getUsers()
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        if (($logueado) && ($rol == "admin")) {
+        if (($logueado) && ($rol == "super" || $rol == "admin")) {
             $users = $this->model->getUsers();
             $this->view->renderUsers($users, $logueado, $rol);
         } else {
@@ -94,11 +105,15 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * FUNCION PARA EDITAR EL ROL DE UN USUARIO
+     * Verifica si el usuario está logueado y es super administrador.
+     */
     public function editRol($id)
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        if (($logueado) && ($rol == "admin")) {
+        if (($logueado) && ($rol == "super")) {
             $rolViejo = $this->model->checkRol($id);
 
             if ($rolViejo->rol === "user") {
@@ -115,11 +130,15 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * FUNCION PARA ELIMINAR UN USUARIO
+     * Verifica si el usuario está logueado y es super administrador.
+     */
     public function deleteUser($id)
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
-        if (($logueado) && ($rol == "admin")) {
+        if (($logueado) && ($rol == "super")) {
             $this->model->deleteUser($id);
             header("location:" . BASE_URL . "users");
         } else {
@@ -128,6 +147,10 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * FUNCION PARA MOSTRAR EL PERFIL DEL USUARIO
+     * Verifica si el usuario está logueado.
+     */
     public function verPerfil()
     {
         $logueado = $this->helper->checkUser();
@@ -143,6 +166,10 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * FUNCION PARA EDITAR EL PERFIL DEL USUARIO
+     * Verifica si el usuario está logueado.
+     */
     public function editarUser()
     {
         $logueado = $this->helper->checkUser();
@@ -165,6 +192,9 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * FUNCION PARA CERRAR SESIÓN
+     */
     public function logout()
     {
         $this->helper->logOut();

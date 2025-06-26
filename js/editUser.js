@@ -1,4 +1,6 @@
-
+/**
+ * FUNCIONALIDAD PARA EDITAR DATOS DEL USUARIO
+ */
 document.addEventListener('DOMContentLoaded', function () {
     const editModal = document.getElementById('editModal');
     const editButton = document.getElementById('editUser');

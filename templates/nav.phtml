@@ -24,11 +24,12 @@
         <li class="nav-item">
           <a class="nav-link" href="precios">Precios</a>
         </li>
-        <?php if (($this->logueado) && ($this->rol == "admin")): ?>
+        <?php if (($this->logueado) && (($this->rol == "admin") || ($this->rol == "super"))): ?>
           <li class="nav-item">
             <a class="nav-link" href="crt_parcelas">Control Parcelas</a>
           </li>
-
+           <?php endif; ?>
+          <?php if (($this->logueado) && ($this->rol == "super")): ?>
           <li class="nav-item">
             <a class="nav-link" href="users">Usuarios</a>
           </li>

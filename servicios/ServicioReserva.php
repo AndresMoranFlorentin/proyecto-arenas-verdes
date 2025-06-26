@@ -79,6 +79,7 @@ class ServicioReserva
         $edadninos20,
         $tiempo_estancia,
         $con_ducha,
+        $con_sanitario,
         $tipo_vehiculo,
         $residente
     ) {

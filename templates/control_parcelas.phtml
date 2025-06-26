@@ -44,7 +44,7 @@
                <p class="card-text">
                 Sector: <strong><?= htmlspecialchars($parcela['sector']) ?></strong>
               </p>
-              <?php if ($this->logueado && $this->rol === 'admin'): ?>
+              <?php if ($this->logueado && (($this->rol === 'admin')||($this->rol === 'super'))): ?>
                 <?php if ($parcela['disponible'] === 'disponible'): ?>
                   <a href="inhabilitar?id=<?= $parcela['id'] ?>"
                           class="btn btn-danger btn-sm inhabilitar"

@@ -105,7 +105,7 @@
       </tr>
     </tbody>
   </table>
-  <?php if ($logueado && $rol === 'admin'): ?>
+  <?php if ($logueado && $rol === 'super'): ?>
     <button type="button" id="editar-todo" class="btn btn-primary">Editar Precios</button>
     <button type="submit" id="guardar-todo" class="btn btn-success" style="display:none;">Guardar Cambios</button>
     <button type="button" id="cancelar-todo" class="btn btn-danger" style="display:none;">Cancelar</button>
@@ -113,57 +113,86 @@
 </form>
 
     <p>*Las tarifas son por día y por persona</p>
-    <h2>Simulador de precios: </h2>
-    <form class="form-inline" action="simular_precios" method="post">
-      <div class="form-group">
-        <label for="personas">Personas: </label>
-        <label> Menores de 4 años: </label>
-        <input name="edad_ninos4" type="number" min="00"
-          max="20" width="20%" id="ninos">
-        <label> Mayores de 4 hasta 12 años: </label>
-        <input name="edad_ninos12" type="number" min="00"
-          max="20" width="20%" id="ninos_m">
-        <label> Mayores de 12 años: </label>
-        <input name="edad_ninos20" type="number" min="00"
-          max="20" width="20%" id="ninos">
+    <br>
+    <h2 class="mb-4">Simulador de precios</h2>
+
+<form action="simular_precios" method="post">
+  <!-- Agrupación de personas por edad -->
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2">Cantidad de Personas</legend>
+
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="ninos">Menores de 4 años:</label>
+        <input name="edad_ninos4" type="number" min="0" max="20" class="form-control" id="ninos">
       </div>
-      <div class="form-group">
-        <label for="estancia">Dias de estancia:</label>
-        <input name="estancia" type="number" min="00"
-          max="100" class="form-control">
+      <div class="form-group col-md-4">
+        <label for="ninos_m">Entre 4 y 12 años:</label>
+        <input name="edad_ninos12" type="number" min="0" max="20" class="form-control" id="ninos_m">
       </div>
-      <div class="form-group">
-          <label for="personas">Procedencia:</label>
-            <select class="form-control" name="localidad" id="exampleFormControlSelect1">
-              <option value="loberia">Loberia</option>
-              <option value="necochea">Necochea</option>
-              <option value="tandil">Tandil</option>
-              <option value="mar_del_plata">Mar del Plata</option>
-              <option value="miramar">Miramar</option>
-              <option value="balcarce">Balcarce</option>
-              <option value="otra">Otra</option>
-            </select>
+      <div class="form-group col-md-4">
+        <label for="ninos_mayor">Mayores de 12 años:</label>
+        <input name="edad_ninos20" type="number" min="0" max="20" class="form-control" id="ninos_mayor">
       </div>
-      <br>
-      <div class="checkbox">
-        <label>Caracteristicas adicionales: </label>
-        <label><input name="caracteristicas[]" type="checkbox" value="ducha"> Ducha</label>
-        <label><input name="caracteristicas[]" type="checkbox" value="sanitario"> Sanitario</label>
+    </div>
+  </fieldset>
+
+  <!-- Estancia y procedencia -->
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2">Datos de la Estancia</legend>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="estancia">Días de estancia:</label>
+        <input name="estancia" type="number" min="1" max="100" class="form-control" id="estancia">
       </div>
-      <br>
-      <div class="form-group">
-        <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
-        <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
-          <option value="auto">Auto</option>
-          <option value="camioneta">Camioneta</option>
-          <option value="motorhome">Motorhome</option>
-          <option value="casilla">Casilla</option>
+
+      <div class="form-group col-md-6">
+        <label for="exampleFormControlSelect1">Procedencia:</label>
+        <select class="form-control" name="localidad" id="exampleFormControlSelect1">
+          <option value="loberia">Lobería</option>
+          <option value="necochea">Necochea</option>
+          <option value="tandil">Tandil</option>
+          <option value="mar_del_plata">Mar del Plata</option>
+          <option value="miramar">Miramar</option>
+          <option value="balcarce">Balcarce</option>
+          <option value="otra">Otra</option>
         </select>
       </div>
-      <div>
-      </div>
-      <button type="submit" class="btn btn-primary">Calcular</button>
-    </form>
+    </div>
+  </fieldset>
+
+  <!-- Características adicionales -->
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2">Características adicionales</legend>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="ducha" id="ducha">
+      <label class="form-check-label" for="ducha">Uso de Ducha</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="sombra" id="sombra">
+      <label class="form-check-label" for="sanitario">Uso de Sanitario</label>
+    </div>
+  </fieldset>
+
+  <!-- Tipo de vehículo -->
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2">Tipo de Vehículo</legend>
+    <div class="form-group">
+      <select class="form-control" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
+        <option value="">Seleccione un tipo</option>
+        <option value="auto">Auto</option>
+        <option value="camioneta">Camioneta</option>
+        <option value="motorhome">Motorhome</option>
+        <option value="casilla">Casilla</option>
+      </select>
+    </div>
+  </fieldset>
+
+  <button type="submit" class="btn btn-primary">Calcular</button>
+</form>
+
     <br>
       <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
   <div class="container">
