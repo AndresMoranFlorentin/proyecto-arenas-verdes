@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2025 a las 00:45:26
+-- Tiempo de generación: 29-06-2025 a las 02:08:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,20 +34,6 @@ CREATE TABLE `notificaciones_pendientes` (
   `fecha_notificacion` datetime NOT NULL,
   `enviado` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `notificaciones_pendientes`
---
-
-INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fecha_notificacion`, `enviado`) VALUES
-(59, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
-(60, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
-(61, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
-(62, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
-(63, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
-(64, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-23 00:00:00', 0),
-(65, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-30 00:00:00', 0),
-(66, 'Andres Moran', 'moranandres729@gmail.com', '2025-05-30 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -94,7 +80,7 @@ INSERT INTO `parcela` (`id`, `tipo_de_vehiculo`, `imagen`, `id_servicio`, `secto
 (20, 'Carpa, Auto/Camioneta', NULL, 70, 'Carpa Fam', 'Cerca', 'Carpa', 4, 'disponible'),
 (21, 'Carpa, Auto/Camioneta', NULL, 70, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
 (22, 'Carpa, Auto/Camioneta', NULL, 70, 'Carpa Fam', 'Cerca', 'Carpa', 10, 'disponible'),
-(23, 'Carpa, Auto/Camioneta', NULL, 62, 'Familiar', 'Cerca', 'Carpa', 8, 'disponible'),
+(23, 'Carpa, Auto/Camioneta', NULL, 62, 'Familiar', 'Cerca', 'Carpa', 8, 'no disponible'),
 (24, 'Carpa, Auto/Camioneta', NULL, 21, 'Familiar', 'Cerca', 'Carpa', 4, 'disponible'),
 (25, 'Casilla, Auto/Camioneta', NULL, 70, 'Familiar', 'Cerca', 'Casilla', 6, 'disponible'),
 (26, 'Casilla, Auto', NULL, 70, 'Familiar', 'Cerca', 'Casilla', 4, 'disponible'),
@@ -172,7 +158,8 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `user_id`, `token`, `expires`) VALUES
-(1, 4, '0dd3ded04f112ef72bd91fc9dbdc10733585f228fad35f695b10af84a88dd05b', '2025-05-23 19:44:28');
+(1, 4, '0dd3ded04f112ef72bd91fc9dbdc10733585f228fad35f695b10af84a88dd05b', '2025-05-23 19:44:28'),
+(2, 4, '9df3e182897ffea9ba4cffa2adce6f5921f55f9436d5475921845c3b42f88624', '2025-06-18 20:57:13');
 
 -- --------------------------------------------------------
 
@@ -199,8 +186,8 @@ CREATE TABLE `precios` (
 --
 
 INSERT INTO `precios` (`id`, `edad_ninos4`, `edad_ninos12`, `edad_ninos20`, `costo_estancia_xdia`, `costo_ducha`, `costo_sanitario`, `costoxvehiculoxdia`, `costoxcasillaxdia`, `costoxmescasilla`, `residente_local`) VALUES
-(1, 700, 1000, 1200, 700, 500, 200, 600, 1800, 32000, 0),
-(2, 500, 800, 1000, 500, 250, 100, 400, 1500, 25000, 1);
+(1, 0, 8500, 15000, 2500, 2000, 350, 2000, 5500, 110000, 0),
+(2, 0, 1000, 2000, 850, 500, 200, 700, 2500, 70000, 1);
 
 -- --------------------------------------------------------
 
@@ -228,9 +215,8 @@ CREATE TABLE `reserva` (
 --
 
 INSERT INTO `reserva` (`id`, `id_usuario`, `menores_de_4`, `menores_de_12`, `mayores_de_12`, `fecha_inicio`, `fecha_fin`, `tipo_vehiculo`, `id_servicio`, `precio_total`, `estado`, `identificador`) VALUES
-(199, 4, 1, 2, 3, '2025-03-21', '2025-03-29', 'auto', 1, 8900, 'confirmada', '63F8DF93A1B498E12107'),
-(200, 4, 1, 3, 1, '2025-04-17', '2025-04-24', 'Auto', 14, 5400, 'confirmada', '13FFEDD52A18BF725CBA'),
-(201, 4, 2, 3, 1, '2025-05-20', '2025-05-24', 'Camioneta', 10, 9800, 'confirmada', '2142FC1A215692071937');
+(214, 4, 0, 1, 3, '2025-06-28', '2025-07-03', 'Camioneta', 54, 22750, 'pendiente', 'D74A52501DED8C9847AF'),
+(222, 4, 3, 2, 3, '2025-06-28', '2025-07-30', 'Motorhome', 54, 152000, 'pendiente', '61ABE9FD39C7E9D03E45');
 
 --
 -- Disparadores `reserva`
@@ -285,8 +271,8 @@ CREATE TABLE `reserva_parcela` (
 --
 
 INSERT INTO `reserva_parcela` (`id_reserva`, `id_parcela`) VALUES
-(200, 1),
-(201, 58);
+(214, 3),
+(222, 21);
 
 -- --------------------------------------------------------
 
@@ -403,9 +389,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `rol`, `nombre`, `apellido`, `dni`, `phone`, `email`, `localidad`, `password`) VALUES
 (1, 'admin', 'Administrador', 'BaseCamp', 0, 0, 'base@gmail.com', 'Loberia', '$2a$12$sQbpXaU3IruUNF.BU7iKj.YeXS.DEJuUB1Jqx3VzaHQglC4i6L/Ee'),
-(4, 'admin', 'Andres', 'Moran', 44830876, 2147483647, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
+(4, 'admin', 'Andres', 'Moran', 44830876, 226289765, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
 (5, 'user', 'Mateo', 'Foglionni', 44888777, 2147483647, 'mateofoglionni@gmail.com', 'Necochea', 'Maqueta'),
-(6, 'user', 'Laula', 'sofirio', 22333444, 2147483647, 'sofini56j@gmail.com', 'Balcarce', 'Nona'),
 (7, 'admin', 'lautaro', 'Lamenza', 2132312321, 34779043, 'flakolobizon@gmail.com', 'Loberia', '$2y$10$srQTkYfI4BLfXAN0uwTHIOuD5OXl4MyKqWUwr5zuGRPfqi/jGhHoC');
 
 --
@@ -476,7 +461,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `notificaciones_pendientes`
 --
 ALTER TABLE `notificaciones_pendientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT de la tabla `parcela`
@@ -488,7 +473,7 @@ ALTER TABLE `parcela`
 -- AUTO_INCREMENT de la tabla `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `precios`
@@ -500,7 +485,7 @@ ALTER TABLE `precios`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
 
 --
 -- AUTO_INCREMENT de la tabla `servicioreserva`

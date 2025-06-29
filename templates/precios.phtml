@@ -9,201 +9,209 @@
   <section class="introduccion" id="content">
     <h1>TARIFAS BASE DE CAMPAMENTO</h1>
     <form action="editarPrecios" method="post">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Categoría</th>
-        <th>NO RESIDENTES</th>
-        <th>RESIDENTES DE LOBERIA</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Menores 4 años</td>
-        <td class="editable" data-col="edad_ninos4_no_residentes">
-          <?= $precios['no_residentes']['edad_ninos4'] > 0 
-              ? "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos4']) 
-              : "sin costo" ?>
-        </td>
-        <td class="editable" data-col="edad_ninos4_residentes">
-          <?= $precios['residentes']['edad_ninos4'] > 0 
-              ? "$ " . htmlspecialchars($precios['residentes']['edad_ninos4']) 
-              : "sin costo" ?>
-        </td>
-      </tr>
-      <tr>
-        <td>De 4 a 12 años</td>
-        <td class="editable" data-col="edad_ninos12_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos12']) ?>
-        </td>
-        <td class="editable" data-col="edad_ninos12_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['edad_ninos12']) ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Mayores 12 años</td>
-        <td class="editable" data-col="edad_ninos20_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos20']) ?>
-        </td>
-        <td class="editable" data-col="edad_ninos20_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['edad_ninos20']) ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Vehículo</td>
-        <td class="editable" data-col="costoxvehiculoxdia_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxvehiculoxdia']) ?>
-        </td>
-        <td class="editable" data-col="costoxvehiculoxdia_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['costoxvehiculoxdia']) ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Estadía diaria Casillas</td>
-        <td class="editable" data-col="costoxcasillaxdia_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxcasillaxdia']) ?>
-        </td>
-        <td class="editable" data-col="costoxcasillaxdia_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['costoxcasillaxdia']) ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Estadía mensual Casillas</td>
-        <td class="editable" data-col="costoxmescasilla_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxmescasilla']) ?>
-        </td>
-        <td class="editable" data-col="costoxmescasilla_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['costoxmescasilla']) ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Pasar el día</td>
-        <td class="editable" data-col="costo_estancia_xdia_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_estancia_xdia']) ?>
-        </td>
-        <td class="editable" data-col="costo_estancia_xdia_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['costo_estancia_xdia']) ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Uso de duchas</td>
-        <td class="editable" data-col="costo_ducha_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_ducha']) ?>
-        </td>
-        <td class="editable" data-col="costo_ducha_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['costo_ducha']) ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Uso de sanitarios</td>
-        <td class="editable" data-col="costo_sanitario_no_residentes">
-          <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_sanitario']) ?>
-        </td>
-        <td class="editable" data-col="costo_sanitario_residentes">
-          <?= "$ " . htmlspecialchars($precios['residentes']['costo_sanitario']) ?>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <?php if ($logueado && $rol === 'super'): ?>
-    <button type="button" id="editar-todo" class="btn btn-primary">Editar Precios</button>
-    <button type="submit" id="guardar-todo" class="btn btn-success" style="display:none;">Guardar Cambios</button>
-    <button type="button" id="cancelar-todo" class="btn btn-danger" style="display:none;">Cancelar</button>
-  <?php endif; ?>
-</form>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Categoría</th>
+            <th>NO RESIDENTES</th>
+            <th>RESIDENTES DE LOBERIA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Menores 4 años</td>
+            <td class="editable" data-col="edad_ninos4_no_residentes">
+              <?= $precios['no_residentes']['edad_ninos4'] > 0
+                ? "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos4'])
+                : "sin costo" ?>
+            </td>
+            <td class="editable" data-col="edad_ninos4_residentes">
+              <?= $precios['residentes']['edad_ninos4'] > 0
+                ? "$ " . htmlspecialchars($precios['residentes']['edad_ninos4'])
+                : "sin costo" ?>
+            </td>
+          </tr>
+          <tr>
+            <td>De 4 a 12 años</td>
+            <td class="editable" data-col="edad_ninos12_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos12']) ?>
+            </td>
+            <td class="editable" data-col="edad_ninos12_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['edad_ninos12']) ?>
+            </td>
+          </tr>
+          <tr>
+            <td>Mayores 12 años</td>
+            <td class="editable" data-col="edad_ninos20_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['edad_ninos20']) ?>
+            </td>
+            <td class="editable" data-col="edad_ninos20_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['edad_ninos20']) ?>
+            </td>
+          </tr>
+          <tr>
+            <td>Vehículo</td>
+            <td class="editable" data-col="costoxvehiculoxdia_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxvehiculoxdia']) ?>
+            </td>
+            <td class="editable" data-col="costoxvehiculoxdia_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['costoxvehiculoxdia']) ?>
+            </td>
+          </tr>
+          <tr>
+            <td>Estadía diaria Casillas</td>
+            <td class="editable" data-col="costoxcasillaxdia_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxcasillaxdia']) ?>
+            </td>
+            <td class="editable" data-col="costoxcasillaxdia_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['costoxcasillaxdia']) ?>
+            </td>
+          </tr>
+          <tr>
+            <td>Estadía mensual Casillas</td>
+            <td class="editable" data-col="costoxmescasilla_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['costoxmescasilla']) ?>
+            </td>
+            <td class="editable" data-col="costoxmescasilla_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['costoxmescasilla']) ?>
+            </td>
+          </tr>
+          <tr>
+            <td>Pasar el día</td>
+            <td class="editable" data-col="costo_estancia_xdia_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_estancia_xdia']) ?>
+            </td>
+            <td class="editable" data-col="costo_estancia_xdia_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['costo_estancia_xdia']) ?>
+            </td>
+          </tr>
+          <tr>
+            <td>Uso de duchas</td>
+            <td class="editable" data-col="costo_ducha_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_ducha']) ?>
+            </td>
+            <td class="editable" data-col="costo_ducha_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['costo_ducha']) ?>
+            </td>
+          </tr>
+          <tr>
+            <td>Uso de sanitarios</td>
+            <td class="editable" data-col="costo_sanitario_no_residentes">
+              <?= "$ " . htmlspecialchars($precios['no_residentes']['costo_sanitario']) ?>
+            </td>
+            <td class="editable" data-col="costo_sanitario_residentes">
+              <?= "$ " . htmlspecialchars($precios['residentes']['costo_sanitario']) ?>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <?php if ($logueado && $rol === 'super'): ?>
+        <button type="button" id="editar-todo" class="btn btn-primary">Editar Precios</button>
+        <button type="submit" id="guardar-todo" class="btn btn-success" style="display:none;">Guardar Cambios</button>
+        <button type="button" id="cancelar-todo" class="btn btn-danger" style="display:none;">Cancelar</button>
+      <?php endif; ?>
+    </form>
 
     <p>*Las tarifas son por día y por persona</p>
     <br>
     <h2 class="mb-4">Simulador de precios</h2>
 
-<form action="simular_precios" method="post">
-  <!-- Agrupación de personas por edad -->
-  <fieldset class="border p-3 mb-4">
-    <legend class="w-auto px-2">Cantidad de Personas</legend>
+    <form action="simular_precios" method="post">
+      <!-- Agrupación de personas por edad -->
+      <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Cantidad de Personas</legend>
 
-    <div class="form-row">
-      <div class="form-group col-md-4">
-        <label for="ninos">Menores de 4 años:</label>
-        <input name="edad_ninos4" type="number" min="0" max="20" class="form-control" id="ninos">
-      </div>
-      <div class="form-group col-md-4">
-        <label for="ninos_m">Entre 4 y 12 años:</label>
-        <input name="edad_ninos12" type="number" min="0" max="20" class="form-control" id="ninos_m">
-      </div>
-      <div class="form-group col-md-4">
-        <label for="ninos_mayor">Mayores de 12 años:</label>
-        <input name="edad_ninos20" type="number" min="0" max="20" class="form-control" id="ninos_mayor">
-      </div>
-    </div>
-  </fieldset>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="ninos">Menores de 4 años:</label>
+            <input name="edad_ninos4" type="number" min="0" max="20" class="form-control" id="ninos">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="ninos_m">Entre 4 y 12 años:</label>
+            <input name="edad_ninos12" type="number" min="0" max="20" class="form-control" id="ninos_m">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="ninos_mayor">Mayores de 12 años:</label>
+            <input name="edad_ninos20" type="number" min="0" max="20" class="form-control" id="ninos_mayor">
+          </div>
+        </div>
+      </fieldset>
 
-  <!-- Estancia y procedencia -->
-  <fieldset class="border p-3 mb-4">
-    <legend class="w-auto px-2">Datos de la Estancia</legend>
+      <!-- Estancia y procedencia -->
+      <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Datos de la Estancia</legend>
 
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="estancia">Días de estancia:</label>
-        <input name="estancia" type="number" min="1" max="100" class="form-control" id="estancia">
-      </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="estadia">Tipo de estadia:</label>
+            <select class="form-control" name="tipo_estadia" id="exampleFormControlSelect1">
+              <option value="acampar">Acampar</option>
+              <option value="pasar_dia">Pasar el dia</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="estancia">Fecha ingreso:</label>
+            <input name="estancia_ingreso" type="date" min="1" max="100" class="form-control" id="estancia_ingreso">
+            <label for="estancia">Fecha fin de estancia:</label>
+            <input name="estancia_salida" type="date" min="1" max="100" class="form-control" id="estancia_salida">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="exampleFormControlSelect1">Procedencia:</label>
+            <select class="form-control" name="localidad" id="exampleFormControlSelect1">
+              <option value="loberia">Lobería</option>
+              <option value="necochea">Necochea</option>
+              <option value="tandil">Tandil</option>
+              <option value="mar_del_plata">Mar del Plata</option>
+              <option value="miramar">Miramar</option>
+              <option value="balcarce">Balcarce</option>
+              <option value="otra">Otra</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
 
-      <div class="form-group col-md-6">
-        <label for="exampleFormControlSelect1">Procedencia:</label>
-        <select class="form-control" name="localidad" id="exampleFormControlSelect1">
-          <option value="loberia">Lobería</option>
-          <option value="necochea">Necochea</option>
-          <option value="tandil">Tandil</option>
-          <option value="mar_del_plata">Mar del Plata</option>
-          <option value="miramar">Miramar</option>
-          <option value="balcarce">Balcarce</option>
-          <option value="otra">Otra</option>
-        </select>
-      </div>
-    </div>
-  </fieldset>
+      <!-- Características adicionales -->
+      <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Características adicionales</legend>
 
-  <!-- Características adicionales -->
-  <fieldset class="border p-3 mb-4">
-    <legend class="w-auto px-2">Características adicionales</legend>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="ducha" id="ducha">
+          <label class="form-check-label" for="ducha">Uso de Ducha</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="sombra" id="sombra">
+          <label class="form-check-label" for="sanitario">Uso de Sanitario</label>
+        </div>
+      </fieldset>
 
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="ducha" id="ducha">
-      <label class="form-check-label" for="ducha">Uso de Ducha</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="sombra" id="sombra">
-      <label class="form-check-label" for="sanitario">Uso de Sanitario</label>
-    </div>
-  </fieldset>
+      <!-- Tipo de vehículo -->
+      <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Tipo de Vehículo</legend>
+        <div class="form-group">
+          <select class="form-control" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="auto">Auto</option>
+            <option value="camioneta">Camioneta</option>
+            <option value="motorhome">Motorhome</option>
+            <option value="casilla">Casilla</option>
+          </select>
+        </div>
+      </fieldset>
 
-  <!-- Tipo de vehículo -->
-  <fieldset class="border p-3 mb-4">
-    <legend class="w-auto px-2">Tipo de Vehículo</legend>
-    <div class="form-group">
-      <select class="form-control" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
-        <option value="">Seleccione un tipo</option>
-        <option value="auto">Auto</option>
-        <option value="camioneta">Camioneta</option>
-        <option value="motorhome">Motorhome</option>
-        <option value="casilla">Casilla</option>
-      </select>
-    </div>
-  </fieldset>
-
-  <button type="submit" class="btn btn-primary">Calcular</button>
-</form>
+      <button type="submit" class="btn btn-primary">Calcular</button>
+    </form>
 
     <br>
-      <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
-  <div class="container">
-    <?php if (!empty($precio_final)): ?>
-      <div class="alert alert-success">
-        <h5>El precio de la reserva segun sus preferencias es de:<strong>  $$  <?= htmlspecialchars($precio_final) ?></strong></h5>
-      </div>
-    <?php else: ?>
-      <br>
-    <?php endif; ?>
-  </div>
+    <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
+    <div class="container">
+      <?php if (!empty($precio_final)): ?>
+        <div class="alert alert-success">
+          <h5>El precio de la reserva segun sus preferencias es de:<strong> $ <?= htmlspecialchars($precio_final) ?> $</strong></h5>
+        </div>
+      <?php else: ?>
+        <br>
+      <?php endif; ?>
+    </div>
   </section>
 </main>
 <?php

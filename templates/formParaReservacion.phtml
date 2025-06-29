@@ -1,11 +1,16 @@
-
-
+<br>
 <?php if (!empty($mensaje)) : ?>
     <div class="mensaje <?= $tipo_mensaje; ?>">
         <p><?= $mensaje; ?></p>
         <?php if ($tipo_mensaje == 'exito') : ?>
-            <a href="https://wa.me/+5492262301388" target="_blank" class="btn btn-success" onclick="cerrarMensajeYResetear()"> 
-            <i class="fab fa-whatsapp"></i> Confirmar
+            <?php if($mensaje_qr == true) : ?>
+                    <img src="./img/qr/codigo_qr.png" alt="QR de confirmación" style="width: 250px; display: block; margin: 10px auto;">
+                    <p>Podra realizar el pago de la reservacion a travez del siguiente Qr, no olvide comunicarse al washapp</p>
+            <?php else : ?>
+                    <p>El cobro de la reservacion se hara en la base del acampamento</p>
+            <?php endif; ?>
+            <a href="https://wa.me/+5492262301388" target="_blank" class="btn btn-success" onclick="cerrarMensajeYResetear()">
+                <i class="fab fa-whatsapp"></i> Confirmar
             </a>
             <button onclick="cerrarMensajeYResetear()" class="btn btn-danger">Salir</button>
         <?php else : ?>
@@ -13,115 +18,151 @@
         <?php endif; ?>
     </div>
 <?php endif; ?>
-        <form action="generar_reservacion" class="form-inline formulario" id="buscadorForm" method="post">
-            <div class="form-group">
-                <div>
-                    <label>Reservacion a Nombre de :</label>
-                    <br>
-                    <label>Nombre :</label>
-                    <input type="text" value="<?php echo $nombre; ?>" name="nombre">
-                    <label>Apellido :</label>
-                    <input type="text" value="<?php echo $apellido; ?>" name="apellido">
-                    <label>Dni :</label>
-                    <input type="number" value="<?php echo $dni; ?>" name="dni">
-                </div>
-                <div>
-                </div>
-                <div class="form-group">
-                    <label>Tiempo de Estadia </label>
-                    <div class="form-group">
-                        <label for="inicio">Fecha de inicio:</label>
-                        <input type="date" id="inicio" value="<?php echo date("Y-m-d"); ?>" name="inicio" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="fecha_fin">Fecha de fin:</label>
-                        <input type="date" id="fecha_fin" name="fecha_fin" required />
-                    </div>
-                </div>
-                <div class="edad-selector">
-                    <div> <label for="menores">Menores de 4 años:</label>
-                        <select id="menores" name="menores">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                        </select>
-                    </div>
-                    <div> <label for="cuatroDoce">De 4 a 12 años:</label>
-                        <select id="cuatroDoce" name="cuatroDoce">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="doceMas">12 años y más:</label>
-                        <select id="doceMas" name="doceMas">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="tipo_de_vehiculo">Tipo de vehículo:</label>
-                        <select class="form_vehiculo" id="tipo_de_vehiculo" name="tipo_de_vehiculo" required>
-                            <option value="Auto">Auto</option>
-                            <option value="Camioneta">Camioneta</option>
-                            <option value="Motorhome">Motorhome</option>
-                            <option value="Casilla">Casilla</option>
+<form action="generar_reservacion" class="container mt-4" id="buscadorForm" method="post">
 
-                        </select>
-                    </div>
+    <!-- Datos personales -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white  fw-bold fs-4">
+            Datos del titular de la reserva
+        </div>
+        <div class="card-body row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" value="<?php echo $nombre; ?>" name="nombre" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Apellido</label>
+                <input type="text" class="form-control" value="<?php echo $apellido; ?>" name="apellido" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">DNI</label>
+                <input type="number" class="form-control" value="<?php echo $dni; ?>" name="dni" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estadia -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white fw-bold fs-4">
+            Información de la estadía
+        </div>
+        <div class="card-body row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Fecha de inicio</label>
+                <input type="date" class="form-control" id="inicio" name="inicio" value="<?php echo date("Y-m-d"); ?>" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Fecha de fin</label>
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Tipo de estadía</label>
+                <select class="form-select" name="tipo_estadia" required>
+                    <option value="acampar">Acampar</option>
+                    <option value="pasar_dia">Pasar el día</option>
+                </select>
+            </div>
+        </div>
+    </div>
+ <!-- Pago -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white  fw-bold fs-4">
+            Información de Pago de la estadía
+        </div>
+        <div class="card-body row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Forma de Pago: </label>
+                <select class="form-select" name="tipo_pago" required>
+                    <option value="efectivo">En efectivo</option>
+                    <option value="transferencia">Por Transferencia</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <!-- Personas -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white  fw-bold fs-4">
+            Cantidad de personas por rango etario
+        </div>
+        <div class="card-body row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Menores de 4 años</label>
+                <select class="form-select" name="menores">
+                    <?php for ($i = 0; $i <= 6; $i++) echo "<option value=\"$i\">$i</option>"; ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">De 4 a 12 años</label>
+                <select class="form-select" name="cuatroDoce">
+                    <?php for ($i = 0; $i <= 10; $i++) echo "<option value=\"$i\">$i</option>"; ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">12 años o más</label>
+                <select class="form-select" name="doceMas">
+                    <?php for ($i = 1; $i <= 10; $i++) echo "<option value=\"$i\">$i</option>"; ?>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehículo -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white  fw-bold fs-4">
+            Vehículo
+        </div>
+        <div class="card-body">
+            <label class="form-label">Tipo de vehículo</label>
+            <select class="form-select" name="tipo_de_vehiculo" required>
+                <option value="Auto">Auto</option>
+                <option value="Camioneta">Camioneta</option>
+                <option value="Motorhome">Motorhome</option>
+                <option value="Casilla">Casilla</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Características de parcela -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white  fw-bold fs-4">
+            Características de la parcela
+        </div>
+        <div class="card-body row">
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input class="form-check-input" name="caracteristicas[]" type="checkbox" value="fogon" id="fogon">
+                    <label class="form-check-label" for="fogon">Con Fogón</label>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Características de la parcela:</label>
-                        <div>
-                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox1" value="fogon">
-                            <label for="inlineCheckbox1">Con Fogón</label>
-                        </div>
-                        <div>
-                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox2" value="tomaElectrica">
-                            <label for="inlineCheckbox2">Con Toma Eléctrica</label>
-                        </div>
-                        <div>
-                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox3" value="sombra">
-                            <label for="inlineCheckbox3">Con Sombra</label>
-                        </div>
-                        <div>
-                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox4" value="agua">
-                            <label for="inlineCheckbox4">Con Agua</label>
-                        </div>
-                        <div>
-                            <input class="form-check form-check-inline" name="caracteristicas[]" type="checkbox" id="inlineCheckbox5" value="con_ducha">
-                            <label for="inlineCheckbox4">Con Ducha</label>
-                        </div>
-                        <div>
-                            <input class="form-check form-check-inline" type="checkbox" id="inlineCheckbox6" checked disabled>
-                            <label for="inlineCheckbox6">✔ Con Sanitario (Siempre incluido, puede estar cerca o ser químico)</label>
-                        </div>
-                    </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="caracteristicas[]" type="checkbox" value="tomaElectrica" id="electrica">
+                    <label class="form-check-label" for="electrica">Con Toma Eléctrica</label>
                 </div>
-                <div class="form-row">
-                    <button type="submit" class="btn btn-success">Reservar</button>
+                <div class="form-check">
+                    <input class="form-check-input" name="caracteristicas[]" type="checkbox" value="sombra" id="sombra">
+                    <label class="form-check-label" for="sombra">Con Sombra</label>
                 </div>
-        </form>
-        <br>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input class="form-check-input" name="caracteristicas[]" type="checkbox" value="agua" id="agua">
+                    <label class="form-check-label" for="agua">Con Agua</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" name="caracteristicas[]" type="checkbox" value="con_ducha" id="ducha">
+                    <label class="form-check-label" for="ducha">Con Ducha</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" checked disabled id="sanitario">
+                    <label class="form-check-label" for="sanitario">✔ Con Sanitario (Siempre incluido)</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="text-center">
+        <button type="submit" class="btn btn-lg btn-primary px-5">Reservar</button>
+    </div>
+
+</form>
+<br>

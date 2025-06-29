@@ -135,7 +135,11 @@ class ReservaController extends BaseController
         $edadninos4 = $_POST['edad_ninos4']; //cantidad de personas de hasta 4 años
         $edadninos12 = $_POST['edad_ninos12']; //cantidad de personas entre 4 y 12 años
         $edadninos20 = $_POST['edad_ninos20']; //cantidad de personas mayores de 12 años
-        $tiempo_estancia = $_POST['estancia']; //el tiempo de estancia que calcula estar
+        
+        $fecha_inicio = $_POST['estancia_ingreso']; //fecha inicio de cuando inicia la reserva
+        $fecha_fin = $_POST['estancia_salida']; //fecha fin de cuando termina la reserva
+        $tiempo_estancia = $this->servicioR->retornarDiasDeDiferencia($fecha_inicio, $fecha_fin);           
+
         // Captura las características de la parcela 
         $caracteristicas = $_POST['caracteristicas'];
 
@@ -150,6 +154,8 @@ class ReservaController extends BaseController
         } else {
             $residente_loberia = 0;
         }
+        $tipo_de_estadia=$_POST['tipo_estadia'];
+       
         //calcula el precio de la reservacion simulada
         $precio_final = $this->servicioR->calcularPrecio(
             $edadninos4,
@@ -157,7 +163,7 @@ class ReservaController extends BaseController
             $edadninos20,
             $tiempo_estancia,
             $con_ducha,
-            $con_sanitario,
+            $tipo_de_estadia,
             $medio_transporte,
             $residente_loberia
         );
@@ -180,6 +186,9 @@ class ReservaController extends BaseController
             $dni = $_POST['dni']; //dni de quien hace la reserva
             $fecha_inicio = $_POST['inicio']; //fecha inicio de cuando inicia la reserva
             $fecha_fin = $_POST['fecha_fin']; //fecha fin de cuando termina la reserva
+
+            $tipo_de_estadia=$_POST['tipo_estadia'];//tipo de estadia si es acampar o pasar el dia, muy importante a la hora de generar el precio
+
             $menores = $_POST['menores']; //numero de menores que iran
             $cuatroDoce = $_POST['cuatroDoce']; //numero de mayores a 4 hasta 12 años que iran
             $doceMas = $_POST['doceMas']; //numero de mayores a 12 años que iran
@@ -197,31 +206,42 @@ class ReservaController extends BaseController
             $con_ducha = in_array('con_ducha', $caracteristicas) ? 1 : 0;
             //suma de la cantidad de personas en total
             $cantPersonas = $menores + $cuatroDoce + $doceMas;
-
+            //informacion de si paga en efectivo o por transferencia
+            $tipo_pago=$_POST['tipo_pago'];
+            $mostrar_qr=false;
+            if($tipo_pago=="transferencia"){
+                $mostrar_qr=true;
+            }
+            else{
+                $mostrar_qr=false;
+            }
             //funcion que calcula los dias de estancia de la reservacion
-            $dias_de_estancia = $this->servicioR->retornarDiasDeDiferencia($fecha_inicio, $fecha_fin);
-            //de nuevo se calcula el precio del costo de la reservacion
-            $datos_user = $this->modelUser->findUserByDni($dni);
-            $id_user = $datos_user->id;
-            $residente = $this->modelUser->userIsResident($id_user) ? 1 : 0;
-
-            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha,null,$tipo_de_vehiculo, $residente);
-            //se obtiene el email del usuario
-            $email_user = $datos_user->email;
+            $dias_de_estancia = $this->servicioR->retornarDiasDeDiferencia($fecha_inicio, $fecha_fin);           
+           
             // Buscar la parcela disponible         
             // Verificar que llegaron todos los datos necesarios
             if (!$this->servicioR->validacionDatosReservacion($_POST)) {
-                $mensaje = "Por favor, completa todos los campos obligatorios.";
+                $mensaje = "Debera asegurarse de que no introdujo datos erroneos y que \n completo todos los campos obligatorios del formulario.";
                 $tipo_mensaje = "error";
-                $this->irAReservacion($mensaje,$tipo_mensaje);
+                $this->irAReservacion($mensaje,$tipo_mensaje,$mostrar_qr);
                 return;
             }
+            $datos_user = $this->modelUser->findUserByDni($dni);  
+             //se obtiene el email del usuario
+            $email_user = $datos_user->email;
+            //se obtiene el id del usuario  
+            $id_user = $datos_user->id;
+            //se carga la variable para saber si es residente o no de loberia
+            $residente = $this->modelUser->userIsResident($id_user) ? 1 : 0;
 
             $id_parcela = $this->model->getParcelaDisponible($fecha_inicio, $fecha_fin, $cantPersonas, $tipo_de_vehiculo, $fogon, $tomaElectrica, $sombra, $agua);
-            
+            //una vez asegurado que existe el usuario se procede a generar el precio de la reservacion
+            $precio_reserva = $this->servicioR->calcularPrecio($menores, $cuatroDoce, $doceMas, $dias_de_estancia, $con_ducha,$tipo_de_estadia,$tipo_de_vehiculo, $residente);
+
             // busca si el servicio es encontrado en la bbdd
             $id_servicio = $this->getServicioAdicional($fogon, $tomaElectrica, $sombra,$con_ducha, $agua);
             //controla si se encontro una parcela indicada
+            
             if (!empty($id_parcela) && !empty($id_servicio)) {
                 // Si llega aquí, se encontro una parcela al menos que coincide con lo que buscaba el usuario
                 // Crea la reservación con los datos recolectados:
@@ -231,12 +251,13 @@ class ReservaController extends BaseController
                 $id_nueva_reserva = $this->model->nuevaReserva($id_user, $menores, $cuatroDoce, $doceMas, $fecha_inicio, $fecha_fin, $tipo_de_vehiculo, $id_servicio, 'pendiente', $identificador,$precio_reserva);
                 // se realiza la conexion entre la nueva reserva y la parcela que sera ocupada
                 $this->model->crearRelacionParcela($id_nueva_reserva, $id_parcela);
+
                 // ya la reservacion fue creada, en el siguiente paso se genera un comprobante pdf
                 // Validacion de los datos antes de generar el PDF
                 if (empty($nombre) || empty($apellido) || empty($identificador) || empty($precio_reserva) || empty($this->cel_washapp)) {
                     $mensaje = "Reservación creada exitosamente. Datos incompletos para generar el comprobante y enviarlo a su email";
                     $tipo_mensaje = "cuidado";
-                    $this->irAReservacion($mensaje,$tipo_mensaje);
+                    $this->irAReservacion($mensaje,$tipo_mensaje,$mostrar_qr);
                     return;
                 } else {
                     try {
@@ -256,7 +277,7 @@ class ReservaController extends BaseController
                             } else {
                                 $mensaje = "Reservacion Exitosa. Error al enviar el correo.";
                                 $tipo_mensaje = "cuidado";
-                                $this->irAReservacion($mensaje,$tipo_mensaje);
+                                $this->irAReservacion($mensaje,$tipo_mensaje,$mostrar_qr);
                                 return;
                             }
                         }
@@ -264,13 +285,13 @@ class ReservaController extends BaseController
                         // Mostrar mensaje de éxito y redirigir
                         $mensaje = "Reservación creada exitosamente. El comprobante fue enviado a su correo electronico";
                         $tipo_mensaje = "exito";
-                        $this->irAReservacion($mensaje,$tipo_mensaje);
+                        $this->irAReservacion($mensaje,$tipo_mensaje,$mostrar_qr);
                         return;
                     } catch (Exception $e) {
                         //echo "Error al generar el PDF: " . $e->getMessage();
                         $mensaje = "Reservación creada exitosamente. Error al generar el PDF";
                         $tipo_mensaje = "cuidado";
-                        $this->irAReservacion($mensaje,$tipo_mensaje);
+                        $this->irAReservacion($mensaje,$tipo_mensaje,$mostrar_qr);
                         return;
                     }
                 }
@@ -289,7 +310,7 @@ class ReservaController extends BaseController
                     }
                     $mensaje .= "</ul>";
                     $tipo_mensaje = "error";
-                    $this->irAReservacion($mensaje,$tipo_mensaje);
+                    $this->irAReservacion($mensaje,$tipo_mensaje,false);
                     return;
                 }
 
@@ -297,7 +318,7 @@ class ReservaController extends BaseController
                 //entonces por defecto se envia el siguiente mensaje
                 $mensaje = "No se ha encontrado una parcela con las características indicadas.";
                 $tipo_mensaje = "error";
-                $this->irAReservacion($mensaje,$tipo_mensaje);
+                $this->irAReservacion($mensaje,$tipo_mensaje,false);
                 return;
             }
         }
@@ -392,7 +413,7 @@ class ReservaController extends BaseController
     /**
      * Funcion que lleva a la pagina de reservacion que muestra el formulario de la reservacion
      */
-    public function irAReservacion($mensaje=null,$tipo_mensaje=null)
+    public function irAReservacion($mensaje=null,$tipo_mensaje=null,$mensaje_qr=false)
     {
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
@@ -411,12 +432,12 @@ class ReservaController extends BaseController
                     //en este caso se buscara todas las reservaciones mas los datos del usuario relevantes que 
                     //hizo la reservacion para que asi el admin pueda con esos datos confirmar o cancelar la reservacion
                     $reservaciones = $this->model->getReservacionesMasUsuario();
-                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad(), $nombre, $apellido, $dni, $reservaciones);
+                    $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje,$mensaje_qr, BaseController::getDisponibilidad(), $nombre, $apellido, $dni, $reservaciones);
                     return;
                 }
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
+                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje,$mensaje_qr, BaseController::getDisponibilidad(), $nombre, $apellido, $dni);
             } else {
-                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje, BaseController::getDisponibilidad());
+                $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje, $tipo_mensaje,$mensaje_qr, BaseController::getDisponibilidad());
             }
             //die();
         } else {

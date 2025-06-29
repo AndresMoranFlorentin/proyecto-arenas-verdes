@@ -50,15 +50,20 @@ class ToolsHelper
             $pdf->Ln(10);
 
             $pdf->SetFont('Arial', '', 12);
-            $pdf->Cell(0, 10, "Nombre: $nombre", 0, 1);
-            $pdf->Cell(0, 10, "Apellido: $apellido", 0, 1);
-            $pdf->Cell(0, 10, "Precio estimado: $$precio", 0, 1);
-            $pdf->Cell(0, 10, "Identificador: $identificador", 0, 1);
+            $pdf->Cell(0, 10, mb_convert_encoding('Nombre: ' . $nombre, 'ISO-8859-1', 'UTF-8'), 0, 1);
+            $pdf->Cell(0, 10,mb_convert_encoding( 'Apellido: '. $apellido, 'ISO-8859-1', 'UTF-8'), 0, 1);
+            $pdf->Cell(0, 10,mb_convert_encoding( 'Precio: $'. $precio, 'ISO-8859-1', 'UTF-8') , 0, 1);//"Precio estimado: $$precio"
+            $pdf->Cell(0, 10, mb_convert_encoding( 'Identificador: '. $identificador, 'ISO-8859-1', 'UTF-8'), 0, 1);
             $pdf->Ln(10);
-            $pdf->MultiCell(0, 10, "Confirme su pago al número: $washapp");
-            $pdf->Ln(10);
-            $pdf->MultiCell(0, 10, "Aviso: Si no confirma el pago en 5 días, la reserva será cancelada.");
-
+            $pdf->MultiCell(0, 10, mb_convert_encoding('Confirme su pago al número: ' . $washapp, 'ISO-8859-1', 'UTF-8'));
+            $pdf->Ln(5);
+            $pdf->MultiCell(0, 10, mb_convert_encoding('También puede escanear el siguiente código QR para transferir:', 'ISO-8859-1', 'UTF-8'));
+            $pdf->Ln(5);
+            // ⬇ QR centrado en la hoja
+            $pdf->Image(__DIR__ . '/../img/qr/codigo_qr.png', 65, $pdf->GetY(), 80);
+            $pdf->Ln(85); // Dejar espacio después del QR
+            $pdf->MultiCell(0, 10, mb_convert_encoding('Aviso: Si no confirma el pago en 5 días, la reserva será cancelada.', 'ISO-8859-1', 'UTF-8'));
+           
             $directory = __DIR__ . '/tmp/';
             if (!is_dir($directory)) {
                 mkdir($directory, 0777, true);

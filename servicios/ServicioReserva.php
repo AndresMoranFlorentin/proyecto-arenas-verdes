@@ -1,7 +1,7 @@
 <?php
 require_once './models/ParcelaModel.php';
+require_once './models/authModel.php';
 require_once './helpers/ToolsHelper.php';
-
 /**
  * Este archivo se encarga de complementar al controlador de reservas
  * con aquellas funciones que necesita el controller pero que no son
@@ -14,6 +14,8 @@ class ServicioReserva
     private $reservaModel;
     /** @var ParcelaModel*/
     private $parcelaModel;
+     /** @var UserModel*/
+    private $userModel;
     /** @var ToolsHelper */
     private $toolsHelper;
 
@@ -22,6 +24,7 @@ class ServicioReserva
         $this->reservaModel = new ReservaModel();
         $this->toolsHelper = new ToolsHelper();
         $this->parcelaModel = new ParcelaModel();
+        $this->userModel = new authModel();
         $this->reservaModel = new ReservaModel();
     }
     /**
@@ -68,7 +71,7 @@ class ServicioReserva
      * @param int $edadninos20 edad de los niños y adultos superiores a 12 años
      * @param int $tiempo_estancia el numero de dias de estadia de la reservacion
      * @param int $con_ducha (0|1) si incluye ducha o no
-     * @param int $con_sanitario (0|1) si incluye sanitario o no
+     * @param string $tipo_estadia si el grupo va a acampar o pasar el dia
      * @param string $tipo_vehiculo el tipo de vehiculo que usara en la parcela
      * @param boolean $residente si es residente local(de loberia) o no(muy importante para calcular el precio)
      * @return float retorna el precio total calculado de una reservacion de tales caracteristicas
@@ -79,7 +82,7 @@ class ServicioReserva
         $edadninos20,
         $tiempo_estancia,
         $con_ducha,
-        $con_sanitario,
+        $tipo_estadia,
         $tipo_vehiculo,
         $residente
     ) {
@@ -87,40 +90,45 @@ class ServicioReserva
         $tabla_precios = $this->reservaModel->getPrecios($residente);
         //de este modo solo utilizo los precios que se encuentran en la primera columna
         $tabla_precios = $tabla_precios[0];
-        //cargo a la variable el precio total de lo que costo
-
-        //costo por en numero de niños y su categoria de edad
-        $precio_ninos4 = $edadninos4 * ($tabla_precios['edad_ninos4'] ?? 0);
-        $precio_ninos12 = $edadninos12 * ($tabla_precios['edad_ninos12'] ?? 0);
-        $precio_ninos20 = $edadninos20 * ($tabla_precios['edad_ninos20'] ?? 0);
-        $precio_final = $precio_ninos4 + $precio_ninos12 + $precio_ninos20;
-        
-        //siempre se le incluye el precio de sanitario
-        $precio_final += $tabla_precios['costo_sanitario'];
-
-        if ($con_ducha) { //en caso de que eligio la reserva con ducha
-            //al monto se le suma el costo de la ducha
-            $precio_final += $tabla_precios['costo_ducha'];
+        //inicializo a la variable deñ precio total de la reservacion
+        $precio_final=0;
+        //aqui se hace una division dependiendo de si van a acampar o pasar el dia(quiere decir que no se quedaran a la noche)
+        if ($tipo_estadia == 'acampar') {
+            //costo por en numero de niños y su categoria de edad
+            $precio_ninos4 = $edadninos4 * ($tabla_precios['edad_ninos4'] ?? 0);
+            $precio_ninos12 = $edadninos12 * ($tabla_precios['edad_ninos12'] ?? 0);
+            $precio_ninos20 = $edadninos20 * ($tabla_precios['edad_ninos20'] ?? 0);
+            $precio_final = ($precio_ninos4 + $precio_ninos12 + $precio_ninos20)*$tiempo_estancia;
         }
+        //en el caso de que sea pasar el dia los costos cambiaran
+        else if ($tipo_estadia == 'pasar_dia') {
 
+            $cant_personas = ($edadninos4 + $edadninos12 + $edadninos20);
+            $precio_final = ($cant_personas * $tabla_precios['costo_estancia_xdia'])*$tiempo_estancia;
+        }
+        //siempre se le incluye el precio de sanitario multiplicado por los dias de estancia
+        $precio_final += ($tabla_precios['costo_sanitario']*$tiempo_estancia);
+        //en caso de que eligio la opcion de ducha
+        if ($con_ducha) {
+            //al monto se le suma el costo de la ducha por la cantidad de dias que se quedaran
+            $precio_final += ($tabla_precios['costo_ducha'] * $tiempo_estancia);
+        }
         if ($tipo_vehiculo != null) { //en caso de que eligio llevar un vehiculo
-            $meses = floor($tiempo_estancia / 30); //calcula cuantos meses de estancia son
-            // Calcular los días restantes que no completan un mes
-            $dias = $tiempo_estancia % 30;
-            if($tipo_vehiculo=='casilla'){
-            $precio_final += ($meses * $tabla_precios['costoxmescasilla']) + ($dias * $tabla_precios['costoxcasillaxdia']);
+            //en el caso especial de que llevara una casilla se hace un calculo especial, calculando los dias o meses de estadia
+            if ($tipo_vehiculo == 'casilla') {
+                $meses = floor($tiempo_estancia / 30); //calcula cuantos meses de estancia son
+                // Calcular los días restantes que no completan un mes
+                $dias = $tiempo_estancia % 30;
+                $precio_final += ($meses * $tabla_precios['costoxmescasilla']) + ($dias * $tabla_precios['costoxcasillaxdia']);
             }
+            else{
             //en caso de que deje algun vehiculo distinto de una casilla se le cobra un precio fijo por dia de estancia
-            $precio_final += ($dias * $tabla_precios['costoxvehiculoxdia']);
-        
-        } else if ($tipo_vehiculo == 'camping') { //camping seria el equivalente a no llevar vehiculos
-
-        } else { //en caso de que eligio llevar un vehiculo
-            $precio_final += $tabla_precios['costoxvehiculoxdia'] * $tiempo_estancia;
+            $precio_final += ($tiempo_estancia * $tabla_precios['costoxvehiculoxdia']);
+       
+            }
+            } else { //camping seria el equivalente a no llevar vehiculos
+            //por el momento si no lleva vehiculo no se le cobra nada aparte
         }
-        //se le agrega al monto el costo de la estadia por dia
-        //$precio_final += ($tabla_precios['costo_estancia_xdia'] * $tiempo_estancia);
-
         return $precio_final;
     }
     /**
@@ -131,12 +139,19 @@ class ServicioReserva
      */
     public function validacionDatosReservacion($datos)
     {
-        $camposRequeridos = ['nombre', 'apellido', 'dni', 'inicio', 'fecha_fin', 'tipo_de_vehiculo'];
+        $camposRequeridos = ['nombre', 'apellido', 'dni', 'inicio', 'fecha_fin','tipo_estadia','tipo_de_vehiculo'];
         $fecha_actual = date('Y-m-d');
         foreach ($camposRequeridos as $campo) {
             if (!isset($datos[$campo]) || empty($datos[$campo])) {
                 return false;
             }
+        }
+                   //se busca si existe ese usuario mediante el dni
+        $dni = $_POST['dni']; //dni de quien hace la reserva
+        $datos_user = $this->userModel->findUserByDni($dni);
+        
+        if($datos_user==null){
+            return false;
         }
         if (!($this->controlFechasInicioFin($datos['inicio'], $datos['fecha_fin']))) {
             return false;
@@ -172,29 +187,29 @@ class ServicioReserva
      * @return array $asociativo es un array asociativo que devuelve una 
      * palabra clave(el sector) junto a el numero de parcelas que le corresponden
      */
-  public function agruparPorSector($parcelas)
-{
-    $asociativo = [
-        "Familiar" => 0,
-        "Carpa Fam" => 0,
-        "Joven" => 0,
-        "Motorhome" => 0
-    ];
+    public function agruparPorSector($parcelas)
+    {
+        $asociativo = [
+            "Familiar" => 0,
+            "Carpa Fam" => 0,
+            "Joven" => 0,
+            "Motorhome" => 0
+        ];
 
-    foreach ($parcelas as $par) {
-        if ($par['sector'] == "Familiar") {
-            $asociativo["Familiar"] += 1;
-        } elseif ($par['sector'] == "Carpa Fam") {
-            $asociativo["Carpa Fam"] += 1;
-        } elseif ($par['sector'] == "Joven") {
-            $asociativo["Joven"] += 1;
-        } elseif ($par['sector'] == "Motorhome") {
-            $asociativo["Motorhome"] += 1;
+        foreach ($parcelas as $par) {
+            if ($par['sector'] == "Familiar") {
+                $asociativo["Familiar"] += 1;
+            } elseif ($par['sector'] == "Carpa Fam") {
+                $asociativo["Carpa Fam"] += 1;
+            } elseif ($par['sector'] == "Joven") {
+                $asociativo["Joven"] += 1;
+            } elseif ($par['sector'] == "Motorhome") {
+                $asociativo["Motorhome"] += 1;
+            }
         }
-    }
 
-    return $asociativo;
-}
+        return $asociativo;
+    }
     /**
      * Esta funcion es la encargada de no solo inhabilitar la parcela si no de eliminar
      * aquellas reservas que se hayan hecho sobre ella en la fecha actual que se pida inhabilitar

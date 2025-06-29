@@ -127,7 +127,7 @@ class ReservaView
      * @param string|null $dni
      * @param array|null $reservaciones
      */
-    public function ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje = null, $tipo_mensaje = null, $dispo, $nombre = null, $apellido = null, $dni = null, $reservaciones = null)
+    public function ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, $mensaje = null, $tipo_mensaje = null,$mensaje_qr=false, $dispo, $nombre = null, $apellido = null, $dni = null, $reservaciones = null)
     {
         // Se resetean los mensajes antes de cargar la vista.
         $this->mensaje = "";

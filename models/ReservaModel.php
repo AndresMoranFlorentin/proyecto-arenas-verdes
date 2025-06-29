@@ -182,13 +182,18 @@ class ReservaModel extends ConectionModel
 
         if (empty($idsFiltradas)) {
             $problemas[] = "No hay parcelas con capacidad para $cantPersonas personas.";
-
+            
+            return $problemas;
         }
         //3. Si el tipo de vehiculo con el que ira no se encuentra disponible para las parcelas buscadas
         if ($tipo_de_vehiculo) {
-            $idsFiltradas = $this->filtrarIds($idsFiltradas, "tipo_de_vehiculo LIKE", "%{$tipo_de_vehiculo}%");
+
+            $idsFiltradas = $this->filtrarIds($idsFiltradas, "tipo_de_vehiculo LIKE ?", ["%{$tipo_de_vehiculo}%"]);
+
             if (empty($idsFiltradas)) {
                 $problemas[] = "No se encontro parcelas que acepte ese tipo de vehiculo.";
+                
+                return $problemas;
             }
         }
         // 4. Filtrar por fogón
@@ -196,6 +201,9 @@ class ReservaModel extends ConectionModel
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_fogon = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con fogón.";
+                
+                return $problemas;
+
             }
         }
         // 5. Filtrar por toma eléctrica
@@ -203,6 +211,8 @@ class ReservaModel extends ConectionModel
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_toma_electrica = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con toma eléctrica.";
+                
+                return $problemas;
             }
         }
         // 6. Sombra
@@ -210,6 +220,7 @@ class ReservaModel extends ConectionModel
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "sombra = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con sombra.";
+                return $problemas;
             }
         }
         // 7. Agua
@@ -217,6 +228,7 @@ class ReservaModel extends ConectionModel
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "agua = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No hay parcelas con conexión de agua.";
+                return $problemas;
             }
         }
         // 8. Si pide Ducha
@@ -224,6 +236,7 @@ class ReservaModel extends ConectionModel
             $idsFiltradas = $this->filtrarIdsConServicio($idsFiltradas, "con_ducha = 1");
             if (empty($idsFiltradas)) {
                 $problemas[] = "No se encontro parcelas con ducha.";
+                return $problemas;
             }
         }
 
