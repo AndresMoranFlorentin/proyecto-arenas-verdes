@@ -5,6 +5,8 @@ require_once './models/authModel.php';
 require_once './helpers/sessionHelper.php';
 require_once 'vendor/autoload.php';
 
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -49,15 +51,15 @@ class PassResetController {
     
                 // Configuración del servidor SMTP
                 $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com'; // Servidor SMTP (puedes usar el de tu proveedor)
+                $mail->Host = $_ENV['MAIL_HOST']; // Servidor SMTP (puedes usar el de tu proveedor)
                 $mail->SMTPAuth = true;
-                $mail->Username = 'llamenza@alumnos.exa.unicen.edu.ar'; // Tu correo electrónico
-                $mail->Password = 'lautaguardiola'; // Contraseña o App Password de tu cuenta
+                $mail->Username = $_ENV['MAIL_USERNAME']; // Tu correo electrónico
+                $mail->Password = $_ENV['MAIL_PASSWORD']; // Contraseña o App Password de tu cuenta
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Tipo de encriptación (TLS)
-                $mail->Port = 587; // Puerto (587 para TLS)
+                $mail->Port = $_ENV['MAIL_PORT']; // 
     
                 // Configuración del correo
-                $mail->setFrom('llamenza@alumnos.exa.unicen.edu.ar', 'Base Campamento Arenas Verdes');
+                $mail->setFrom($_ENV['MAIL_USERNAME'], $_ENV['MAIL_NAME']);
                 $mail->addAddress($email); // Dirección del destinatario
     
                 $mail->Subject = 'Recupera tu contraseña';

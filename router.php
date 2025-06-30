@@ -9,11 +9,19 @@
  */
 
 // Requiere los controladores necesarios para gestionar las acciones
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Dotenv\Dotenv; // ← ESTA LÍNEA ES CLAVE
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 require_once './controllers/ReservaController.php';
 require_once './controllers/authController.php';
 require_once './controllers/ParcelaController.php';
 require_once './controllers/resetPassController.php';
 require_once './controllers/InformeController.php';
+
+
 
 // Define la URL base de la aplicación
 // Ejemplo: http://localhost:8080/miApp/

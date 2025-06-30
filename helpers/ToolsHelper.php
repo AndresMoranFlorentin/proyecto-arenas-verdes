@@ -1,6 +1,8 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -16,17 +18,23 @@ class ToolsHelper
     /**
      * nombre de la cuenta de gmail remitente
      */
-    private $nombre_cuenta = 'mateo oscuro';
+    private $nombre_cuenta;
     /**
      * email de la cuenta de gmail remitente:
      */
-    private $email_remitente = 'mateooscuro43@gmail.com';
+    private $email_remitente;
 
     /**
      * //contraseña de la cuenta de gmail remitente:
      */
-    private $password_remitente = 'xfmj dbla oxqk reaq ';
+    private $password_remitente;
 
+    public function __construct()
+    {
+        $this->nombre_cuenta = $_ENV['MAIL_NAME'];
+        $this->email_remitente = $_ENV['MAIL_USERNAME'];
+        $this->password_remitente = $_ENV['MAIL_PASSWORD'];
+    }
     /**
      * Genera un archivo pdf el cual su informacion es dada 
      * por los parametros que recibe la funcion
@@ -97,7 +105,7 @@ class ToolsHelper
         try {
             // Configuración del servidor SMTP
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // Servidor SMTP de Gmail
+            $mail->Host = $_ENV['MAIL_HOST']; // Servidor SMTP de Gmail
             $mail->SMTPAuth = true;
             $mail->Username = $this->email_remitente; // Tu dirección de correo
             $mail->Password = $this->password_remitente; // Contraseña de la aplicación (ver más abajo)
@@ -129,15 +137,15 @@ class ToolsHelper
         try {
             // Configuración del servidor SMTP
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
+            $mail->Host = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = 'mateooscuro43@gmail.com'; // el correo Gmail remitente
-            $mail->Password = 'xfmj dbla oxqk reaq '; // contraseña del remitente
+            $mail->Username = $this->email_remitente; // el correo Gmail remitente
+            $mail->Password = $this->password_remitente; // contraseña del remitente
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
+            $mail->Port = $_ENV['MAIL_PORT'];
 
             // Destinatarios
-            $mail->setFrom('mateooscuro43@gmail.com', 'mateo oscuro');
+            $mail->setFrom($this->email_remitente, $this->nombre_cuenta);
             $mail->addAddress($email_destinatario, $nombre_destinatario); // Añadir destinatario
 
             // Contenido del correo
@@ -169,15 +177,15 @@ class ToolsHelper
         try {
             // Configuración del servidor SMTP
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
+            $mail->Host = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = 'mateooscuro43@gmail.com'; // el correo Gmail remitente
-            $mail->Password = 'xfmj dbla oxqk reaq '; // contraseña del remitente
+            $mail->Username = $this->email_remitente; // el correo Gmail remitente
+            $mail->Password = $this->password_remitente; // contraseña del remitente
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
+            $mail->Port = $_ENV['MAIL_PORT'];
 
             // Destinatarios
-            $mail->setFrom('mateooscuro43@gmail.com', 'mateo oscuro');
+            $mail->setFrom($this->email_remitente, $this->nombre_cuenta);
             $mail->addAddress($email_destinatario, $nombre_destinatario); // Añadir destinatario
 
             // Contenido del correo

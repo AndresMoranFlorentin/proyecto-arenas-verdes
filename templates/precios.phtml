@@ -139,11 +139,11 @@
 
   <!-- Estancia y procedencia -->
   <fieldset class="border p-3 mb-4">
-    <legend class="w-auto px-2">Datos de la Estancia</legend>
+    <legend class="w-auto px-2">Datos de la Estadía</legend>
 
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label for="estancia">Días de estancia:</label>
+        <label for="estancia">Días de estadía:</label>
         <input name="estancia" type="number" min="1" max="100" class="form-control" id="estancia">
       </div>
 
@@ -198,7 +198,7 @@
   <div class="container">
     <?php if (!empty($precio_final)): ?>
       <div class="alert alert-success">
-        <h5>El precio de la reserva segun sus preferencias es de:<strong>  $$  <?= htmlspecialchars($precio_final) ?></strong></h5>
+        <h5>El precio de la reserva según sus preferencias es de:<strong>  $$  <?= htmlspecialchars($precio_final) ?></strong></h5>
       </div>
     <?php else: ?>
       <br>
