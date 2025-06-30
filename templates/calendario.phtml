@@ -2,7 +2,7 @@
 <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
 <div class="container">
   <?php if (!empty($reservaciones)): ?>
-    <h4> El numero de parcelas encontradas en total bajo esas caracteristicas son: <?= htmlspecialchars(count($reservaciones)) ?></h3>
+    <h4> El número de parcelas encontradas en total bajo esas características son: <?= htmlspecialchars(count($reservaciones)) ?></h3>
     <div class="sectores_parcelas">
       <p class="motorhome">Sector Motorhome: <?= htmlspecialchars($parcelas_por_sector['Motorhome']) ?></p>
       <p class="familiar">Sector Familiar: <?= htmlspecialchars($parcelas_por_sector['Familiar']) ?></p>
@@ -12,13 +12,13 @@
     <br>
     <div id="calendar"></div>
     <br>
-    <h4>Lista de parcelas encontradas con mas detalle:</h4>
+    <h4>Lista de parcelas encontradas con más detalle:</h4>
     <br>
     <?php foreach (array_slice($reservaciones, 0, 5) as $parcela): ?>
       <div class="alert alert-success">
         <img width="130px" src="img\arenas verdes\arenas-verdes.jpg" alt="Imagen de la parcela">
         <div class="name">
-          <p>Tipos de Vehiculos que acepta: <?= htmlspecialchars($parcela['tipo_de_vehiculo']) ?>
+          <p>Tipos de Vehículos que acepta: <?= htmlspecialchars($parcela['tipo_de_vehiculo']) ?>
           </p>
         </div>
         <div class="detalles">
