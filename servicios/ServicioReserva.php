@@ -14,7 +14,7 @@ class ServicioReserva
     private $reservaModel;
     /** @var ParcelaModel*/
     private $parcelaModel;
-     /** @var UserModel*/
+     /** @var authModel*/
     private $userModel;
     /** @var ToolsHelper */
     private $toolsHelper;
