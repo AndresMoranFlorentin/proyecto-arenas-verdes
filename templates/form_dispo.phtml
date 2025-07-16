@@ -49,3 +49,9 @@
       </div>
     </form>
     <br>
+    <?php if(!empty($mostrar) && $mostrar==true):?>
+        <p class="alert alert-danger"><?= htmlspecialchars($mensaje)?></p>
+    <?php else: ?>
+
+    <?php endif; ?>
+

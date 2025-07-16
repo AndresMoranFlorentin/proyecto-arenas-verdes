@@ -61,7 +61,7 @@ class ReservaView
      * @param bool $logueado
      * @param bool $dispo
      */
-    public function mostrarParcela($rol, $logueado, $dispo)
+    public function mostrarParcela($rol, $logueado, $dispo,$mostrar=false,$mensaje="")
     {
         $this->logueado = $logueado;
         $this->rol = $rol;

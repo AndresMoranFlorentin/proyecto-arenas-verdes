@@ -1,9 +1,30 @@
+ <style>
+    .campo-fecha { display: none; margin-top: 10px; }
+  </style>
+
 <main>
     <section class="informes" id="content">
         <h2>Generación de Informes</h2>
         <form id="formulario-informes">
-            <label for="fecha">Seleccionar Fecha:</label>
-            <input type="date" name="fecha" id="fecha" required>
+           <label for="fecha">Elegir rango de tiempo</label>
+           <select id="tipoReserva" onchange="mostrarCampos()">
+                <option value="">-- Selecciona una opción --</option>
+                <option value="dia">Un dia en particular</option>
+                <option value="rango">Un rango de dias</option>
+            </select>
+
+            <div id="campoUnico" class="campo-fecha">
+                <label for="fechaUnica">Fecha:</label>
+                <input type="date" id="fecha" name="fecha">
+            </div>
+
+            <div id="campoRango" class="campo-fecha">
+                <label for="fechaInicio">Fecha inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio">
+                <br>
+                <label for="fechaFin">Fecha fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin">
+            </div>
 
             <label for="tipo_informe">Tipo de Informe:</label>
             <select name="tipo_informe" id="tipo_informe">
