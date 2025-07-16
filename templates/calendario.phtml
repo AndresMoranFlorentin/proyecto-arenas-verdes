@@ -3,39 +3,39 @@
 <div class="container">
   <?php if (!empty($reservaciones)): ?>
     <h4> El numero de parcelas encontradas en total bajo esas caracteristicas son: <?= htmlspecialchars(count($reservaciones)) ?></h3>
-    <div class="sectores_parcelas">
-      <p class="motorhome">Sector Motorhome: <?= htmlspecialchars($parcelas_por_sector['Motorhome']) ?></p>
-      <p class="familiar">Sector Familiar: <?= htmlspecialchars($parcelas_por_sector['Familiar']) ?></p>
-      <p class="juvenil">Sector juvenil: <?= htmlspecialchars($parcelas_por_sector['Joven']) ?></p>
-      <p class="campamento_familiar">Sector campamento familiar: <?= htmlspecialchars($parcelas_por_sector['Carpa Fam']) ?></p>
-</div>
-    <br>
-    <div id="calendar"></div>
-    <br>
-    <h4>Lista de parcelas encontradas con mas detalle:</h4>
-    <br>
-    <?php foreach (array_slice($reservaciones, 0, 5) as $parcela): ?>
-      <div class="alert alert-success">
-        <img width="130px" src="img\arenas verdes\arenas-verdes.jpg" alt="Imagen de la parcela">
-        <div class="name">
-          <p>Tipos de Vehiculos que acepta: <?= htmlspecialchars($parcela['tipo_de_vehiculo']) ?>
-          </p>
+      <div class="sectores_parcelas">
+        <p class="motorhome">Sector Motorhome: <?= htmlspecialchars($parcelas_por_sector['Motorhome']) ?></p>
+        <p class="familiar">Sector Familiar: <?= htmlspecialchars($parcelas_por_sector['Familiar']) ?></p>
+        <p class="juvenil">Sector juvenil: <?= htmlspecialchars($parcelas_por_sector['Joven']) ?></p>
+        <p class="campamento_familiar">Sector campamento familiar: <?= htmlspecialchars($parcelas_por_sector['Carpa Fam']) ?></p>
+      </div>
+      <br>
+      <div id="calendar"></div>
+      <br>
+      <h4>Lista de parcelas encontradas con mas detalle:</h4>
+      <br>
+      <?php foreach (array_slice($reservaciones, 0, 5) as $parcela): ?>
+        <div class="alert alert-success">
+          <img width="130px" src="img\arenas verdes\arenas-verdes.jpg" alt="Imagen de la parcela">
+          <div class="name">
+            <p>Tipos de Vehiculos que acepta: <?= htmlspecialchars($parcela['tipo_de_vehiculo']) ?>
+            </p>
+          </div>
+          <div class="detalles">
+            <p>Sector: <?= htmlspecialchars($parcela['sector'])
+                        ?></p>
+            <p>Uso del espacio: <?= htmlspecialchars($parcela['uso_espacio'])
+                                ?></p>
+            <p>Sanitarios: <?= htmlspecialchars($parcela['sanitarios_distancia']) ?></p>
+            <div><a href="seccion_reservacion"><button class="button">Reservar</button></a></div>
+          </div>
         </div>
-        <div class="detalles">
-          <p>Sector: <?= htmlspecialchars($parcela['sector'])
-                      ?></p>
-          <p>Uso del espacio: <?= htmlspecialchars($parcela['uso_espacio'])
-                              ?></p>
-          <p>Sanitarios: <?= htmlspecialchars($parcela['sanitarios_distancia']) ?></p>
-          <div><button class="button">Reservar</button></div>
-        </div>
-      </div> 
-  <?php endforeach; ?>
-  <?php elseif (isset($reservaciones)): ?>
-    <p class="alert alert-danger">No se encontraron parcelas disponibles con esas características.</p>
-  <?php else: ?>
-    
-  <?php endif; ?>
+      <?php endforeach; ?>
+    <?php elseif (isset($reservaciones)): ?>
+      <p class="alert alert-danger">No se encontraron parcelas disponibles con esas características.</p>
+    <?php else: ?>
+
+    <?php endif; ?>
 </div>
 
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
@@ -85,8 +85,8 @@
             start: date,
             end: date,
             //title: sector,
+            display: 'list-item',
             color: sectorColors[sector] || 'gray', // Color del evento según el sector
-            display: 'block',
             extendedProps: {
               sector: sector
             },
@@ -99,7 +99,7 @@
     calendar.setOption('eventContent', function(arg) {
       const color = sectorColors[arg.event.extendedProps.sector] || 'gray';
       return {
-        html: `<div style="width: 12px; height: 12px; background-color: ${color}; border: 1px solid black; border-radius: 3px; display: block;"></div> <span>${arg.event.title}</span>`,
+        html: `<div style="width: 25px; height: 25px; background-color: ${color}; border: 1px solid black; border-radius: 2px; margin: 1px;"></div>`,
       };
     });
 

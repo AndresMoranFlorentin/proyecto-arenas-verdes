@@ -69,14 +69,17 @@ class ReservaController extends BaseController
         $logueado = $this->helper->checkUser();
         $rol = $this->helper->getRol();
         if (
-            !isset($_POST['inicio']) && !isset($_POST['fecha_fin'])
-            && !isset($_POST['personas']) && !isset($_POST['tipo_de_vehiculo'])
-            && !($this->servicioR->controlFechasInicioFin($_POST['inicio'], $_POST['fecha_fin']))
-            && $_POST['personas'] <= 0
-        ) {
+            !isset($_POST['inicio']) || !isset($_POST['fecha_fin'])
+            || !isset($_POST['personas']) && !isset($_POST['tipo_de_vehiculo'])
+            || !($this->servicioR->controlFechasInicioFin($_POST['inicio'], $_POST['fecha_fin']))
+            || ($_POST['personas'] <= 0))
+       {
             //vuelve a enviarte a la pagina de reservacion faltaria mejorar para que muestre un mensaje
             //de error por envio de datos incompletos 
-            $this->view->mostrarParcela($rol, $logueado, BaseController::getDisponibilidad());
+            $mostrar=true;
+            $mensaje="Uno o varios de los parametros pedidos fueron erroneamente ingresados";
+            $this->view->mostrarParcela($rol, $logueado, BaseController::getDisponibilidad(),$mostrar,$mensaje);
+            return;
         }
         //captura de los datos enviados por el formulario:
         /** @var date fecha de inicio de cuando se encontraria disponible la parcela */
