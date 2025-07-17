@@ -336,16 +336,9 @@ class ReservaController extends BaseController
 
         if ($logueado && ($rol == 'admin' || 'super')) {
             $id_reserva = $_POST['id_reserva'];
-            $id_del_usuario = $this->helper->getId();
-
-            $usuario_login = $this->modelUser->findUserById($id_del_usuario);
-            $nombre = $usuario_login['nombre'];
-            $apellido = $usuario_login['apellido'];
-            $dni = $usuario_login['dni'];
-
             $this->model->confirmarReservacion($id_reserva);
-            $reservaciones = $this->model->getReservacionesMasUsuario();
-            $this->view->ir_seccion_Reservacion($rol, $logueado, $id_parcela = null, null, null, BaseController::getDisponibilidad(), $nombre, $apellido, $dni, $reservaciones);
+           //Redirigir a la página de reservas después de realizar la acción
+            header("Location: " . BASE_URL . "seccion_reservacion");
             return;
         }
         $this->irAReservacion();
