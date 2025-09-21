@@ -1,6 +1,11 @@
 <?php include 'header.phtml'; ?>
 <?php include 'nav.phtml'; ?>
-
+<?php if ($dispo == false): ?>
+  <?php include 'cartel_baja_disponibilidad.phtml'; ?>
+  <br>
+<?php else: ?>
+  <br>
+<?php endif; ?>
 <main>
   <section class="introduccion" id="content">
     <br>

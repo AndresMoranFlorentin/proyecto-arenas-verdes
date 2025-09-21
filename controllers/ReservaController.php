@@ -129,16 +129,23 @@ class ReservaController extends BaseController
 
         //control
         if (
-            !isset($_POST['edad_ninos4']) && !isset($_POST['edad_ninos12'])
-            && !isset($_POST['edad_ninos20']) && (!isset($_POST['estancia']) && $_POST['estancia'] <= 0)
-        ) {
+           ($_POST['edad_ninos4']=="" && $_POST['edad_ninos12']=="" && $_POST['edad_ninos20']=="") 
+           || (!isset($_POST['estancia_ingreso']) || (!isset($_POST['estancia_salida']))
+           ||($_POST['estancia_ingreso']) > $_POST['estancia_salida']))
+            {
             $precios = $this->model->getPreciosLista();
-            $this->view->renderPrecios($logueado, $rol, $precios, BaseController::getDisponibilidad());
+            $this->view->mostrarPrecioParcela($rol, $logueado,"", $precios, BaseController::getDisponibilidad());
         }
+        else{
         $edadninos4 = $_POST['edad_ninos4']; //cantidad de personas de hasta 4 años
         $edadninos12 = $_POST['edad_ninos12']; //cantidad de personas entre 4 y 12 años
         $edadninos20 = $_POST['edad_ninos20']; //cantidad de personas mayores de 12 años
         
+         //en caso de que alguna de los grupos separados por edades este vacia que tenga el valor 0 entonces
+        $edadninos4 = isset($_POST['edad_ninos4']) && $_POST['edad_ninos4'] !== '' ? (int)$_POST['edad_ninos4'] : 0;
+        $edadninos12 = isset($_POST['edad_ninos12']) && $_POST['edad_ninos12'] !== '' ? (int)$_POST['edad_ninos12'] : 0;
+        $edadninos20 = isset($_POST['edad_ninos20']) && $_POST['edad_ninos20'] !== '' ? (int)$_POST['edad_ninos20'] : 0;
+       
         $fecha_inicio = $_POST['estancia_ingreso']; //fecha inicio de cuando inicia la reserva
         $fecha_fin = $_POST['estancia_salida']; //fecha fin de cuando termina la reserva
         $tiempo_estancia = $this->servicioR->retornarDiasDeDiferencia($fecha_inicio, $fecha_fin);           
@@ -173,6 +180,7 @@ class ReservaController extends BaseController
 
         $this->view->mostrarPrecioParcela($rol, $logueado, $precio_final, $precios, BaseController::getDisponibilidad());
     }
+     }
     /**
      * Funcion encargada de generar una reservacion en linea con
      * datos dados por el usuario tras pasar por varios controles

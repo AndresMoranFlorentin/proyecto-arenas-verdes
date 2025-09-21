@@ -3,7 +3,7 @@ const cron = require('node-cron');
 const path = require('path');
 const { exec } = require('child_process');
 
-const scriptPath = path.join(__dirname, 'notificacion_diaria.php');
+const scriptPath = path.join(__dirname, 'NotificacionDiaria.php');
 //const logPath = path.join(__dirname, 'log_cron.txt');
 const phpPath = "C:/xampp/php/php.exe";
 

@@ -205,10 +205,22 @@
     <!-- SECCION PARA MOSTRAR LAS PARCELAS DISPONIBLES -->
     <div class="container">
       <?php if (!empty($precio_final)): ?>
-        <div class="alert alert-success">
-          <h5>El precio de la reserva segun sus preferencias es de:<strong> $ <?= htmlspecialchars($precio_final) ?> $</strong></h5>
+        <div style="background-color: #f0f0f0;">
+          <div style="background-color: #f0f0f0; border: 5px solid green; padding: 10px; border-radius: 2px;">
+            <h5>El precio de la reserva segun sus preferencias es de:<span style="color: blue;"><strong> $ <?= htmlspecialchars($precio_final) ?> </strong></span></h5>
+          </div>
+          <br>
+          <div style="background-color:#18018050;align-items: end; padding: 10px;border-radius: 5px;flex:auto;">
+            <h5>Si desea reservar, dirijase al siguiente boton:</h5>
+            <a href="seccion_reservacion">
+              <button class="btn btn-success">Reservar</button>
+            </a>
+          </div>
         </div>
       <?php else: ?>
+        <div class="alert alert-warning" role="alert">
+          <strong>Los datos ingresados en el formulario estan incompletos o erroneos</strong>
+        </div>
         <br>
       <?php endif; ?>
     </div>

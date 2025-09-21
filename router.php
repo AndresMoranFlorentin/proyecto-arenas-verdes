@@ -15,6 +15,8 @@ require_once './controllers/ParcelaController.php';
 require_once './controllers/resetPassController.php';
 require_once './controllers/InformeController.php';
 
+require_once './cron/script_ejecutar/NotificacionDiaria.php';
+
 // Define la URL base de la aplicación
 // Ejemplo: http://localhost:8080/miApp/
 define('BASE_URL', '//' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']) . '/');
@@ -33,12 +35,14 @@ $authController = new AuthController();
 $passController = new PassResetController();
 $parcelaController = new ParcelaController();
 $informeController = new InformeController(); // Instancia del controlador de informes
+//dos veces al dia se ejecutara el siguiente archivo y 
+$notificacion= new NotificacionDiaria();
+$notificacion->ejecutarTareasDiarias(); 
 
 $params = explode('/', $action);
 
 // Enrutamiento de las acciones
 switch ($params[0]) {
-
     /**
      * --- Funciones del ReservaController ---
      */
