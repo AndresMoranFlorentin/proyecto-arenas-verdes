@@ -615,4 +615,18 @@ class ReservaModel extends ConectionModel
             'no_residentes' => $noResidentes,
         ];
     }
+    //Funciones encargadas de operar con la tabla de config_tareas, obtener la ultima vez que se
+    //se activaron unas funciones que deben ejecutarse dos veces al dia
+    public function getUltimaEjecucion() {
+        $query = $this->db->prepare("SELECT valor FROM config_tareas WHERE clave = 'ultima_ejecucion'");
+        $query->execute();
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row["valor"] : null;
+    }
+
+    public function setUltimaEjecucion($fecha) {
+        $query = $this->db->prepare("UPDATE config_tareas SET valor = :fecha WHERE clave = 'ultima_ejecucion'");
+        $query->bindParam(":fecha", $fecha);
+        $query->execute();
+    }
 }
