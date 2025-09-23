@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-06-2025 a las 02:08:25
+-- Tiempo de generación: 23-09-2025 a las 18:49:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,6 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `config_tareas`
+--
+
+CREATE TABLE `config_tareas` (
+  `id` int(11) NOT NULL,
+  `clave` varchar(50) NOT NULL,
+  `valor` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `config_tareas`
+--
+
+INSERT INTO `config_tareas` (`id`, `clave`, `valor`) VALUES
+(1, 'ultima_ejecucion', '2025-09-23 18:32:17');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `notificaciones_pendientes`
 --
 
@@ -34,6 +53,19 @@ CREATE TABLE `notificaciones_pendientes` (
   `fecha_notificacion` datetime NOT NULL,
   `enviado` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `notificaciones_pendientes`
+--
+
+INSERT INTO `notificaciones_pendientes` (`id`, `nombre_completo`, `email`, `fecha_notificacion`, `enviado`) VALUES
+(82, 'Andres Moran', 'moranandres729@gmail.com', '2025-07-05 00:00:00', 0),
+(83, 'Andres Moran', 'moranandres729@gmail.com', '2025-07-05 00:00:00', 0),
+(84, 'Andres Moran', 'moranandres729@gmail.com', '2025-07-05 00:00:00', 0),
+(85, 'Andres Moran', 'moranandres729@gmail.com', '2025-07-05 00:00:00', 0),
+(86, 'Andres Moran', 'moranandres729@gmail.com', '2025-07-05 00:00:00', 0),
+(87, 'Andres Moran', 'moranandres729@gmail.com', '2025-07-17 00:00:00', 0),
+(88, 'Andres Moran', 'moranandres729@gmail.com', '2025-07-17 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -159,7 +191,14 @@ CREATE TABLE `password_resets` (
 
 INSERT INTO `password_resets` (`id`, `user_id`, `token`, `expires`) VALUES
 (1, 4, '0dd3ded04f112ef72bd91fc9dbdc10733585f228fad35f695b10af84a88dd05b', '2025-05-23 19:44:28'),
-(2, 4, '9df3e182897ffea9ba4cffa2adce6f5921f55f9436d5475921845c3b42f88624', '2025-06-18 20:57:13');
+(2, 4, '9df3e182897ffea9ba4cffa2adce6f5921f55f9436d5475921845c3b42f88624', '2025-06-18 20:57:13'),
+(3, 4, '71d8f6bafcd10f563c2ff6d495140218d80f42b5784381a1ea3109d3df513c1f', '2025-06-30 19:22:56'),
+(4, 4, 'fafec25e40a23deac62d7549f0d10ae7aa68c2e59e790e92ed881d0a4f4bd283', '2025-06-30 19:27:27'),
+(5, 4, '17b0e90de156a1444a0bbc990ce6601b20bc06ed4f9c130d85f7bddf0d8076ea', '2025-07-01 00:21:17'),
+(6, 4, 'f394c0d1a2d401e52f99eb6e2b0b233aaee216eaaa503769ac88e8ffcbedeeac', '2025-07-01 00:31:45'),
+(7, 4, '73ae06c7672321f03ca78da44b2de064dd290ca6cb61dd63b0a1e2b1fcb7854d', '2025-07-01 00:33:16'),
+(8, 4, '16c5817c85031a6d7af4df77c3ccea8d0498bdba084829255908ae339728f0bc', '2025-07-01 00:34:35'),
+(9, 4, '731eb0c544944e9e9ddee5e82f9cfe0227faaada370809640dc575d8f994bfa1', '2025-07-01 00:37:31');
 
 -- --------------------------------------------------------
 
@@ -215,8 +254,11 @@ CREATE TABLE `reserva` (
 --
 
 INSERT INTO `reserva` (`id`, `id_usuario`, `menores_de_4`, `menores_de_12`, `mayores_de_12`, `fecha_inicio`, `fecha_fin`, `tipo_vehiculo`, `id_servicio`, `precio_total`, `estado`, `identificador`) VALUES
-(214, 4, 0, 1, 3, '2025-06-28', '2025-07-03', 'Camioneta', 54, 22750, 'pendiente', 'D74A52501DED8C9847AF'),
-(222, 4, 3, 2, 3, '2025-06-28', '2025-07-30', 'Motorhome', 54, 152000, 'pendiente', '61ABE9FD39C7E9D03E45');
+(228, 4, 4, 2, 3, '2025-07-01', '2025-07-06', 'Camioneta', 54, 47000, 'confirmada', 'D5062E28CAE29C9C9B87'),
+(230, 4, 2, 2, 1, '2025-07-07', '2025-07-18', 'Auto', 5, 53900, 'confirmada', '9F8936C771B013AD3648'),
+(232, 4, 2, 4, 2, '2025-08-11', '2025-08-17', 'Auto', 8, 46200, 'pendiente', 'E659A90DAA2212DD6F2A'),
+(233, 4, 2, 4, 2, '2025-08-11', '2025-08-17', 'Auto', 14, 46200, 'pendiente', 'A39B695BF86B9A7BF44B'),
+(234, 4, 3, 5, 3, '2025-08-11', '2025-08-17', 'Casilla', 19, 71400, 'pendiente', '5C007F4F8449DF0CFBA1');
 
 --
 -- Disparadores `reserva`
@@ -271,8 +313,11 @@ CREATE TABLE `reserva_parcela` (
 --
 
 INSERT INTO `reserva_parcela` (`id_reserva`, `id_parcela`) VALUES
-(214, 3),
-(222, 21);
+(228, 22),
+(230, 9),
+(232, 70),
+(233, 42),
+(234, 33);
 
 -- --------------------------------------------------------
 
@@ -388,14 +433,21 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `rol`, `nombre`, `apellido`, `dni`, `phone`, `email`, `localidad`, `password`) VALUES
-(1, 'admin', 'Administrador', 'BaseCamp', 0, 0, 'base@gmail.com', 'Loberia', '$2a$12$sQbpXaU3IruUNF.BU7iKj.YeXS.DEJuUB1Jqx3VzaHQglC4i6L/Ee'),
-(4, 'admin', 'Andres', 'Moran', 44830876, 226289765, 'moranandres729@gmail.com', 'Loberia', '$2y$10$ka.UHO2FdC4wudt81ve.ruTT/bDKB/jzzg5XJXEh4Yq2J8DOVcrAy'),
+(1, 'super', 'Administrador', 'BaseCamp', 0, 0, 'base@gmail.com', 'Loberia', '$2a$12$sQbpXaU3IruUNF.BU7iKj.YeXS.DEJuUB1Jqx3VzaHQglC4i6L/Ee'),
+(4, 'super', 'Andres', 'Moran', 44830876, 226289765, 'moranandres729@gmail.com', 'Loberia', '$2y$10$gwZ55KYjReMRPeOCREdAH.EpROzh00Vwlq/MVk97Q6eEwUDWaqFDm'),
 (5, 'user', 'Mateo', 'Foglionni', 44888777, 2147483647, 'mateofoglionni@gmail.com', 'Necochea', 'Maqueta'),
 (7, 'admin', 'lautaro', 'Lamenza', 2132312321, 34779043, 'flakolobizon@gmail.com', 'Loberia', '$2y$10$srQTkYfI4BLfXAN0uwTHIOuD5OXl4MyKqWUwr5zuGRPfqi/jGhHoC');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `config_tareas`
+--
+ALTER TABLE `config_tareas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `clave` (`clave`);
 
 --
 -- Indices de la tabla `notificaciones_pendientes`
@@ -458,10 +510,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `config_tareas`
+--
+ALTER TABLE `config_tareas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `notificaciones_pendientes`
 --
 ALTER TABLE `notificaciones_pendientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT de la tabla `parcela`
@@ -473,7 +531,7 @@ ALTER TABLE `parcela`
 -- AUTO_INCREMENT de la tabla `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `precios`
@@ -485,7 +543,7 @@ ALTER TABLE `precios`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=224;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
 
 --
 -- AUTO_INCREMENT de la tabla `servicioreserva`
