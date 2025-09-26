@@ -1,9 +1,13 @@
 <nav class="navbar navbar-expand-md navbar">
   <div class="container-fluid">
     <!-- Logo -->
+    <div style="margin: 15px;">
     <a href="https://www.turismoloberia.gov.ar" class="navbar-brand">
-      <img src="./img/logos/logo_loberia.png" alt="Logo Lobería" class="logo" />
+      <img src="./img/logos/logoLoberia.jpg" alt="Logo Lobería" class="logo" />
     </a>
+    <strong style="color: #5faf27; font-weight: bolder; font-size: 24px; font-family: 'MADE Tommy Soft', sans-serif;">LOBERÍA</strong>
+    
+  </div>
     <!-- Botón de menú en pantallas pequeñas -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,29 +17,29 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="home">Inicio</a>
+          <a class="nav-link" href="home" style="color: #5faf27; font-weight: bolder;">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="parcelas">Parcelas</a>
+          <a class="nav-link" href="parcelas" style="color: #5faf27; font-weight: bolder;">Parcelas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="seccion_reservacion">Reservación</a>
+          <a class="nav-link" href="seccion_reservacion" style="color: #5faf27; font-weight: bolder;">Reservación</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="precios">Precios</a>
+          <a class="nav-link" href="precios" style="color: #5faf27; font-weight: bolder;">Precios</a>
         </li>
         <?php if (($this->logueado) && (($this->rol == "admin") || ($this->rol == "super"))): ?>
           <li class="nav-item">
-            <a class="nav-link" href="crt_parcelas">Control Parcelas</a>
+            <a class="nav-link" href="crt_parcelas" style="color: #5faf27; font-weight: bolder;">Control Parcelas</a>
           </li>
            <?php endif; ?>
           <?php if (($this->logueado) && ($this->rol == "super")): ?>
           <li class="nav-item">
-            <a class="nav-link" href="users">Usuarios</a>
+            <a class="nav-link" href="users" style="color: #5faf27; font-weight: bolder;">Usuarios</a>
           </li>
         <?php endif; ?>
         <li class="nav-item">
-          <a class="nav-link" href="preguntas">Preguntas Frecuentes</a>
+          <a class="nav-link" href="preguntas" style="color: #5faf27; font-weight: bolder;">Preguntas Frecuentes</a>
         </li>
      
       <!-- Botón de Login para registrarse -->
