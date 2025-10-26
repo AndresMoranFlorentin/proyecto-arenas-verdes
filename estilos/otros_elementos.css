@@ -218,8 +218,7 @@ COMO EL MAPA:**/
 }
 /*----ESTILO PARA CARTEL DE BAJA DISPONIBILIDAD*/
 .cartel_baja_dispo1 {
-  background-color: #ffcccb; /* Fondo de color rojo claro */
-  border: 2px solid #d32f2f; /* Borde rojo oscuro */
+  background-color: #57af31; /* Fondo de color rojo claro */
   border-radius: 8px; /* Bordes redondeados */
   padding: 16px;
   max-width: 900px; /* Ancho máximo del cartel */
@@ -233,7 +232,7 @@ COMO EL MAPA:**/
 }
 /*----ESTILO PARA CARTEL DE BAJA DISPONIBILIDAD*/
 .cartel_baja_dispo {
-  background-color: #1f1c1c; /* Fondo de color negro */
+  background-color: #57af31; /* Fondo de color negro */
   color: #fff; /* Texto de color blanco */
   height: 50px; /* Altura fija */
   width: 100%; /* Ancho completo del body */
@@ -251,12 +250,12 @@ COMO EL MAPA:**/
 
 
 .cartel_baja_dispo strong {
-  color: #b71c1c; /* Color destacado para "Aviso" */
+  color: white; /* Color destacado para "Aviso" */
   font-size: 20px; /* Tamaño un poco mayor */
 }
 
 .cartel_baja_dispo span {
-  color: #e2e60b; /* Color verde oscuro para la llamada a la acción */
+  color: white; /* Color verde oscuro para la llamada a la acción */
   font-weight: bold; /* Resaltar la acción */
   font-size: 18px; /* Tamaño un poco mayor */
 

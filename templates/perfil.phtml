@@ -17,7 +17,7 @@
        <p><strong>Teléfono:</strong> <?= htmlspecialchars($user->phone) ?></p>
        <p><strong>Mail:</strong> <?= htmlspecialchars($user->email) ?></p>
    
-       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+       <button class="btn" data-bs-toggle="modal" data-bs-target="#editModal" style="background-color: #57af31; color:white;"
         id="editUser"
         data-nombre="<?= htmlspecialchars($user->nombre) ?>"
         data-apellido="<?= htmlspecialchars($user->apellido) ?>"

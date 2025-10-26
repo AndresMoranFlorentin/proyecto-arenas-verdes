@@ -21,10 +21,10 @@
   <div class="row row-cols-1 g-4">
     <?php foreach ($reservaciones as $reserva): ?>
       <div class="col">
-        <div class="card shadow-sm border-primary">
+        <div class="card shadow-sm " style="border: 1px solid #57af31;">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <span class="fw-bold text-primary">Identificador: <h5><?php echo $reserva['identificador']; ?></h5></span>
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#infoExtra<?php echo $reserva['id']; ?>">
+            <span class="fw-bold " style="color: #57af31;">Identificador: <h5><?php echo $reserva['identificador']; ?></h5></span>
+            <button id="btnDetalle" class="btn btn-sm"  type="button" data-bs-toggle="collapse" data-bs-target="#infoExtra<?php echo $reserva['id']; ?>">
               Detalles
             </button>
           </div>
@@ -57,14 +57,14 @@
             <?php if($reserva['estado'] == 'pendiente'): ?>
               <form method="post" action="confirmar_reserva" onsubmit="return confirmarAccion(this);">
                 <input type="hidden" name="id_reserva" value="<?php echo $reserva['id']; ?>">
-                <button type="submit" class="btn btn-success btn-sm">✔ Confirmar</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#57af31; color:white">✔ Confirmar</button>
               </form>
               <form method="post" action="cancelar_reserva" onsubmit="return eliminarAccion(this);">
                 <input type="hidden" name="id_reserva" value="<?php echo $reserva['id']; ?>">
                 <button type="submit" class="btn btn-danger btn-sm">✖ Eliminar</button>
               </form>
             <?php else: ?>
-              <span class="text-success fw-bold">Ya está confirmada</span>
+              <span class="fw-bold" style="color:#57af31;">Ya está confirmada</span>
             <?php endif; ?>
           </div>
         </div>

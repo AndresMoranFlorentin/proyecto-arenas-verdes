@@ -106,7 +106,7 @@
         </tbody>
       </table>
       <?php if ($logueado && $rol === 'super'): ?>
-        <button type="button" id="editar-todo" class="btn btn-primary">Editar Precios</button>
+        <button type="button" id="editar-todo" class="btn" style="background-color: #57af31; color:white;">Editar Precios</button>
         <button type="submit" id="guardar-todo" class="btn btn-success" style="display:none;">Guardar Cambios</button>
         <button type="button" id="cancelar-todo" class="btn btn-danger" style="display:none;">Cancelar</button>
       <?php endif; ?>
@@ -198,7 +198,7 @@
         </div>
       </fieldset>
 
-      <button type="submit" class="btn btn-primary">Calcular</button>
+      <button type="submit" class="btn" style="background-color: #57af31; color: white;">Calcular</button>
     </form>
 
     <br>
@@ -218,7 +218,7 @@
           </div>
         </div>
       <?php else: ?>
-        <div class="alert alert-warning" role="alert">
+        <div class="alert alert-warning" role="alert" style="display: none;">
           <strong>Los datos ingresados en el formulario estan incompletos o erroneos</strong>
         </div>
         <br>
