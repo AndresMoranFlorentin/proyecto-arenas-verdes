@@ -1,38 +1,36 @@
-
-
 <?php include 'header.phtml'; ?>
 <?php include 'nav.phtml'; ?>
 <main>
-<section>
-<h1>Lista de Usuarios</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Apellido y Nombre</th>
-            <th>Email</th>
-            <th>DNI</th>
-            <th>Localidad</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($users as $user): ?>
-            <tr>
-                <td><?= htmlspecialchars($user->apellido . ' ' . htmlspecialchars($user->nombre)) ?></td>
-                <td><?= htmlspecialchars($user->email) ?></td>
-                <td><?= htmlspecialchars($user->dni) ?></td>
-                <td><?= htmlspecialchars($user->localidad) ?></td>
-                <td><?= htmlspecialchars($user->rol) ?></td>
-                <td>
-                    <a class="btn btn-edit btn-info" href="editRol/<?= htmlspecialchars($user->id) ?>">Editar Rol</a>
-                    <a class="btn btn-delete btn-danger" href="deleteUser/<?= htmlspecialchars($user->id) ?>">Eliminar</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-</section>
+    <section class="introduccion" id="content">
+        <h1>Lista de Usuarios</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Apellido y Nombre</th>
+                    <th>Email</th>
+                    <th>DNI</th>
+                    <th>Localidad</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($user->apellido . ' ' . htmlspecialchars($user->nombre)) ?></td>
+                        <td><?= htmlspecialchars($user->email) ?></td>
+                        <td><?= htmlspecialchars($user->dni) ?></td>
+                        <td><?= htmlspecialchars($user->localidad) ?></td>
+                        <td><?= htmlspecialchars($user->rol) ?></td>
+                        <td>
+                            <a class="btn btn-edit btn-info" href="editRol/<?= htmlspecialchars($user->id) ?>">Editar Rol</a>
+                            <a class="btn btn-delete btn-danger" href="deleteUser/<?= htmlspecialchars($user->id) ?>">Eliminar</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
 </main>
 <?php
 include 'whatsapp.phtml';

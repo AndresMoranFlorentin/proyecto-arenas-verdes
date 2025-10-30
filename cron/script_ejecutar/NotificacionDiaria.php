@@ -33,15 +33,31 @@ function __construct()
         $this->modelo = new ReservaModel();
         $this->toolHelper= new ToolsHelper();
     }
+/**
+ * Ejecuta tareas diarias si ha pasado al menos un minuto desde la última ejecución.
+ *
+ * Este método verifica la última fecha de ejecución registrada en la base de datos.
+ * Si ha transcurrido al menos un minuto, una hora o un día desde entonces,
+ * se ejecutan las siguientes tareas:
+ *   - Envío de notificaciones por fin de reservación.
+ *   - Actualización de disponibilidad.
+ * Finalmente, se actualiza la fecha de última ejecución en la base de datos.
+ *
+ * @return void
+ */
+
 public function ejecutarTareasDiarias() {
+    // Obtiene la última fecha de ejecución desde la base de datos (tabla config).
     $ultimaEjecucion = $this->modelo->getUltimaEjecucion(); // SELECT ultima_fecha FROM config
 
+    // Crea objetos DateTime para la fecha actual y la última ejecución.
     $ahora = new DateTime();
     $ultima = new DateTime($ultimaEjecucion);
 
+    // Si ha pasado al menos 1 minuto, 1 hora o 1 día, se ejecutan las tareas.
     $diff = $ahora->diff($ultima);
     //$diff->h >= 12 || $diff->days > 0
-    if ($diff->h >= 12 || $diff->days > 0 ) { //$diff->i >= 1 || $diff->h > 0 || $diff->days > 0 
+    if ($diff->i >= 1 || $diff->h > 0 || $diff->days > 0 ) { //$diff->i >= 1 || $diff->h > 0 || $diff->days > 0 
         $this->avisoDeNotificacionesFinReservacion();
         $this->actualizar_disponibilidad();
         $this->modelo->setUltimaEjecucion($ahora->format("Y-m-d H:i:s"));
