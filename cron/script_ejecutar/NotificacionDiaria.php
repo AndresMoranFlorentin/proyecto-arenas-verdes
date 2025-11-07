@@ -14,11 +14,12 @@ require_once __DIR__ . '/../../controllers/BaseController.php'; // Incluir el co
 class NotificacionDiaria {
 //Datos del remitente (pueden cambiarse por otros):
 //nombre de la cuenta:
-private $nombre_cuenta = 'mateo oscuro';
+private $nombre_cuenta = 'reservasbasedecampamento';
 //email:
-private $email_remitente = 'mateooscuro43@gmail.com';
+private $email_remitente = 'reservasbasedecampamento@gmail.com';
 //contraseña:
-private $password_remitente = 'xfmj dbla oxqk reaq ';
+//private $password_remitente = 'xfmj dbla oxqk reaq ';
+private $password_remitente = 'coiv ggaf vnha whts';
 //en esta variable(que se deberia mantener fija)esta el numero
 //de parcelas que se considera baja disponibilidad
 private $num_min_parce_dispo = 15;
@@ -54,10 +55,11 @@ public function ejecutarTareasDiarias() {
     $ahora = new DateTime();
     $ultima = new DateTime($ultimaEjecucion);
 
-    // Si ha pasado al menos 1 minuto, 1 hora o 1 día, se ejecutan las tareas.
     $diff = $ahora->diff($ultima);
-    //$diff->h >= 12 || $diff->days > 0
-    if ($diff->i >= 1 || $diff->h > 0 || $diff->days > 0 ) { //$diff->i >= 1 || $diff->h > 0 || $diff->days > 0 
+    // Si ha pasado al menos 1 minuto, 1 hora o 1 día, se ejecutan las tareas.
+    //if ($diff->i >= 1 || $diff->h > 0 || $diff->days > 0 ) {
+    // Ejecutar solo si han pasado al menos 4 horas
+    if ($diff->h >= 4 || $diff->days > 0) {
         $this->avisoDeNotificacionesFinReservacion();
         $this->actualizar_disponibilidad();
         $this->modelo->setUltimaEjecucion($ahora->format("Y-m-d H:i:s"));
