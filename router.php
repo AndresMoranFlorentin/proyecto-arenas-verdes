@@ -41,9 +41,6 @@ $authController = new AuthController();
 $passController = new PassResetController();
 $parcelaController = new ParcelaController();
 $informeController = new InformeController(); // Instancia del controlador de informes
-//dos veces al dia se ejecutara el siguiente archivo y 
-$notificacion= new NotificacionDiaria();
-$notificacion->ejecutarTareasDiarias(); 
 
 $params = explode('/', $action);
 

@@ -12,14 +12,7 @@ require_once __DIR__ . '/../../helpers/ToolsHelper.php';
 require_once __DIR__ . '/../../controllers/BaseController.php'; // Incluir el controlador
 
 class NotificacionDiaria {
-//Datos del remitente (pueden cambiarse por otros):
-//nombre de la cuenta:
-private $nombre_cuenta = 'reservasbasedecampamento';
-//email:
-private $email_remitente = 'reservasbasedecampamento@gmail.com';
-//contraseña:
-//private $password_remitente = 'xfmj dbla oxqk reaq ';
-private $password_remitente = 'coiv ggaf vnha whts';
+
 //en esta variable(que se deberia mantener fija)esta el numero
 //de parcelas que se considera baja disponibilidad
 private $num_min_parce_dispo = 15;

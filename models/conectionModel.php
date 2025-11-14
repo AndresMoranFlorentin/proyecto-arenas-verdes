@@ -8,11 +8,11 @@ class ConectionModel {
     // Constructor de la clase: establece la conexión a la base de datos al instanciar la clase.
     function __construct() {
         // Datos necesarios para conectarse a la base de datos.
-        $user = 'root';                                // Nombre de usuario de la base de datos.
-        $pass = '';                                    // Contraseña del usuario (vacía en este caso).
-        $dbname = 'campamento_municipaldb';            // Nombre de la base de datos a utilizar.
-        $host = 'localhost';                           // Dirección del servidor de base de datos.
-        $port = '3306';                                // Puerto utilizado por el servidor MySQL.
+        $user = $_ENV['DB_USER'];                                // Nombre de usuario de la base de datos.
+        $pass = $_ENV['DB_PASSWORD'];                                    // Contraseña del usuario (vacía en este caso).
+        $dbname = $_ENV['NAME_BBDD'];            // Nombre de la base de datos a utilizar.
+        $host = $_ENV['DB_HOST'];                           // Dirección del servidor de base de datos.
+        $port = $_ENV['DB_PORT'];                                // Puerto utilizado por el servidor MySQL.
 
         // Crea una nueva conexión PDO utilizando los datos anteriores.
         // NOTA: hay un pequeño error en la cadena de conexión, debería ser 'host=$host;port=$port'
