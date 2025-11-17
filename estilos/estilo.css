@@ -221,6 +221,16 @@ footer {
   overflow: hidden;
   background-color: #57af31;
 }
+.tabla-ajustable {
+  width: 100%;
+}
+.tabla-ajustable td,
+.tabla-ajustable th {
+    word-break: break-word;
+    white-space: normal;
+}
+
+
 
 #tabla_preguntas {
   width: 100%;

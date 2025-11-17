@@ -50,8 +50,7 @@ class ToolsHelper
      */
     public function generarPDF($nombre, $apellido, $identificador, $precio, $washapp)
     {
- echo "<script>console.log('IMPORTANTE:\\n{$this->nombre_cuenta}\\n{$this->email_remitente}\\n{$this->password_remitente}');</script>";      
-   try {
+        try {
             $pdf = new FPDF();
             $pdf->AddPage();
             $pdf->SetFont('Arial', 'B', 16);
@@ -91,7 +90,6 @@ class ToolsHelper
 
     public function enviarCorreoConPDF($email, $nombre, $rutaPDF)
     {
-        echo "<script>console.log('IMPORTANTE:\\n{$this->nombre_cuenta}\\n{$this->email_remitente}\\n{$this->password_remitente}');</script>";
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
@@ -111,18 +109,16 @@ class ToolsHelper
 
             $mail->send();
             return true;
-        }catch (Exception $e) {
-        echo "Error al enviar el correo: " . $mail->ErrorInfo;
-         var_dump("\n\nError al enviar el correo: " . $mail->ErrorInfo);
-        return false;
-}
+        } catch (Exception $e) {
+            error_log("Error al enviar el correo: " . $mail->ErrorInfo);
+            return false;
+        }
     }
     /**Funcion que sirve para enviar un mensaje de mail para alertar a los usuarios de que
      * la reservacion finalizara*/
     function enviarEmail($nombre_destinatario, $email_destinatario)
     {
-        echo "<script>console.log('IMPORTANTE:\\n{$this->nombre_cuenta}\\n{$this->email_remitente}\\n{$this->password_remitente}');</script>";
-         $mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);
 
         try {
             // Configuración del servidor SMTP
@@ -147,11 +143,9 @@ class ToolsHelper
             // Enviar correo 
             $mail->send();
             return true;
-        }catch (Exception $e) {
-        echo "Error al enviar el correo: " . $mail->ErrorInfo;
-        var_dump("\n\nError al enviar el correo: " . $mail->ErrorInfo);
-        return false;
-}
+        } catch (Exception $e) {
+            return false;
+        }
     }
     /**
      *Funcion que genera un numero alfanumerico unico para identificar las reservaciones 
@@ -164,7 +158,6 @@ class ToolsHelper
      * su reservacion ha finalizado porque la parcela ha sido inhabilitada abruptamente*/
     function notificarCancelacionReservaEmail($nombre_destinatario, $email_destinatario)
     {
-echo "<script>console.log('IMPORTANTE:\\n{$this->nombre_cuenta}\\n{$this->email_remitente}\\n{$this->password_remitente}');</script>";
         $mail = new PHPMailer(true);
 
         try {
@@ -191,9 +184,7 @@ echo "<script>console.log('IMPORTANTE:\\n{$this->nombre_cuenta}\\n{$this->email_
             $mail->send();
             return true;
         } catch (Exception $e) {
-        echo "Error al enviar el correo: " . $mail->ErrorInfo;
-        var_dump("\n\nError al enviar el correo: " . $mail->ErrorInfo);
-        return false;
-}
+            return false;
+        }
     }
 }
