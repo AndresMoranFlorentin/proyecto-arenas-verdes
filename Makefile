@@ -18,14 +18,18 @@ help :
 
 install :
 	sudo install -d -o $(USUARIO_DESPLIEGUE) -g $(GRUPO_DESPLIEGUE) -m 2755 $(DIRECTORIO_BASE)
-	sudo rsync -vrR --delete --exclude config/disponibilidad.txt \
+	sudo rsync -vrR --delete --exclude /config/disponibilidad.txt \
+		--exclude "/helpers/tmp/?*" --exclude "/helpers/helpers/" \
 		$(OBJETIVOS) $(DIRECTORIO_BASE)
 	sudo chown -Rh $(USUARIO_DESPLIEGUE):$(GRUPO_DESPLIEGUE) \
 		$(DIRECTORIO_BASE)
 	sudo chmod 640 $(DIRECTORIO_BASE)/.htaccess
-	sudo chmod 2775 $(DIRECTORIO_BASE)/config
+	sudo chmod 2775 $(DIRECTORIO_BASE)/config $(DIRECTORIO_BASE)/helpers/tmp
 	sudo chown $(USUARIO_WWW) $(DIRECTORIO_BASE)/config/disponibilidad.txt
+	sudo chown -f $(USUARIO_WWW) $(DIRECTORIO_BASE)/helpers/tmp/* || true
 
 deploy :
 	rsync -vrR --delete --exclude config/disponibilidad.txt \
+		--exclude "/helpers/tmp/?*" --exclude "/helpers/helpers/" \
+		$(OBJETIVOS) $(DIRECTORIO_BASE) \
 		$(OBJETIVOS) $(DIRECTORIO_BASE)
